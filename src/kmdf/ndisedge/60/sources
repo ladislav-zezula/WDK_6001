@@ -1,0 +1,40 @@
+# Copyright (c) Microsoft Corporation.  All rights reserved.
+#
+# sources
+# Microsoft Virutal NDIS-WDF Miniport Driver
+# BUILD command sources file
+#
+
+TARGETNAME=ndisedge
+TARGETTYPE=DRIVER
+
+
+
+C_DEFINES=$(C_DEFINES) -DNDIS_MINIPORT_DRIVER -DNDIS60_MINIPORT=1 -DBINARY_COMPATIBLE=0 -DNDIS_WDM=1 
+#-DINTERFACE_WITH_NDISPROT=1 
+
+C_DEFINES=$(C_DEFINES) -DNTDDI_VERSION=NTDDI_VISTA
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=ndisedge
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+
+
+MISCFILES=$(NTTARGETFILES)
+
+
+TARGETLIBS=$(DDK_LIB_PATH)\ndis.lib \
+        $(DDK_LIB_PATH)\ntstrsafe.lib
+
+SOURCES = \
+        ndiswdm.c \
+        init.c \
+        request.c \
+        send.c \
+        receive.c \
+        ExCallbk.c\
+        ndiswdm.rc 
+

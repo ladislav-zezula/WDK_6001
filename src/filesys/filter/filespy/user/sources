@@ -1,0 +1,21 @@
+TARGETNAME=filespy
+TARGETTYPE=PROGRAM
+USE_MSVCRT=1
+UMTYPE=console
+
+
+TARGETLIBS=$(OBJ_PATH)\..\lib\$(O)\filespyLib.lib   \
+           $(OBJ_PATH)\..\..\lib\$(O)\namelookup.lib
+
+INCLUDES=..\filter;..\lib;..\..\lib
+
+C_DEFINES=$(C_DEFINES) -DUNICODE -D_UNICODE
+
+SOURCES=fspyLog.c \
+        fspyUser.c \
+        fspyUser.rc
+
+!if "$(DDK_TARGET_OS)"=="WinLH"
+_NT_TARGET_VERSION=$(_NT_TARGET_VERSION_WINXP)
+!endif
+

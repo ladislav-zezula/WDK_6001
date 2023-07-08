@@ -1,0 +1,51 @@
+TARGETNAME=tape
+TARGETTYPE=EXPORT_DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\classpnp.lib
+
+INCLUDES=..\..\inc;..\inc
+
+!if !defined(DDK_TARGET_OS)
+!if $(AMD64) || $(386)
+
+DLLLIBOBJECTS=$(DLLLIBOBJECTS) \
+        $(BASE_LIB_PATH)\memcmp.obj \
+        $(BASE_LIB_PATH)\memcpy.obj \
+        $(BASE_LIB_PATH)\memset.obj
+
+!elseif $(IA64)
+
+DLLLIBOBJECTS=$(DLLLIBOBJECTS) \
+        $(BASE_LIB_PATH)\_memmove.obj \
+        $(BASE_LIB_PATH)\_memcpy.obj \
+        $(BASE_LIB_PATH)\_memset.obj \
+        $(BASE_LIB_PATH)\_memcmp.obj
+!endif
+
+!if $(AMD64) || $(IA64)
+DLLLIBOBJECTS=$(DLLLIBOBJECTS) \
+     $(BASE_LIB_PATH)\gshandler.obj
+!endif
+!endif
+
+NTTARGETFILE1=$(OBJ_PATH)\$(O)\TapeWithGS.lib
+# 4001 no object files specified; libraries used
+# 4006 __NULL_IMPORT_DESCRIPTOR already defined in ScsiPortWithGs.lib(NTOSKRNL.exe); second definition ignored
+LINK_LIB_IGNORE=4001,4006
+PASS1_PUBLISH={$(OBJ_PATH)\$(O)\TapeWithGS.lib=$(DDK_LIB_PATH)\tape.lib}
+
+SOURCES=tape.c     \
+        physlogi.c \
+        port.c     \
+        tapewmi.c  \
+        tape.rc
+
+DLLDEF=tape.def
+
+TARGET_DESTINATION=retail
+
+COVERAGE_ENTRY_POINT=TapeClassInitialize
+COVERAGE_UNLOAD_POINT=TapeUnload
+
+LOC_DRIVER_INFS=tape.inf
+

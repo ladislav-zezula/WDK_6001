@@ -1,0 +1,26 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Description: 
+
+	This rule verifies that ExFreePool is not called with NULL
+	argument in UnloadDriver and RemoveDevice routines.
+*/
+
+#include "ntddk_slic.h"
+
+state {
+  enum { Disabled, Enabled } check = Disabled;
+}
+
+ExFreePool.entry 
+{
+    if ( check == Enabled && $1 == NULL) {
+        abort "The driver is passing NULL to ExFreePool, which can cause a bugcheck.";
+    }
+}
+
+[ sdv_RunRemoveDevice, sdv_RunUnload ].entry
+{
+    check = Enabled;
+}

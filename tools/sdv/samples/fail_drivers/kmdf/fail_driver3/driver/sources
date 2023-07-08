@@ -1,0 +1,14 @@
+TARGETNAME=fail_driver3
+TARGETTYPE=DRIVER
+
+KMDF_VERSION_MAJOR=1
+KMDF_VERSION_MINOR=7
+
+MSC_WARNING_LEVEL=/W4 /WX
+
+SOURCES = fail_driver3.c
+
+INCLUDES=..\Library
+
+TARGETLIBS=$(OBJ_PATH)\..\library\$(O)\fail_library3.lib
+

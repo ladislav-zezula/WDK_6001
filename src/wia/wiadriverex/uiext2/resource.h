@@ -1,0 +1,5 @@
+//(C) COPYRIGHT MICROSOFT CORP., 1998-1999
+#define IDI_TESTDEVICE                  2005
+
+
+

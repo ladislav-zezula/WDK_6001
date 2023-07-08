@@ -1,0 +1,25 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\errcodes.h \
+ $(MC_SOURCEDIR)\errcodes.rc \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\hbtnkey.obj \
+ $(OBJ_PATH)\$O\hidbtn.obj \
+ $(OBJ_PATH)\$O\pnp.obj \
+ $(OBJ_PATH)\$O\ioctl.obj \
+ $(OBJ_PATH)\$O\errlog.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\hbtnkey.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\input\hbtnkey
+MAKEDIR_RELATIVE_TO_BASEDIR=src\input\hbtnkey
+OBJ_PATH=e:\sdk\wdk_6001\src\input\hbtnkey
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

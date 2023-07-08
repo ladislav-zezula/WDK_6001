@@ -1,0 +1,9 @@
+TARGETNAME=toaster
+TARGETTYPE=DRIVER
+
+INCLUDES = ..\..\inc;..\shared\
+
+
+TARGETLIBS= $(DDK_LIB_PATH)\ntstrsafe.lib
+
+SOURCES= incomplete1.c

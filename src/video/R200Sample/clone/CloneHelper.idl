@@ -1,0 +1,28 @@
+// CloneHelper.idl : IDL source for CloneHelper
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (CloneHelper.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "CloneViewHelper.idl";
+
+[
+    uuid(9F7668BC-E163-414C-92C6-01228863FF5A),
+    version(1.0),
+    helpstring("CloneHelper 1.0 Type Library")
+]
+library CloneHelperLib
+{
+    importlib("stdole2.tlb");
+    [
+        uuid(6C4BE3D5-831A-42ED-AA62-2AEB34C8CBA4),
+        helpstring("CloneViewHelper Class")
+    ]
+    coclass CloneViewHelper
+    {
+        [default] interface IViewHelper;
+    };
+};
+

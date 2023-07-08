@@ -1,0 +1,23 @@
+!INCLUDE ..\SOURCES.INC
+
+ALT_PROJECT=WOW6432
+ALT_PROJECT_TARGET=WOW6432
+
+TARGETNAME=r2umd32
+TARGETPATH=..\..\lib\$(ALT_PROJECT)\obj$(BUILD_ALT_DIR)
+TARGETTYPE=DYNLINK
+
+C_DEFINES=$(C_DEFINES) \
+    -DWOW6432                   \
+    -DRADEON_ASIC=0x200         \
+    -DSWNP_CACHE                \
+
+!if $(FREEBUILD)
+LINKLIBS=$(LINKLIBS)    \
+    ..\..\lib\$(ALT_PROJECT)\*\free\r2umdd.lib \
+    ..\..\lib\$(ALT_PROJECT)\*\free\r2um.lib
+!else
+LINKLIBS=$(LINKLIBS)    \
+    ..\..\lib\$(ALT_PROJECT)\*\chk\r2umdd.lib \
+    ..\..\lib\$(ALT_PROJECT)\*\chk\r2um.lib
+!endif

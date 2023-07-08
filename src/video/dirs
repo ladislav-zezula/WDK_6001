@@ -1,0 +1,4 @@
+DIRS= \
+     displays \
+     pixlib \
+     R200Sample

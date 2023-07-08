@@ -1,0 +1,39 @@
+
+
+TARGETNAME=1394API
+TARGETTYPE=DYNLINK
+DLLENTRY=_DllMainCRTStartup
+
+TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
+           $(SDK_LIB_PATH)\user32.lib   \
+           $(SDK_LIB_PATH)\setupapi.lib \
+           $(SDK_LIB_PATH)\advapi32.lib
+
+USE_MAPSYM=1
+USE_MSVCRT=1
+UMTYPE=windows
+
+INCLUDES=..\..\inc;              \
+         ..\..\driver\common;
+
+SOURCES= 1394api.rc      \
+         1394api.c       \
+         1394main.c      \
+         asyncapi.c      \
+         debug.c         \
+         isochapi.c      \
+         util.c
+
+C_DEFINES=/DW32 /DWIN32
+
+PASS0_PUBLISH=          \
+        {..\..\inc\1394api.h=$(DRIVERS_TST_INC_PATH)\1394api.h}
+
+PASS1_PUBLISH={$(OBJ_PATH)\$(O)\1394api.lib=$(DRIVERS_TST_LIB_PATH)\$(TARGETNAME).lib} \
+
+TARGET_DESTINATION=idw
+
+MUI=0
+
+MUI_COMMENT=LGNEXCLUDE_MOVE, moved from exclusion txt, owners have to contact MUICore to resolve
+

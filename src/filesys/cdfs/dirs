@@ -1,0 +1,5 @@
+DIRS= \
+     w2k \
+     wlh \
+     wnet \
+     wxp

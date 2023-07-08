@@ -1,0 +1,4 @@
+DIRS= \
+     kmdf \
+     umdf \
+     wdf1394

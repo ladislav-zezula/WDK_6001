@@ -1,0 +1,44 @@
+!IF 0
+
+Copyright (c) 2005 Microsoft Corporation
+
+All rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+PARTICULAR PURPOSE.
+
+File Name:
+
+    sources
+
+Abstract:
+
+    This file specifies the target component being built and the list of
+    sources files needed to build that component.  Also specifies optional
+    compiler switches and libraries that are unique for the component being
+    built.
+
+!ENDIF
+
+SOURCES=\
+    ptmanage.cpp   \
+    rescache.cpp   \
+    rescpy.cpp     \
+    saxhndlr.cpp   \
+    widetoutf8.cpp \
+    xdrchflt.cpp   \
+    xdsmplflt.cpp  \
+    xdstrmflt.cpp  \
+
+INCLUDES=$(INCLUDES); \
+    ..\xdcont;        \
+
+TARGETNAME=xdfltcmn
+TARGETPATH=$(OBJ_PATH)\..\lib\$(_OBJ_DIR)
+TARGETTYPE=LIBRARY
+
+!include ..\sources.inc
+
+

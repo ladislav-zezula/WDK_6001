@@ -1,0 +1,21 @@
+!include ..\sources.inc
+
+TARGETNAME=hwextsta
+TARGETPATH=..\lib
+TARGETTYPE=LIBRARY
+
+PRECOMPILED_INCLUDE=hw_pcomp.h
+
+INCLUDES= $(INCLUDES)        \
+    ..\inc;                  \
+    $(DDK_INC_PATH)
+
+SOURCES=                     \
+    hw_80211.c               \
+    hw_eprom.c               \
+    Hw_Main.c                \
+    Hw_Nic.c                 \
+    Hw_Oids.c	             \
+    Hw_Recv.c                \
+    Hw_Send.c                \
+    Hw_ccmp.c

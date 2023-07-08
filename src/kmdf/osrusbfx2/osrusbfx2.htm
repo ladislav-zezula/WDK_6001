@@ -1,0 +1,391 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-
+1252">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 6.0">
+<TITLE>OSRUSBFX2</TITLE>
+</HEAD>
+<BODY LINK="#0000ff">
+
+<FONT FACE="Verdana" SIZE=5><H2>OSRUSBFX2</H2>
+</FONT><FONT FACE="Verdana" SIZE=2>
+
+<FONT FACE="Verdana" SIZE=5><H3>Summary</H3>
+</FONT><FONT FACE="Verdana" SIZE=2>
+
+<p>The OSRUSBFX2 sample demonstrates how to perform bulk and interrupt data transfers to an USB device using Windows Driver Framework (WDF). This sample is written for OSR USB-FX2 Learning Kit. 
+The specification for the device is at <b>
+<a href="http://www.osronline.com/hardware/OSRFX2_32.pdf">
+http://www.osronline.com/hardware/OSRFX2_32.pdf</a>.&nbsp; </b></p>
+<p><b>Here is the overview of the device:</b></p>
+<ul>
+  <li>Device is loosely based on the development board supplied with the Cypress 
+  EZ-USB FX2 Development Kit (CY3681)</li>
+  <li>Contains 1 interface and 3 endpoints (Interrupt IN, Bulk Out, Bulk IN)</li>
+  <li>Firmware supports vendor commands to query or set LED Bar graph display, 
+  7-segment LED display and query toggle switch states</li>
+  <li>Interrupt Endpoint: 
+  <ul>
+    <li>Sends an 8-bit value that represents the state of the switches</li>
+    <li>Sent on startup, resume from suspend, and whenever the switch pack 
+    setting changes</li>
+    <li>Firmware does not de-bounce the switch pack</li>
+    <li>One switch change can result in multiple bytes being sent </li>
+    <li>Bits are in the reverse order of the labels on the pack <br>
+    E.g.&nbsp; bit 0x80 is labeled 1 on the pack</li>
+  </ul>
+  </li>
+  <li>Bulk Endpoints are configured for loopback: 
+  <ul>
+    <li>Device moves data from IN endpoint to OUT endpoint</li>
+    <li>Device does not change the values of the data it receives nor does it 
+    internally create any data</li>
+    <li>Endpoints are always double buffered</li>
+    <li>Max packet size depends on speed (64 Full speed, 512 High speed)</li>
+  </ul>
+  </li>
+</ul>
+<p>This sample contains a console test application and a series of drivers. The 
+driver is developed iteratively as a series of steps - starting with a most 
+basic &quot;Hello World&quot; driver to fully functional driver in the 'Final' step. The 
+description of what is demonstrated in each step is given in the table below.</p>
+<table border="1" style="border-collapse: collapse" width="877" id="table1">
+  <tr>
+    <td width="158">Step1</td>
+    <td width="736">The is the most basic step. The source file contains 
+    absolutely minimal amount of code to get the driver loaded in memory and 
+    respond to PNP and Power events. You can install, uninstall, disable, 
+    enable, suspend and resume the system and everything will work fine.</td>
+  </tr>
+  <tr>
+    <td width="158">Step2</td>
+    <td width="736">This step:<ol>
+      <li>Creates a context with the WDFDEVICE object.</li>
+      <li>Initializes the USB device by registering a EvtPrepareHardware 
+      callback</li>
+      <li>Registers an interface so that application can open an handle to the 
+      device.</li>
+    </ol>
+    </td>
+  </tr>
+  <tr>
+    <td width="158">Step3</td>
+    <td width="736">
+    <ol>
+      <li>Creates a default parallel queue to receive an IOCTL requests to set 
+      bar graph display.</li>
+      <li>Retrieves memory handle from the requests and use that to send<br>
+      a vendor command to the USB device.</li>
+    </ol>
+    </td>
+  </tr>
+  <tr>
+    <td width="158">Step4</td>
+    <td width="736">
+    <ol>
+      <li>Registers read and write events on the default queue.</li>
+      <li>Retrieves memory from read and write request, format the requests and 
+      send it to USB target.</li>
+    </ol>
+    </td>
+  </tr>
+  <tr>
+    <td width="158">Step5</td>
+    <td width="736">How to do WPP tracing</td>
+  </tr>
+  <tr>
+    <td width="158">Final</td>
+    <td width="736">This steps includes all the features list in the above steps 
+    and the following:<ol>
+      <li>Creates two separate sequential queues and configures them to dispatch 
+      read and write requests directly.</li>
+      <li>Enables wait-wake and selective suspend support.</li>
+      <li>Configures a USB target continuous reader to read toggle switch states 
+      asynchronously from the interrupt endpoint.</li>
+      <li>Supports additional IOCTLs to get &amp; set the 7-segment display, toggle 
+      switches, reset and re-enumerate device.</li>
+    </ol>
+    </td>
+  </tr>
+  <tr>
+    <td width="158">EnumSwitches</td>
+    <td width="736">This is a stripped-down version of the final version. It's 
+    meant to demonstrate child device enumeration support of WDF. This sample 
+    configures a continuous reader on the interrupt pipe to read toggle switch 
+    states and then enumerates each &quot;ON&quot; switch as a child device in the 
+    completion callback of the continuous reader. The child devices are 
+    enumerated as raw PDOs, so no INF file is required to install them.</td>
+  </tr>
+</table>
+</FONT>
+<H3><A NAME="build"></A>Building the sample</H3><FONT FACE="Verdana" 
+SIZE=2><P>
+To build the sample drivers and exe, you must first set up the DDK environment on your host machine. The “Installation and Release Notes” in the Windows 2000/XP/Server 2003 DDK has a complete description on how to do this.
+
+ <OL>
+
+
+ <LI>
+     Run the build –ceZ command in the osrusbfx2 directory to build <I>osrusbfx2.sys</I> and <I>osrusbfx2.exe</I>.
+
+ 
+
+     The target driver name for all the steps is same. So depending which step 
+     you want to test, you can copy the <I>osrusbfx2.sys </I>from the build 
+     output directory.<LI>
+     Copy <I>KMDF coinstaller (wdfcoinstallerMMmmm.dll)</I>, <I>osrusbfx2.sys</I>, <I>osrusbfx2.exe</I>, and <I>osrusbfx2.inf</I> to a 
+     removable media or a temporary directory on the target system.
+</OL>
+  <P>
+
+
+<H3>Installing the Driver</H3>
+
+  If you adapting this driver for your device, make sure the 
+  INF file has been updated to match the hardware id (VID, PID), and the device description text to 
+  match your test board/device. <p>
+  When you plug in the device, depending on the operating system you are using:
+  <p><b>On Windows XP and later:</b></p>
+  <ul>
+    <li>&quot;Found New Hardware Wizard&quot; dialog box 
+    will appear. Here select the 
+    radio button labeled &quot;Install from a list of specific location (Advanced)&quot; and then hit the &quot;Next&quot; button. 
+<li>In the following screen select the radio button labeled &quot; Search the best driver in these locations&quot; and then select &quot;Include this location in the search path&quot; and specify the target media or the directory where the INF and SYS files are copied and then hit the &quot;Next&quot; button. 
+<li>The system will scan the directory and pick up the matching INF and start the installation. You will get a Hardware Installation Warning dialog stating that your driver has not passed Windows Logo Testing. Hit &quot;Continue Anyway&quot; button.
+<li>The system will copy the driver, INF file, load the driver and start the device. If every thing goes fine, you will get &quot;Completing the Found New Hardware Wizard&quot;. Hit the &quot;Finish&quot; button and the installation is complete.
+<li> You should be able to see the device in the Device manager under &quot;Sample 
+Device&quot;
+  </ul>
+ 
+
+  <p><b>On Windows 2000:</b></p>
+  <ul>
+    <li>&quot;Found New Hardware Wizard&quot; dialog box 
+    will appear with the description of the device. Here click &quot;Next&quot; button. 
+<li>In the following screen &quot;Install Hardware Device Driver&quot;, select the radio button 
+labeled &quot; 
+Display a list of known drivers for this device...&quot; and then click &quot;Next&quot; 
+button.<li>In the following dialog on &quot;Hardware Type&quot;, select &quot;Other Devices&quot; 
+    from the list and click &quot;Next&quot;.<li>In the dialog on &quot;Select a Device 
+    Driver&quot;, click on &quot;Have Disk&quot;.<li>Specify the target media or the directory where the INF and SYS files are copied and then hit the &quot;Okay&quot; button. 
+    <li>Select &quot;OSR&quot; in the Manufacture section selection and click &quot;Next&quot;.<li>
+    Click &quot;Next&quot; on the &quot;Start Device Driver Installation&quot; dialog.<li>Click 
+    Finish at 'Completing the Add/Remove Hardware Wizard.' 
+  </ul>
+ 
+
+<h3>Testing</h3>
+
+You can use osrusbfx2.exe to test the device. This console application 
+enumerates the interface registered by the driver and opens the device to send 
+read, write or ioctl requests based on the command line options. 
+</font></font><FONT FACE="Verdana"> 
+<PRE>
+<font size="4" face="Verdana">USAGE:
+
+Usage for Read/Write test:
+-r [n] where n is number of bytes to read
+-w [n] where n is number of bytes to write
+-c [n] where n is number of iterations (default = 1)
+-v verbose -- dumps read data
+-p play with Bar Display, Dip Switch, 7-Segemet Display
+-a to perform asynchronous I/O
+-u to dump USB configuration and pipe info 
+</font></PRE></font>
+<h3>
+
+
+<FONT FACE="Verdana">
+
+Playing with the 7 segment display, toggle switches and bar graph display:</font></h3>
+<p>
+
+
+<FONT FACE="Verdana" SIZE=2>
+
+osrusbfx2.exe -p option 1-9 allows to set and clear bar graph display, set and 
+get 7 segment state, and read the toggle switch states.</font></p>
+<p>
+
+
+<FONT FACE="Courier New" SIZE=3>
+
+USBFX TEST -- Functions:<br>
+<br>
+1. Light Bar<br>
+2. Clear Bar<br>
+3. Light entire Bar graph<br>
+4. Clear entire Bar graph<br>
+5. Get bar graph state<br>
+6. Get Switch state<br>
+7. Get Switch Interrupt Message<br>
+8. Get 7 segment state<br>
+9. Set 7 segment state<br>
+10. Reset the device<br>
+11. Reenumerate the device<br>
+<br>
+0. Exit<br>
+<br>
+Selection:</font></p>
+<h3>
+
+
+<FONT FACE="Verdana Ref">
+
+Reset and Reenumerate the device:</font></h3>
+<p>
+
+
+<FONT FACE="Verdana" SIZE=2>
+
+osrusbfx2.exe -p and select option 10 and 11 to either reset the device or 
+reenumerate the device.</font></p>
+<h3>
+
+
+<font face="Verdana">Read &amp; Write to bulk endpoints:</font></h3><FONT FACE="Verdana" SIZE=2>
+
+
+</P>
+<p>
+osrusbfx2.exe -r 64&nbsp; - to read 64 bytes to the bulk in endpoint</P>
+<p>
+osrusbfx2.exe -w 64 - to write 64 bytes to the bulk out endpoint</P>
+<p>
+osrusbfx2.exe -r 64 -w 64 -c 100 -v <-- This command first writes 64 bytes of data to bulk out endpoint (Pipe01), and then reads 
+64 bytes from bulk-in endpoint (Pipe02), and compares the read buffer with write buffer to see if they match. If the buffer contents match, it repeats this operation 100 times.
+</P>
+<p>
+To read &amp; write to the device asynchronously in an infinite loop: osrusbfx2.exe 
+-a</P>
+<p>
+The bulk endpoints are double buffered. Depending on the operational speed, full 
+or high, the buffer size is either 64 bytes or 512 bytes respectively. A request 
+to read data wouldn't complete if the buffers are empty. If the buffers are 
+full, a request to write data wouldn't complete until the buffers are emptied. 
+So when you are doing a synchronous read, you should make sure the endpoint 
+buffer has data. Let us see what happen when you send 512 bytes write request, 
+when the device is operating in full speed mode. Since the endpoints are double 
+buffered, the total buffer capacity is 256 bytes. So the first 256 bytes would 
+fill the buffer and the write request will wait in the USB stack until the 
+buffers are emptied. So if you run another instance of the application to read 
+512 bytes of data, both write and read requests will get completed successfully.</P>
+<FONT FACE="Verdana">
+<h3>
+<font size="4">Dumping Descriptors:</font></font><FONT FACE="Verdana" SIZE=2><br>
+
+</h3>
+
+<p>
+osrusbfx2.exe  -u <-- Will dump all the descriptors and endpoint information.
+<p>
+If the device is operating in high speed mode, you will get the following 
+information:<p>
+</font><font size="3" FACE="Verdana"><br>
+===================<br>
+USB_CONFIGURATION_DESCRIPTOR<br>
+bLength = 0x9, decimal 9<br>
+bDescriptorType = 0x2 ( USB_CONFIGURATION_DESCRIPTOR_TYPE )<br>
+wTotalLength = 0x27, decimal 39<br>
+bNumInterfaces = 0x1, decimal 1<br>
+bConfigurationValue = 0x1, decimal 1<br>
+iConfiguration = 0x4, decimal 4<br>
+bmAttributes = 0xa0 ( USB_CONFIG_BUS_POWERED )<br>
+MaxPower = 0x32, decimal 50<br>
+<br>
+-----------------------------<br>
+USB_INTERFACE_DESCRIPTOR #0<br>
+bLength = 0x9<br>
+bDescriptorType = 0x4 ( USB_INTERFACE_DESCRIPTOR_TYPE )<br>
+bInterfaceNumber = 0x0<br>
+bAlternateSetting = 0x0<br>
+bNumEndpoints = 0x3<br>
+bInterfaceClass = 0xff<br>
+bInterfaceSubClass = 0x0<br>
+bInterfaceProtocol = 0x0<br>
+bInterface = 0x0<br>
+------------------------------<br>
+USB_ENDPOINT_DESCRIPTOR for Pipe00<br>
+bLength = 0x7<br>
+bDescriptorType = 0x5 ( USB_ENDPOINT_DESCRIPTOR_TYPE )<br>
+bEndpointAddress= 0x81 ( INPUT )<br>
+bmAttributes= 0x3 ( USB_ENDPOINT_TYPE_INTERRUPT )<br>
+wMaxPacketSize= 0x49, decimal 73<br>
+bInterval = 0x1, decimal 1<br>
+------------------------------<br>
+USB_ENDPOINT_DESCRIPTOR for Pipe01<br>
+bLength = 0x7<br>
+bDescriptorType = 0x5 ( USB_ENDPOINT_DESCRIPTOR_TYPE )<br>
+bEndpointAddress= 0x6 ( OUTPUT )<br>
+bmAttributes= 0x2 ( USB_ENDPOINT_TYPE_BULK )<br>
+wMaxPacketSize= 0x200, decimal 512<br>
+bInterval = 0x0, decimal 0<br>
+------------------------------<br>
+USB_ENDPOINT_DESCRIPTOR for Pipe02<br>
+bLength = 0x7<br>
+bDescriptorType = 0x5 ( USB_ENDPOINT_DESCRIPTOR_TYPE )<br>
+bEndpointAddress= 0x88 ( INPUT )<br>
+bmAttributes= 0x2 ( USB_ENDPOINT_TYPE_BULK )<br>
+wMaxPacketSize= 0x200, decimal 512<br>
+bInterval = 0x0, decimal 0<br>
+</font><FONT FACE="Verdana" SIZE=2>
+
+<br>
+<p>
+If the device is operating in low speed mode:
+</font>
+<p>
+
+
+<FONT FACE="Verdana" SIZE=3>
+
+===================<br>
+USB_CONFIGURATION_DESCRIPTOR<br>
+bLength = 0x9, decimal 9<br>
+bDescriptorType = 0x2 ( USB_CONFIGURATION_DESCRIPTOR_TYPE )<br>
+wTotalLength = 0x27, decimal 39<br>
+bNumInterfaces = 0x1, decimal 1<br>
+bConfigurationValue = 0x1, decimal 1<br>
+iConfiguration = 0x3, decimal 3<br>
+bmAttributes = 0xa0 ( USB_CONFIG_BUS_POWERED )<br>
+MaxPower = 0x32, decimal 50<br>
+<br>
+-----------------------------<br>
+USB_INTERFACE_DESCRIPTOR #0<br>
+bLength = 0x9<br>
+bDescriptorType = 0x4 ( USB_INTERFACE_DESCRIPTOR_TYPE )<br>
+bInterfaceNumber = 0x0<br>
+bAlternateSetting = 0x0<br>
+bNumEndpoints = 0x3<br>
+bInterfaceClass = 0xff<br>
+bInterfaceSubClass = 0x0<br>
+bInterfaceProtocol = 0x0<br>
+bInterface = 0x0<br>
+------------------------------<br>
+USB_ENDPOINT_DESCRIPTOR for Pipe00<br>
+bLength = 0x7<br>
+bDescriptorType = 0x5 ( USB_ENDPOINT_DESCRIPTOR_TYPE )<br>
+bEndpointAddress= 0x81 ( INPUT )<br>
+bmAttributes= 0x3 ( USB_ENDPOINT_TYPE_INTERRUPT )<br>
+wMaxPacketSize= 0x49, decimal 73<br>
+bInterval = 0x1, decimal 1<br>
+------------------------------<br>
+USB_ENDPOINT_DESCRIPTOR for Pipe01<br>
+bLength = 0x7<br>
+bDescriptorType = 0x5 ( USB_ENDPOINT_DESCRIPTOR_TYPE )<br>
+bEndpointAddress= 0x6 ( OUTPUT )<br>
+bmAttributes= 0x2 ( USB_ENDPOINT_TYPE_BULK )<br>
+wMaxPacketSize= 0x40, decimal 64<br>
+bInterval = 0x0, decimal 0<br>
+------------------------------<br>
+USB_ENDPOINT_DESCRIPTOR for Pipe02<br>
+bLength = 0x7<br>
+bDescriptorType = 0x5 ( USB_ENDPOINT_DESCRIPTOR_TYPE )<br>
+bEndpointAddress= 0x88 ( INPUT )<br>
+bmAttributes= 0x2 ( USB_ENDPOINT_TYPE_BULK )<br>
+wMaxPacketSize= 0x40, decimal 64<br>
+bInterval = 0x0, decimal 0<br>
+&nbsp;</p>
+
+</BODY>
+</HTML>

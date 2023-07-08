@@ -1,0 +1,19 @@
+TARGETNAME=agp440
+TARGETTYPE=DRIVER
+TARGET_DESTINATION=retail
+
+TARGETLIBS=$(OBJ_PATH)\..\agplib\$O\agplib.lib
+
+INCLUDES=..\inc;..\..\..\inc
+
+MSC_WARNING_LEVEL=/W3 /WX
+
+SOURCES=agplog.mc       \
+        agp440.rc       \
+        init.c          \
+        gart.c          \
+        verifier.c
+
+
+# Macro to create marker for Boot Driver embedded signing.
+BOOT_LOADER_CRITICAL=1

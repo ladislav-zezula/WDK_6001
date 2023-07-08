@@ -1,0 +1,25 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\swapapointerface.h \
+ $(PASS0_HEADERDIR)\swapapodll.h \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\swapapogfx.obj \
+ $(OBJ_PATH)\$O\swapapolfx.obj \
+ $(OBJ_PATH)\$O\swap.obj \
+ $(OBJ_PATH)\$O\swapapodll.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\swapapodll.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\audio\sysfx\apo
+MAKEDIR_RELATIVE_TO_BASEDIR=src\audio\sysfx\apo
+OBJ_PATH=e:\sdk\wdk_6001\src\audio\sysfx\apo
+_CONCURRENT_MIDL_UUID=494e7e4e8575286287ee9294ca6e07ae
+_CONCURRENT_MIDL_LOCKDIR=$(OBJ_PATH)\$O\$(_CONCURRENT_MIDL_UUID)
+CONCURRENT_MANIFEST_BUILD=0

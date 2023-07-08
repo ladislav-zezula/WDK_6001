@@ -1,0 +1,22 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\busenum.obj \
+ $(OBJ_PATH)\$O\pnp.obj \
+ $(OBJ_PATH)\$O\power.obj \
+ $(OBJ_PATH)\$O\buspdo.obj \
+ $(OBJ_PATH)\$O\wmi.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\busenum.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\general\toaster\bus
+MAKEDIR_RELATIVE_TO_BASEDIR=src\general\toaster\bus
+OBJ_PATH=e:\sdk\wdk_6001\src\general\toaster\bus
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

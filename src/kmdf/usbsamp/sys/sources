@@ -1,0 +1,29 @@
+TARGETNAME=usbsamp
+TARGETTYPE=DRIVER
+
+
+KMDF_VERSION_MAJOR=1
+INF_NAME=usbsamp
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+
+MISCFILES=$(NTTARGETFILES)
+
+
+
+C_DEFINES= $(C_DEFINES) 
+#-DBUFFERED_READ_WRITE=1
+
+INCLUDES=$(INCLUDES);..\..\inc            
+
+TARGETLIBS=$(TARGETLIBS) $(DDK_LIB_PATH)\usbd.lib
+
+
+SOURCES=driver.c \
+    device.c \
+    queue.c \
+    bulkrwr.c \
+    isorwr.c  \
+        usbsamp.rc
+

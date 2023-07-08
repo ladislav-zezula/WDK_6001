@@ -1,0 +1,11 @@
+TARGETNAME=vhidmini
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+
+TARGETLIBS=$(DDK_LIB_PATH)\hidclass.lib
+
+INCLUDES=..\inc
+
+SOURCES=VHidMini.c vhidmini.rc
+
+

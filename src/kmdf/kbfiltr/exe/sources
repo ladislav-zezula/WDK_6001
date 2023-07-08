@@ -1,0 +1,17 @@
+TARGETNAME=kbftest
+TARGETTYPE=PROGRAM
+
+_NT_TARGET_VERSION= $(_NT_TARGET_VERSION_WIN2K)
+
+UMTYPE=console
+UMENTRY=main
+
+USE_MSVCRT=1
+
+TARGETLIBS=$(SDK_LIB_PATH)\setupapi.lib
+            
+SOURCES= kbftest.c
+         
+         
+
+

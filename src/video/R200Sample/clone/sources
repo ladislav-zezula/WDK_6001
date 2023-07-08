@@ -1,0 +1,32 @@
+!INCLUDE ..\sources.inc
+
+#
+# sources file for Clone View Helper COM Object Prototype
+#
+
+# Specify target information
+TARGETNAME  = CloneHelper
+TARGETPATH=..\lib\$(_OBJ_DIR)
+TARGETTYPE  = DYNLINK
+USE_MSVCRT=1
+
+# binplace the DLL
+TARGET_DESTINATION=retail
+
+DLLENTRY    = _DllMainCRTStartup
+                
+# Sources for the DLL
+SOURCES=CloneHelper.rc \
+        CloneHelper.idl \
+        CloneHelperImpl.cpp \
+        StreamHelper.cpp \
+               
+
+TARGETLIBS  =   $(TARGETLIBS)                   \
+                $(SDK_LIB_PATH)\gdi32.lib       \
+                $(SDK_LIB_PATH)\kernel32.lib    \
+                $(SDK_LIB_PATH)\ole32.lib       \
+                $(SDK_LIB_PATH)\oleaut32.lib    \
+                $(SDK_LIB_PATH)\user32.lib      \
+                $(SDK_LIB_PATH)\advapi32.lib    \
+                $(SDK_LIB_PATH)\uuid.lib        \

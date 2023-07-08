@@ -1,0 +1,14 @@
+TARGETNAME=exabyte2
+TARGETTYPE=MINIPORT
+
+TARGETLIBS=$(DDK_LIB_PATH)\tape.lib
+
+INCLUDES=..\inc
+
+SOURCES=exabyte2.c \
+        wmi.c      \
+        exabyte2.rc
+
+
+TARGET_DESTINATION=retail
+

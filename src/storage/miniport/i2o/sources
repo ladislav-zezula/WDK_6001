@@ -1,0 +1,17 @@
+TARGETNAME=i2omp
+TARGETTYPE=MINIPORT
+
+INCLUDES=..\inc
+
+
+SOURCES=i2omp.c       \
+        i2omp.rc
+
+MAJORCOMP=ntos
+
+TARGETLIBS=$(DDK_LIB_PATH)\storport.lib
+
+INCLUDES=.
+
+TARGET_DESTINATION=retail
+

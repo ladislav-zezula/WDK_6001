@@ -1,0 +1,162 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Eventdrv</title>
+</head>
+
+<body>
+
+<div style="width: 8.515in; position: absolute; height: 10.39in; left: 12px; top: -30px">
+	<div class="shape" style="padding: 2.88pt" v:shape="_x0000_s1030">
+		<!--StartFragment--><p class="MsoNormal" style="mso-pagination: none">&nbsp;</p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 16pt; language: EN; mso-ansi-language: EN">
+		Eventdrv<o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 14pt; language: EN; mso-ansi-language: EN">
+		Summary</span><span style="font-size: 14pt; language: EN; mso-ansi-language: EN"><o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">
+		Eventdrv is a sample kernel mode trace provider/driver. The driver does 
+		not control any hardware; it simply generates trace events. It is 
+		designed to demonstrate the use of ETW tracing in a driver.<o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">
+		Eventdrv registers as a provider by calling the EtwRegister API. If 
+		successful, it logs a StartEvent event with the device’s name, the 
+		length of the name, and the status code. Then, when it receives a 
+		DeviceIOControl call, it logs a SampleEventA event. Finally, when the 
+		driver gets unloaded, it logs an UnloadEvent event with a pointer to the 
+		device object.<o:p> Note that Windows Pre-Processor (WPP) Tracing tools 
+		such as TraceView.exe cannot be used to start/stop and view traces.</o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">&nbsp;&nbsp;<o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 14pt; language: EN; mso-ansi-language: EN">
+		Using the Sample</span><span style="font-size: 14pt; language: EN; mso-ansi-language: EN"><o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 14pt; language: EN; mso-ansi-language: EN">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">To 
+		test the Eventdrv event tracing provider, use the following procedure:<o:p></o:p></span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">
+		1.</span><span style="width: 9pt">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">Build 
+		the Eventdrv sample driver (in evntdrv\Eventdrv) by using the -cZg switch.</span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		2.&nbsp;&nbsp; Install the manifest located in the evntdrv\Eventdrv 
+		folder by using the following command:</p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wevtutil im evntdrv.xml<br>
+		<br>
+		Installing the manifest will create registry keys which allows tools to 
+		be able to find the resource and message file(s) which contains event 
+		provider information. Search MSDN for further details on the wevtutil 
+		tool.</p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-family: Times New Roman">3</span><span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">.</span><span style="width: 9pt">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">Build 
+		the evntctrl executable file (in evntdrv\evntctrl) by using the -cZg switch. Evntctrl sends 
+		IOCTLs to Eventdrv, which then generates trace messages when it receives 
+		the IOCTLs.</span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-family: Times New Roman">4</span><span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">.</span><span style="width: 9pt">&nbsp;</span>Make 
+		a folder in the system directory called ETWD<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">riverSample. 
+		For example, C:\ETWDriverSample. Copy </span><span style="font-size: 12pt; language: EN"><o:p>
+		Eventdrv.sys and evntctrl.exe to this folder. Also, copy Tracelog.exe 
+		from the tools\tracing folder in the Driver Kit to this folder. This 
+		directory must be created because the path to the resource file 
+		specified in the manifest evntdrv.xml points to the %systemroot%\ETWDriverSample 
+		folder. If this folder is not created and the Evntdrv.sys binary is not 
+		copied, decoding tools will not be able to find the event information to 
+		decode the trace file. </o:p></span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-family: Times New Roman">5</span><span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">.</span><span style="width: 9pt">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">Use 
+		Tracelog to start a trace session that is called “TestEventdrv”. The 
+		following command starts the trace session and creates a trace log file, 
+		Eventdrv.etl, in the local directory.<br>
+		<br>
+		Tracelog -start TestEventdrv -guid #</span><span style="font-size: 12pt; color: black; language: EN; mso-ansi-language: EN; mso-bidi-language: AR-SA">b5a0bda9-50fe-4d0e-a83d-bae3f58c94d6 
+		-f Eventdrv.etl</span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-family: Times New Roman">6</span><span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">.</span><span style="width: 9pt">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">To 
+		generate trace messages, run Evntctrl.exe. This executable file is built 
+		in step 3. Each time you type a character other than Q or q, Evntctrl 
+		sends an IOCTL to the driver that signals it to generate trace messages. 
+		To stop Evntctrl, type Q or q.</span><span style="font-size: 12pt; language: EN"><o:p></o:p></span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-family: Times New Roman">7</span><span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">.</span><span style="width: 9pt">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">To 
+		stop the trace session, use the following Tracelog command:<br>
+		<br>
+		tracelog -stop TestEventdrv</span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		<span style="font-family: Times New Roman">8</span><span style="font-size: 12pt; color: black; direction: ltr; font-family: Times New Roman; unicode-bidi: embed; language: EN">.</span><span style="width: 9pt">&nbsp;</span><span style="font-size: 12pt; language: EN; mso-ansi-language: EN">To 
+		display the trace messages in the Tracedrv.etl file, use Tracerpt. Type 
+		the following <br>
+		command:<br>
+		<br>
+		tracerpt Eventdrv.etl</span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This creates two files: summary.txt and 
+		dumpfile.xml. Dumpfile.xml will contain the event information in an XML format. 
+		For additional options, do tracerpt /?.</p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		9. <span style="font-size: 12pt; language: EN; mso-ansi-language: EN">&nbsp; 
+		To uninstall the manifest, use the following command:</span></p>
+		<p class="MsoNormal" style="text-indent: -18pt; mso-pagination: none; mso-level-number-format: arabic; mso-level-text: %1.; margin-left: 18pt">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; wevtutil um evntdrv.xml<span style="font-size: 12pt; language: EN; mso-ansi-language: EN"><br>
+&nbsp;</span><span style="font-size: 12pt; language: EN"><o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 14pt; language: EN; mso-ansi-language: EN">
+		Limitations</span><span style="font-size: 14pt; language: EN; mso-ansi-language: EN"><o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">
+		Eventdrv is designed for Windows Vista and later versions of Windows.<br>
+		This sample driver should not be used in a production environment.</span></p>
+		<p class="MsoNormal" style="mso-pagination: none">&nbsp;</p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 14pt; language: EN; mso-ansi-language: EN">
+		File List</span><span style="font-size: 14pt; language: EN; mso-ansi-language: EN"><o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 12pt; language: EN; mso-ansi-language: EN">
+		Eventdrv<br>
+		</span>
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">
+		Drvioctl.h<br>
+		Evntdrv.c<br>
+		Evntdrv.xml<br>
+		Makefile<br>
+		Makefile.inc<br>
+		Sources<o:p></o:p></span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 12pt; text-decoration: underline; language: EN; mso-ansi-language: EN; text-underline: single">
+		Evntctrl</span><br>
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN; text-underline: single">
+		Install.c</span><span style="font-size: 12pt; text-decoration: underline; language: EN; mso-ansi-language: EN; text-underline: single"><br>
+		</span>
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN; text-underline: single">
+		Install.h</span><span style="font-size: 12pt; text-decoration: underline; language: EN; mso-ansi-language: EN; text-underline: single"><br>
+		</span>
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN; text-underline: single">
+		Makefile</span><span style="font-size: 12pt; text-decoration: underline; language: EN; mso-ansi-language: EN; text-underline: single"><br>
+		</span>
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN; text-underline: single">
+		Sources</span><span style="font-size: 12pt; text-decoration: underline; language: EN; mso-ansi-language: EN; text-underline: single"><br>
+		</span>
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN; text-underline: single">
+		Tracectl.c</span></p>
+		<p class="MsoNormal" style="mso-pagination: none">&nbsp;</p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-weight: bold; font-size: 14pt; language: EN; mso-ansi-language: EN">
+		Location</span></p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 12pt; language: EN; mso-ansi-language: EN">The 
+		files that comprise Eventdrv are included in the Windows Driver Kit in the 
+		\src\general\evntdrv folder.</span></p>
+		<p class="MsoNormal" style="mso-pagination: none">&nbsp;</p>
+		<p class="MsoNormal" style="mso-pagination: none">
+		<span style="font-size: 12pt; language: EN"><o:p></o:p></span></div>
+</div>
+
+</body>
+
+</html>

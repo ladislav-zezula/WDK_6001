@@ -1,0 +1,43 @@
+!include ..\sources.inc
+
+TARGETNAME=rtlnwifi
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+
+PRECOMPILED_INCLUDE=precomp.h
+
+INCLUDES= \
+    ..;                     \
+    ..\inc;                 \
+    $(DDK_INC_PATH)
+
+SOURCES=$(SOURCES)          \
+   ..\Mp_dbg.c              \
+   ..\mp_evnts.c            \
+   ..\Mp_Isr.c              \
+   ..\Mp_main.c             \
+   ..\Mp_Oids.c             \
+   ..\Mp_Recv.c             \
+   ..\Mp_send.c             \
+   ..\Mp_elem.c             \
+   ..\Mp_Power.c            \
+   ..\Mp_Util.c             \
+   st_main.c                \
+   st_misc.c                \
+   St_aplst.c               \
+   st_recv.c                \
+   st_oids.c                \
+   st_conn.c                \
+   st_auth.c                \
+   st_assoc.c               \
+   St_adhoc.c               \
+   st_send.c                \
+   st_scan.c                \
+   rtlnwifi.rc
+
+TARGETLIBS=\
+    $(DDK_LIB_PATH)\ndis.lib    \
+    ..\lib\*\rtlpriv.lib        \
+    ..\lib\*\hwextsta.lib
+
+

@@ -1,0 +1,22 @@
+
+TARGETNAME=mcd
+TARGETTYPE=EXPORT_DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\classpnp.lib
+
+INCLUDES=..\inc;..\..\inc
+
+PASS1_PUBLISH={$(OBJ_PATH)\$(O)\mcd.lib=$(DDK_LIB_PATH)\mcd.lib}
+
+SOURCES=mcd.c \
+        mcdwmi.c \
+        mcd.rc
+
+DLLDEF=mcd.def
+
+COVERAGE_ENTRY_POINT=ChangerClassInitialize
+COVERAGE_UNLOAD_POINT=ChangerUnload
+
+TARGET_DESTINATION=retail
+
+LOC_DRIVER_INFS=mchgr.inf

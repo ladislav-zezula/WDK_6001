@@ -1,0 +1,13 @@
+TARGETNAME=nsmmc
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\mcd.lib
+
+INCLUDES=..\inc;..\..\inc;..\..\..\inc
+
+SOURCES=nsmmc.c \
+        nsmmc.rc
+
+
+TARGET_DESTINATION=retail
+

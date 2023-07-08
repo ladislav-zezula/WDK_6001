@@ -1,0 +1,54 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Description:
+
+	This rule verifies that calls to KeAcquireSpinLock or
+	KeAcquireSpinLockRaiseToDpc and KeReleaseSpinlock are used in
+	strict alternation.  Moreover, at the end of the dispatch or
+	cancel routine driver should not hold the spinlock.
+*/
+
+#include "ntddk_slic.h"
+
+state{
+   enum {initial,unlocked,locked} s = initial;
+}
+watch KeAcquireSpinLock.exit.$1;
+
+KeAcquireSpinLock.exit[guard $1]
+{  
+        if (s == locked) {
+            abort "The driver is calling $fname after already acquiring the spinlock.";
+        } else {
+            s = locked;
+        }
+}
+
+KeAcquireSpinLockRaiseToDpc.exit[guard $1]
+{   
+       if (s == locked) {
+            abort "The driver is calling $fname after already acquiring the spinlock.";
+        } else {
+            s = locked;
+        }
+}
+
+KeReleaseSpinLock.entry[guard $1]
+{
+        if (s != locked) {
+            abort "The driver is calling $fname without first acquiring the spinlock.";
+        } else {
+            s = unlocked;
+        }
+}
+
+[DriverEntry,sdv_RunAddDevice,sdv_RunStartDevice,sdv_RunStartIo,sdv_RunDPC,
+ sdv_RunISR,sdv_RunCancelRoutine,sdv_RunDispatchFunction,sdv_RunRemoveDevice,
+ sdv_RunUnload
+].exit
+{
+        if (s == locked) {
+            abort "The dispatch routine has returned without releasing a spinlock.";
+        }
+}

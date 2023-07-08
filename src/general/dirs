@@ -1,0 +1,9 @@
+DIRS= \
+     cancel \
+     event \
+     evntdrv \
+     ioctl \
+     pcidrv \
+     portio \
+     toaster \
+     tracedrv

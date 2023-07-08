@@ -1,0 +1,10 @@
+TARGETNAME=fail_driver3
+TARGETTYPE=DRIVER
+
+MSC_WARNING_LEVEL=/W4 /WX
+
+SOURCES = fail_driver3.c \
+          pnp.c \
+          power.c \
+          wmi.c
+          

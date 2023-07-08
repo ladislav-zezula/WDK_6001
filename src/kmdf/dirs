@@ -1,0 +1,19 @@
+DIRS= \
+     1394 \
+     AMCC5933 \
+     echo \
+     fakemodem \
+     hidusbfx2 \
+     kbfiltr \
+     ndisedge \
+     ndisprot \
+     nonpnp \
+     osrusbfx2 \
+     pcidrv \
+     PLX9x5x \
+     ramdisk \
+     sdiomars \
+     serial \
+     toaster \
+     usbsamp \
+     wmisamp

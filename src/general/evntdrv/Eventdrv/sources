@@ -1,0 +1,10 @@
+TARGETTYPE=DRIVER
+TARGETNAME=Eventdrv
+
+INCLUDES= .
+SOURCES= Evntdrv.c \
+         evntdrv.xmlEvents.rc
+
+
+NTTARGETFILE0=$(O)\evntdrv.xmlEvents.h
+

@@ -1,0 +1,256 @@
+;-----------------------------------------------
+; ATI Display Information file : R200.INF
+; Installation INF for the ATI display driver.
+; Copyright(C) 1998-2003 ATI Technologies Inc.
+; Windows Vista
+; Base INF Last Updated 01/20/2004
+
+[Version]
+Signature="$Windows NT$"
+Provider=%ATI%
+ClassGUID={4D36E968-E325-11CE-BFC1-08002BE10318}
+Class=Display
+DriverVer=11/22/2004, 6.14.10.7000
+;CatalogFile=filename.cat
+
+[DestinationDirs]
+DefaultDestDir  = 11
+R200.Miniport   = 12  ; drivers
+R200.Display    = 11  ; system32
+R200.DispWow    = 10, SysWow64
+R200.Clone	= 11  ;
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+;
+; Driver information
+;
+
+[Manufacturer]
+%ATI% = ATI.Mfg, NTamd64
+
+[ATI.Mfg.NTamd64]
+"RADEON 8500/RADEON 8500LE (Microsoft Corporation - WDDM)" =           R200_R200,    PCI\VEN_1002&DEV_514c&SUBSYS_003a1002
+"RADEON 8500/RADEON 8500LE (Microsoft Corporation - WDDM)" =           R200_R200,    PCI\VEN_1002&DEV_514C&SUBSYS_013A1002
+"RADEON 8500 Family (Microsoft Corporation - WDDM)" =                  R200_R200,    PCI\VEN_1002&DEV_514c
+"RADEON 8500/RADEON 8500LE Family (Microsoft Corporation - WDDM)" =    R200_R200,    PCI\VEN_1002&DEV_514E
+"RADEON 8500/RADEON 8500LE Family (Microsoft Corporation - WDDM)" =    R200_R200,    PCI\VEN_1002&DEV_514F
+"RADEON 8500/RADEON 8500LE Family (Microsoft Corporation - WDDM)" =    R200_R200,    PCI\VEN_1002&DEV_516C
+
+
+
+;
+; General installation section
+;
+
+[R200_R200]
+Include=msdv.inf
+FeatureScore=F8
+CopyFiles=R200.Miniport, R200.Display, R200.DispWow, R200.Clone
+AddReg = R200_SoftwareDeviceSettings
+AddReg = R200_R200_SoftwareDeviceSettings
+DelReg = R200_RemoveDeviceSettings
+RegisterDlls = R200_RegisterDlls
+
+
+;
+; File sections
+;
+
+[r200.Miniport]
+r200.sys
+
+[r200.Display]
+r200umd.dll,,,0x00004000	; COPYFLG_IN_USE_TRY_RENAME
+
+[R200.DispWow]
+r2umd32.dll,,,0x00004000	; COPYFLG_IN_USE_TRY_RENAME
+
+[R200.Clone]
+CloneHelper.dll,,,0x00004000	; COPYFLG_IN_USE_TRY_RENAME
+
+[R200_RegisterDlls]
+11,,CloneHelper.dll,1
+
+;
+; Service Installation
+;
+
+[R200_R200.Services]
+AddService = r200, 0x00000002, R200_Service_Inst
+
+
+;
+; Service Installation Section
+;
+
+[R200_Service_Inst]
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+LoadOrderGroup = Video
+ServiceBinary  = %12%\r200.sys
+
+[R200_R200_SoftwareDeviceSettings]
+HKR,, DisableEnumAllChilds,        %REG_DWORD%,    1
+HKR,, MemInitLatencyTimer,         %REG_DWORD%,    0x775771BF
+HKR,, DisableDrvAlphaBlend,        %REG_DWORD%,    1
+HKR,, GCOOPTION_DigitalCrtInfo,    %REG_BINARY%,   A3,38,61,C1,A3,38,61,B1
+HKR,, DisableDynamicEnableMode,    %REG_DWORD%,    1
+HKR,, DALNonStandardModesBCD1, %REG_BINARY%,17,92,13,44,00,00,00,00,18,56,13,92,00,00,00,00,07,20,04,80,00,00,00,60,07,20,04,80,00,00,00,75,07,20,04,80,00,00,00,85,07,20,04,80,00,00,00,90,07,20,04,80,00,00,01,00,07,20,05,76,00,00,00,60
+HKR,, DALNonStandardModesBCD2, %REG_BINARY%,07,20,05,76,00,00,00,75,07,20,05,76,00,00,00,85,07,20,05,76,00,00,01,00
+HKR,, DALRestrictedModesBCD1, %REG_BINARY%,12,80,09,60,00,00,00,00
+HKR,, AntiAlias,                            %REG_SZ%,       1
+HKR,, DALRULE_NOFORCEBOOT,                  %REG_DWORD%,    1
+HKR,, DisableFullAdapterInit,               %REG_DWORD%,    0
+HKR,, GCORULE_R200TVPLLWA,                  %REG_DWORD%,    1
+HKR,, TVR200Flag,                           %REG_DWORD%,    1
+HKR,, HDTVRULE_HDTVGDOENABLE,        %REG_DWORD%,    1
+HKR,, HDTVRULE_HDTVSIGNALFORMAT,   %REG_DWORD%,    1
+HKR,, InstalledDisplayDrivers,     %REG_MULTI_SZ%, r200umd, r2umd32.dll
+
+
+[R200_SoftwareDeviceSettings]
+HKR,, DDC2Disabled,                         %REG_DWORD%,    0
+HKR,, DisableBlockWrite,                    %REG_DWORD%,    1
+HKR,, DisableDMACopy,                       %REG_DWORD%,    0
+HKR,, InstalledDisplayDrivers,              %REG_MULTI_SZ%, r200umd,r2umd32
+HKR,, UserModeDriverName,                   %REG_MULTI_SZ%, r200umd.dll
+HKR,, UserModeDriverNameWow,                %REG_MULTI_SZ%, r2umd32.dll
+HKR,, MultiFunctionSupported,               %REG_DWORD%,    1
+HKR,, TestEnv,                              %REG_DWORD%,    0
+HKR,, TimingSelection,                      %REG_DWORD%,    0
+HKR,, VgaCompatible,                        %REG_DWORD%,    0
+HKR,,"Adaptive De-interlacing",             %REG_DWORD%,    1
+HKR,,"VPE Adaptive De-interlacing",         %REG_DWORD%,    1
+HKR,, GCOOPTION_DisableGPIOPowerSaveMode,   %REG_DWORD%,    1
+HKLM,"Software\ATI Technologies\CBT",ReleaseVersion,,"7.91-030625n-Microsoft-FINAL"
+HKR,, ReleaseVersion,,"7.91-030625n-Microsoft-FINAL"
+HKR,, BuildNumber,,"09700"
+HKR,, DALGameGammaScale,       %REG_DWORD%,   0x00646464
+HKR,, DALRULE_ADDNATIVEMODESTOMODETABLE,    %REG_DWORD%,    1
+HKR,, DALRULE_GETVGAEXPANSIONATBOOT,        %REG_DWORD%,    0
+HKLM, "Software\CLASSES\CLSID\{EBB5845F-CA80-11CF-BD3C-008029E89281}\InProcServer32",ThreadingModel,,"Both"
+HKR,, Catalyst_Version,,"CatalystVer"
+HKR,, ExtEvent_LCDSetNativeModeOnResume,      %REG_DWORD%,    0
+HKR,, TVForceDetection,   %REG_DWORD%,    0
+HKR,, DALRULE_ADAPTERBANDWIDTHMODEENUM,      %REG_DWORD%,    0
+HKR,, GCOOPTION_MinMemEff,      %REG_DWORD%,    0
+HKR,, GCORULE_IncreaseMinMemEff,      %REG_DWORD%,    0
+HKR,, DALRULE_DISABLECWDDEDETECTION,      %REG_DWORD%,    0
+HKR,, DALRULE_SELECTIONSCHEME, %REG_DWORD%, 0
+HKR,, DALRULE_NOCRTANDDFPACTIVESIMULTANEOUSLY,      %REG_DWORD%,    0
+HKR,, DisableMMSnifferCode,                     %REG_DWORD%,    1
+; production driver shouldn't allow to use UnspecifiedHSync and PixelRate
+HKR,, AllowUnspecifiedHSync,                    %REG_DWORD%,    1
+HKR,, AllowUnspecifiedPixelRate,                %REG_DWORD%,    1
+
+
+[R200_RemoveDeviceSettings]
+HKR,, Adaptive De-interlacing
+HKR,, AgpLevel
+HKR,, AntiAlias
+HKR,, DALCurrentObjectData
+HKR,, DALLastConnected
+HKR,, DALLastSelected
+HKR,, DALLastTypes
+HKR,, DALNonStandardModesBCD
+HKR,, DALObjectData
+HKR,, DALObjectData0
+HKR,, DALObjectData1
+HKR,, DALR6 CRT_MaxModeInfo
+HKR,, DALR6 CRT2_MaxModeInfo
+HKR,, DALR6 DFP_MaxModeInfo
+HKR,, DALR6 DFPx_MaxModeInfo
+HKR,, DALR6 GCO_Index0
+HKR,, DALRestrictedModesBCD
+HKR,, DALRULE_ADDNATIVEMODESTOMODETABLE
+HKR,, DALRULE_CRTSUPPORTSALLMODES
+HKR,, DALRULE_DISABLEBANDWIDTH
+HKR,, DALRULE_DISPLAYSRESTRICTMODES
+HKR,, DALRULE_NOCRTANDLCDONSAMECONTROLLER
+HKR,, DALRULE_NOFORCEBOOT
+HKR,, DALRULE_NOTVANDCRTONSAMECONTROLLER
+HKR,, DALRULE_RESTRICTUNKNOWNMONITOR
+HKR,, DALRULE_SAVEPANLOCK
+HKR,, DALSelectObjectData0
+HKR,, DALSelectObjectData1
+HKR,, DDC2Disabled
+HKR,, DefaultMode
+HKR,, DFPRULE_HotplugSupported
+HKR,, DisableAGP
+HKR,, DisableAGPPM4
+HKR,, DisableBlockWrite
+HKR,, DisableD3D
+HKR,, DisableDMA
+HKR,, DisableDMACopy
+HKR,, DisableDrvStretchBlt
+HKR,, DisableEngine
+HKR,, DisableEnumAllChilds
+HKR,, DisableFullAdapterInit
+HKR,, DisableHierarchicalZ
+HKR,, DisableIDCT
+HKR,, DisableLCD
+HKR,, DisableMMLIB
+HKR,, DisableOpenGLScrAccelerate
+HKR,, DisablePllInit
+HKR,, DisablePrimaryTiling
+HKR,, DisableTCL
+HKR,, DisableTiling
+HKR,, DisableTimeStampWriteBack
+HKR,, DisableUSWC
+HKR,, DisableVPE
+HKR,, EnableWaitUntilIdxTriList2
+HKR,, GCORULE_HIGHDISPRI
+HKR,, GCORULE_R200TVPLLWA
+HKR,, LVB
+HKR,, MaxAgpVb
+HKR,, MaxAGPVB
+HKR,, MaxLocalVb
+HKR,, MaxLocalVB
+HKR,, SubmitOnDraw
+HKR,, TestEnv
+HKR,, TimingSelection
+HKR,, TVR200Flag
+HKR,, VgaCompatible
+HKR,, VPE Adaptive De-interlacing
+HKR,, ATIPoll
+
+
+[R200_R200.GeneralConfigData]
+MaximumDeviceMemoryConfiguration=128
+
+
+[SourceDisksNames.amd64]
+1 = %DiskID1%
+
+[SourceDisksFiles]
+r200.sys    = 1
+r200umd.dll = 1
+r2umd32.dll = 1
+CloneHelper.dll=1
+
+
+[Strings]
+
+;
+; Non-Localizable Strings
+;
+
+REG_SZ         = 0x00000000
+REG_MULTI_SZ   = 0x00010000
+REG_EXPAND_SZ  = 0x00020000
+REG_BINARY     = 0x00000001
+REG_DWORD      = 0x00010001
+SERVICEROOT    = "System\CurrentControlSet\Services"
+
+;
+; Localizable Strings
+;
+
+MSFT         = "Microsoft"
+ATI          = "ATI Technologies Inc."
+DiskID1	     = "R200 Sample Driver" 	
+                                                                                                                                                                                                                                                
+

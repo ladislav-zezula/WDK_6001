@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayDDKEntryPoints_type xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_CREATE</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_CREATE_NAMED_PIPE</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_CLOSE</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_READ</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_WRITE</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_QUERY_INFORMATION</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SET_INFORMATION</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_QUERY_EA</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SET_EA</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_FLUSH_BUFFERS</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_QUERY_VOLUME_INFORMATION</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SET_VOLUME_INFORMATION</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_DIRECTORY_CONTROL</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_FILE_SYSTEM_CONTROL</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_DEVICE_CONTROL</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_INTERNAL_DEVICE_CONTROL</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SHUTDOWN</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_LOCK_CONTROL</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_CLEANUP</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_CREATE_MAILSLOT</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_QUERY_SECURITY</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SET_SECURITY</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_POWER</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SYSTEM_CONTROL</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_DEVICE_CHANGE</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_QUERY_QUOTA</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SET_QUOTA</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_PNP</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_PNP_POWER</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_SCSI</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">IRP_MJ_OTHER</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">DriverStartIo</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">AddDevice</name>
+  </DDK_ENTRY_TYPE>
+  <DDK_ENTRY_TYPE>
+     <name xmlns="http://www.microsoft.com">DriverUnload</name>
+  </DDK_ENTRY_TYPE>
+</ArrayDDKEntryPoints_type>

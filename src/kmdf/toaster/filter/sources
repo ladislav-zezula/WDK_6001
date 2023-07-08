@@ -1,0 +1,28 @@
+TARGETNAME=devupper
+TARGETTYPE=DRIVER
+
+
+
+C_DEFINES= $(C_DEFINES) -DIOCTL_INTERFACE=1
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=devupper
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+
+
+MISCFILES=$(NTTARGETFILES)
+
+
+TARGETLIBS=$(TARGETLIBS) \
+           $(DDK_LIB_PATH)\wdmsec.lib
+
+INCLUDES=$(INCLUDES);..\..\inc
+
+C_DEFINES= $(C_DEFINES)  
+
+SOURCES= filter.c \
+         filter.rc
+

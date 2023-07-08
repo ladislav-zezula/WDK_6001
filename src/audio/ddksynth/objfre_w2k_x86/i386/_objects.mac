@@ -1,0 +1,30 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\adapter.obj \
+ $(OBJ_PATH)\$O\clist.obj \
+ $(OBJ_PATH)\$O\control.obj \
+ $(OBJ_PATH)\$O\csynth.obj \
+ $(OBJ_PATH)\$O\instr.obj \
+ $(OBJ_PATH)\$O\kernhelp.obj \
+ $(OBJ_PATH)\$O\midi.obj \
+ $(OBJ_PATH)\$O\miniport.obj \
+ $(OBJ_PATH)\$O\mix.obj \
+ $(OBJ_PATH)\$O\plclock.obj \
+ $(OBJ_PATH)\$O\syslink.obj \
+ $(OBJ_PATH)\$O\voice.obj \
+ $(OBJ_PATH)\$O\mmx.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\ddksynth.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\audio\ddksynth
+MAKEDIR_RELATIVE_TO_BASEDIR=src\audio\ddksynth
+OBJ_PATH=e:\sdk\wdk_6001\src\audio\ddksynth
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

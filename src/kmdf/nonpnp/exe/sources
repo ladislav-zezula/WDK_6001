@@ -1,0 +1,24 @@
+TARGETNAME=nonpnpapp
+TARGETTYPE=PROGRAM
+
+_NT_TARGET_VERSION= $(_NT_TARGET_VERSION_WIN2K)
+
+USE_MSVCRT=1
+
+UMTYPE=console
+UMENTRY=main
+
+#binplace the inf
+INF_NAME=nonpnp
+MISCFILES=$(INF_NAME).inf
+
+TARGETLIBS=$(SDK_LIB_PATH)\setupapi.lib \
+           $(SDK_LIB_PATH)\user32.lib  
+
+INCLUDES=$(DDK_INC_PATH);$(KMDF_INC_PATH)\$(KMDF_VER_PATH);..\sys
+
+SOURCES=       \
+    testapp.c install.c
+
+RUN_WPP= $(SOURCES) #-func:printf(MSG,...)
+

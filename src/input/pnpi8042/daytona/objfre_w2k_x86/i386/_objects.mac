@@ -1,0 +1,33 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\i8042log.h \
+ $(MC_SOURCEDIR)\i8042log.rc \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\i8042cmn.obj \
+ $(OBJ_PATH)\$O\i8042dep.obj \
+ $(OBJ_PATH)\$O\i8042str.obj \
+ $(OBJ_PATH)\$O\kbdcmn.obj \
+ $(OBJ_PATH)\$O\kbddep.obj \
+ $(OBJ_PATH)\$O\kbdpnp.obj \
+ $(OBJ_PATH)\$O\moucmn.obj \
+ $(OBJ_PATH)\$O\moudep.obj \
+ $(OBJ_PATH)\$O\moupnp.obj \
+ $(OBJ_PATH)\$O\pnp.obj \
+ $(OBJ_PATH)\$O\sysbtn.obj \
+ $(OBJ_PATH)\$O\wmi.obj \
+ $(OBJ_PATH)\$O\hook.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\i8042prt.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\input\pnpi8042\daytona
+MAKEDIR_RELATIVE_TO_BASEDIR=src\input\pnpi8042\daytona
+OBJ_PATH=e:\sdk\wdk_6001\src\input\pnpi8042\daytona
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

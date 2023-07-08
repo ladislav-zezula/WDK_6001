@@ -1,0 +1,12 @@
+TARGETNAME=hidkmdf
+TARGETTYPE=DRIVER
+TARGETPATH=obj
+
+TARGETLIBS=$(DDK_LIB_PATH)\hidclass.lib
+
+
+SOURCES= hidkmdf.c \
+        hidkmdf.rc
+
+
+

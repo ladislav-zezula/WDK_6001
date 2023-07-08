@@ -1,0 +1,206 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./valid_files/filelist.xml">
+<link rel=Edit-Time-Data href="./valid_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Class ToasterNotifyDeviceArrival</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Wmi Mof Checking Tool</o:Author>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>Wmi Mof Checking Tool</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>3</o:TotalTime>
+  <o:Created>1999-09-10T01:09:00Z</o:Created>
+  <o:LastSaved>1999-09-10T01:12:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>51</o:Words>
+  <o:Characters>292</o:Characters>
+  <o:Company>Microsoft</o:Company>
+  <o:Lines>2</o:Lines>
+  <o:Paragraphs>1</o:Paragraphs>
+  <o:CharactersWithSpaces>358</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Compatibility>
+   <w:UseFELayout/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+    {font-family:"MS Mincho";
+    panose-1:2 2 6 9 4 2 5 8 3 4;
+    mso-font-alt:"\FF2D\FF33 \660E\671D";
+    mso-font-charset:128;
+    mso-generic-font-family:roman;
+    mso-font-format:other;
+    mso-font-pitch:fixed;
+    mso-font-signature:1 134676480 16 0 131072 0;}
+@font-face
+    {font-family:"\@MS Mincho";
+    panose-1:2 2 6 9 4 2 5 8 3 4;
+    mso-font-charset:128;
+    mso-generic-font-family:modern;
+    mso-font-pitch:fixed;
+    mso-font-signature:-1610612033 1757936891 16 0 131231 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+    {mso-style-parent:"";
+    margin:0in;
+    margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    font-size:12.0pt;
+    font-family:"Times New Roman";
+    mso-fareast-font-family:"MS Mincho";}
+@page Section1
+    {size:8.5in 11.0in;
+    margin:1.0in 1.25in 1.0in 1.25in;
+    mso-header-margin:.5in;
+    mso-footer-margin:.5in;
+    mso-paper-source:0;}
+div.Section1
+    {page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1026"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h3>Class ToasterNotifyDeviceArrival</h3>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<form NAME=ClassForm>
+
+<p class=MsoNormal><span style='display:none;mso-hide:all'><script language="VBScript">
+<!--
+On Error Resume Next
+Dim Locator
+Dim Service
+Dim Collection
+Dim InstancePaths()
+Dim InstanceCount
+Dim CurrentInstanceIndex
+
+
+Dim LastEventObject
+Dim ReceivedEvent
+ReceivedEvent = FALSE
+InstanceCount = 1
+
+Sub window_onLoad 
+  Set Locator = CreateObject("WbemScripting.SWbemLocator")
+  Locator.Security_.Privileges.AddAsString "SeSecurityPrivilege"
+  Set Service = Locator.ConnectServer(, "root\wmi")
+  Service.Security_.ImpersonationLevel=3
+  On Error Resume Next
+  Err.Clear
+  Service.ExecNotificationQueryAsync mysink, _
+           "select * from ToasterNotifyDeviceArrival"
+
+  if Err.Number <> 0 Then
+    MsgBox Err.Description,, "Error Registering for event"
+  End If
+End Sub
+
+Sub ReloadInstance
+  Set TheForm = Document.ClassForm
+  if ReceivedEvent Then
+      Set Instance = LastEventObject
+      TheForm.InstanceNameText.Value = Instance.InstanceName
+        TheForm.ModelNameText.Value = Instance.ModelName
+  End If
+
+End Sub
+
+Sub NextIndexButton_OnClick(ByRef Index, MaxIndex)
+  if InstanceCount <> 0 Then
+    Index = Index + 1
+    if Index = MaxIndex Then
+      Index = 0
+    End If
+      Call ReloadInstance
+  End If
+End Sub
+
+Sub PrevIndexButton_OnClick(ByRef Index, MaxIndex)
+  if InstanceCount <> 0 Then
+    if Index = 0 Then
+      Index = MaxIndex - 1
+    Else
+      Index = Index - 1
+    End If
+      Call ReloadInstance
+  End If
+End Sub
+
+Sub GotoIndexButton_OnClick(ByRef Index, MaxIndex, NewIndex)
+  if InstanceCount <> 0 Then
+    DestIndex = NewIndex + 0
+    if DestIndex >= 0 And DestIndex < MaxIndex Then
+      Index = DestIndex
+      Call ReloadInstance
+    Else
+      MsgBox "Enter an index between 0 and " & MaxIndex-1, ,"Index out of range"
+    End If
+  End If
+End Sub
+
+-->
+</script></span><INPUT TYPE="TEXT" SIZE="128" NAME="InstanceNameText" VALUE=""></p>
+<SCRIPT FOR="mysink" EVENT="OnObjectReady(Instance, objAsyncContext)" LANGUAGE="VBScript">
+        Set LastEventObject = Instance
+        ReceivedEvent = TRUE
+        Call ReloadInstance
+</SCRIPT>
+<p class=MsoNormal>ModelName: <span style='mso-tab-count:2'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><INPUT TYPE="TEXT" SIZE="96" NAME="ModelNameText"></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><a href="index.htm"
+title="Goes back to list of classes in this MOF">Back to List</a></p>
+
+</form>
+
+</div>
+
+<OBJECT ID="mysink" CLASSID="CLSID:75718C9A-F029-11d1-A1AC-00C04FB6C223"></OBJECT>
+</body>
+
+</html>

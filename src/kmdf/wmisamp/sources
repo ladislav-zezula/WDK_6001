@@ -1,0 +1,46 @@
+# Copyright (c) Microsoft Corporation.  All rights reserved.
+#
+#    THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+#    EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+#    WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+#
+# Module Name:
+#
+#    sources
+#
+# Abstract:
+#
+#    Sources file for the WMI sample driver.
+#
+
+TARGETNAME=WmiSamp
+TARGETTYPE=DRIVER
+
+
+
+KMDF_VERSION_MAJOR=1
+INF_NAME=WmiSamp
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+
+
+MISCFILES=$(NTTARGETFILES)
+
+
+
+#
+# List of source files to compile.
+#
+SOURCES=             \
+       WmiSamp.mof   \
+       WmiSamp.rc    \
+       WmiSamp.c     \
+    WmiHandler.c     \
+
+NTTARGETFILE0=\
+        $(OBJ_PATH)\$O\wmidata.h   \
+        $(OBJ_PATH)\$O\wmisamp.x   \
+        $(OBJ_PATH)\$O\wmisamp.vbs
+
+

@@ -1,0 +1,54 @@
+#############################################################################
+#
+#       Copyright (C) Microsoft Corporation. All Rights Reserved.
+#
+#       Sources for BDA sample generic tuner
+#
+##########################################################################
+
+TARGETNAME=BDASwTunerDVBT # Set driver's name
+TARGETTYPE=DRIVER   # Set type of file built, for example, program, DLL, or driver
+                    # For BDA minidriver, set to DRIVER.
+DRIVERTYPE=WDM  # Set type of driver, can be set to either WDM or VXD. 
+                # For BDA, set to WDM.
+
+# Generate .SYM and .PDB (map) files.  These files map names to addresses. 
+# Required to debug on Win9x.
+USE_MAPSYM=1  
+
+# Point to the header files that the sample source requires. 
+INCLUDES= \
+    $(DDK_INC_PATH); \
+    $(DDK_INC_PATH)\wdm; \
+    $(SDK_INC_PATH); \
+    $(SDK_PATH)\AMovie\Inc; \
+    $(INCLUDES)
+
+# Point to the library files that the sample source requires. 
+TARGETLIBS= \
+    $(DDK_LIB_PATH)\ks.lib \
+    $(DDK_LIB_PATH)\ksguid.lib \
+    $(DDK_LIB_PATH)\BdaSup.lib \
+    $(DDK_LIB_PATH)\ntstrsafe.lib \
+
+# The following macros are used with the Soft-ICE debugging tool.
+!ifdef BUILD_SOFTICE_SYMBOLS
+TARGETPATHEX=$(TARGETPATH)\$(TARGET_DIRECTORY)
+
+NTTARGETFILES=$(TARGETPATH)\$(TARGETNAME).dbg
+
+NTTARGETFILES=$(TARGETPATHEX)\$(TARGETNAME).nms $(NTTARGETFILES)
+!endif
+
+C_DEFINES=$(C_DEFINES) -DPROPERTYSET_CAPTUREDRIVER -DDVBT_RECEIVER
+
+# Sample source files that must be compiled.
+SOURCES= \
+    ..\ObjDesc.cpp  \
+    ..\inpin.cpp    \
+    ..\outpin.cpp   \
+    ..\Filter.cpp   \
+    ..\Device.cpp   \
+    ..\bdaguid.c    \
+    ..\registry.cpp \
+    ..\BDATuner.rc

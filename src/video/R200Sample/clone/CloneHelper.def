@@ -1,0 +1,11 @@
+; CloneHelper.def : Declares the module parameters.
+
+LIBRARY      "CloneHelper.DLL"
+
+EXPORTS
+        DllMain
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE
+

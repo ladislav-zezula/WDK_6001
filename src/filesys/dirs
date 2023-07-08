@@ -1,0 +1,7 @@
+DIRS= \
+     cdfs \
+     fastfat \
+     filter \
+     miniFilter \
+     nulmrx \
+     smbmrx

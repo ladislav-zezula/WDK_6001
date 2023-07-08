@@ -1,0 +1,34 @@
+#MAJORCOMP=ntos
+#MINORCOMP=dd
+
+TARGETNAME=BDASwCap
+TARGETTYPE=DRIVER
+TARGETLIBS=$(DDK_LIB_PATH)\ks.lib \
+    $(DDK_LIB_PATH)\BdaSup.lib \
+
+
+INCLUDES=$(DDK_INC_PATH);$(SDK_PATH)\AMovie\Inc;
+DRIVERTYPE=WDM
+
+#MSC_WARNING_LEVEL=/W3 /WX
+C_DEFINES=$(C_DEFINES) -DUNICODE -D_UNICODE -DDEBUG_LEVEL=DEBUGLVL_BLAB -DPROPERTYSET_CAPTUREDRIVER
+
+USE_MAPSYM=1
+
+#LINKER_FLAGS =$(LINKER_FLAGS) -map -merge:PAGECONST=PAGE
+
+SOURCES=\
+        bdacap.rc    \
+        device.cpp   \
+        filter.cpp   \
+        TStream.cpp  \
+        capture.cpp  \
+        hwsim.cpp    \
+        fileread.cpp \
+        registry.cpp
+
+
+MISCFILES=\
+        bdaswcap.inf
+
+

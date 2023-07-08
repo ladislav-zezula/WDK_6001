@@ -1,0 +1,8 @@
+NullExFreePool
+NullExFreePoolGlobal
+SafeStrings
+ZwRegistryCreate
+ZwRegistryOpen
+DanglingDeviceObjectReference
+DebugBreakUsage
+

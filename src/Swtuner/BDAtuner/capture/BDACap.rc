@@ -1,0 +1,26 @@
+//+-------------------------------------------------------------------------
+//
+//  Microsoft Windows
+//
+//  Copyright (C) Microsoft Corporation.  All rights reserved.
+//
+//  File:      BDACap.rc
+//
+//--------------------------------------------------------------------------
+
+#include <windows.h>
+
+#include <ntverp.h>
+
+#define VER_FILETYPE                VFT_DRV
+#define VER_FILESUBTYPE             VFT2_UNKNOWN
+#define VER_FILEDESCRIPTION_STR     "BDA/AVStream Simulated Hardware Sample"
+#define VER_INTERNALNAME_STR        "BDACap.sys"
+#define VER_ORIGINALFILENAME_STR    "BDACap.sys"
+
+#define VER_FILEVERSION                 5,02,3790,5
+
+#include "common.ver"
+
+
+

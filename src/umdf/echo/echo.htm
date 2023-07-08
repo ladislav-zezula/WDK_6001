@@ -1,0 +1,243 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>UMDF Echo Sample Driver</title>
+<style type="text/css">
+.style1 {
+	font-family: Verdana;
+	font-size: x-small;
+}
+</style>
+</head>
+
+<body>
+
+<h1><font face="Verdana"><font size="2">ECHO</font></h1>
+<h2>
+<font size="2">SUMMARY</font></h2>
+<p>
+<font size="2">This sample demonstrates how to use the User-Mode Driver Framework to write a driver and 
+demonstrates best practices. It also demonstrates the use of a default Serial 
+Dispatch I/O Queue, its request start events, cancellation event, and 
+synchronizing with another thread.</font><p>
+<font size="2">This sample driver is a minimal driver meant to demonstrate the 
+usage of the User-Mode Driver Framework. It is not intended for use in 
+a production environment.</font><p class="style1">Se<font size="2">e the UMDF 
+Readme.htm file for more information about
+<a href="../readme.htm#Supported_Environments">supported operating systems</a> 
+and <a href="../readme.htm#BuildEnv">building the samples</a>.</font></p>
+<h2>
+<font size="2">BUILDING THE SAMPLE</font></h2>
+<p><font face="Verdana" size="2">Start a build environment window as described 
+under<b> <a href="../readme.htm#buildenv">Building and Testing the Samples</a>
+</b>the UMDF Readme file.</font></p>
+<p>
+<font size="2">Change to the directory containing the device source code, such as &quot;CD 
+c:\WINDDK\&lt;build 
+number&gt;\src\umdf\echo&quot; 
+(the WINDDK path and build number may vary).</font><p>
+<font size="2">Run build -ceZ, or use the macro BLD. This command invokes the Microsoft make 
+routines to build the components. If the build succeeds, you will find the 
+driver, WUDFEchoDriver.dll in the %_BuildArch% subdirectory of the %TARGETPATH% 
+directory specified in the Sources file. If it fails you can find errors and 
+warnings in the build error (.err) and warning (.wrn) log files respectively 
+(buildfre_wlh_x86.err for example). </font>
+<h2>
+<font size="2">INSTALLATION</font></h2>
+<p><font face="Verdana" size="2">To test the sample you will need to setup your 
+test system as described <b><a href="../readme.htm#buildenv">Building and 
+Testing the Samples</a> </b>the UMDF Readme file.</font></p>
+<p><font face="Verdana" size="2">To install the echo driver:</font></p>
+<blockquote>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<li><font face="Verdana" size="2">First copy the driver binary and the WUDFEchoDriver.inf 
+		file to a directory on your test machine (for example c:\echoSample.)</font></li>
+		<li>Copy the UMDF coinstaller WUDFUpdate_01007.dll from c:\winddk\&lt;bld&gt;\redist\wdf\&lt;arch&gt; to
+		the same directory (for example c:\echoSample).</li>
+		<li>Change to the directory containing the inf and binaries (for example
+		<b>cd /d c:\echoSample</b>.)</li>
+		<li><font size="2">Next run devcon.exe as follows:</font></li>
+	</ol>
+								</font>
+	<blockquote>
+		<p><font size="2" face="Courier New">devcon.exe install 
+		WUDFEchoDriver.inf WUDF\Echo</font></p>
+		<p><font face="Verdana" size="2">DevCon can be found in the tools 
+		directory of your WDK enlistment (for example: c:\winddk\&lt;bld&gt;\tools\devcon\i386\devcon.exe.)</font></p>
+	</blockquote>
+</blockquote>
+<p><font face="Verdana" size="2">To update the echo driver after making any 
+changes:</font></p><font face="Verdana">
+<blockquote>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<li>Increment the version number found in the INF.&nbsp; While this is 
+		not strictly necessary, it will help ensure PnP selects your new driver 
+		as a better match for the device.</li>
+		<li><font face="Verdana" size="2">Copy the updated driver binary and the WUDFEchoDriver.inf 
+		file to a directory on your test machine (for example c:\echoSample.)</font></li>
+		<li>Change to the directory containing the inf and binaries (for example
+		<b>cd /d c:\echoSample</b>.)</li>
+		<li><font size="2">Next run devcon.exe as follows:</font></li>
+	</ol>
+								</font>
+	<blockquote>
+		<p><font size="2" face="Courier New">devcon.exe update 
+		WUDFEchoDriver.inf WUDF\Echo</font></p>
+	</blockquote>
+</blockquote><font face="Verdana">
+<h2>
+<font size="2">TESTING</font></h2>
+<p>
+<font size="2">To test the Echo driver, you can run echoapp.exe which is built from the 
+    Kernel-Mode Driver Framework samples under src\kmdf\echo\exe.</font><p>
+<font size="2">First install the device as described above. Then run echoapp.exe</font><blockquote>
+	<pre><font size="2">D:\&gt;echoapp /?</font></pre>
+	<pre><font size="2">Usage:</font></pre>
+	<pre><font size="2">Echoapp.exe --- Send single write and read request synchronously</font></pre>
+	<pre><font size="2">Echoapp.exe -Async --- Send 100 reads and writes asynchronously</font></pre>
+	<pre><font size="2">Exit the app anytime by pressing Ctrl-C</font></pre>
+	<pre>&nbsp;</pre>
+	<pre><font size="2">D:\&gt;echoapp</font></pre>
+	<pre><font size="2">DevicePath: \\?\root#sample#0000#{cdc35b6e-0be4-4936-bf5f-5537380a7c1a}</font></pre>
+	<pre><font size="2">Opened device successfully</font></pre>
+	<pre><font size="2">512 Pattern Bytes Written successfully</font></pre>
+	<pre><font size="2">512 Pattern Bytes Read successfully</font></pre>
+	<pre><font size="2">Pattern Verified successfully</font></pre>
+	<pre>&nbsp;</pre>
+	<pre><font size="2">D:\&gt;echoapp -Async</font></pre>
+	<pre><font size="2">DevicePath: \\?\root#sample#0000#{cdc35b6e-0be4-4936-bf5f-5537380a7c1a}</font></pre>
+	<pre><font size="2">Opened device successfully</font></pre>
+	<pre><font size="2">Starting AsyncIo</font></pre>
+	<pre><font size="2">Number of bytes written by request number 0 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 0 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 1 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 2 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 2 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 3 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 3 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 4 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 4 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 5 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 5 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 6 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 6 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 7 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 7 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 8 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 8 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 9 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 9 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 10 is 1024</font></pre>
+	<pre><font size="2">Number of bytes read by request number 10 is 1024</font></pre>
+	<pre><font size="2">Number of bytes written by request number 11 is 1024</font></pre>
+	<pre>...</pre>
+</blockquote>
+<p><font size="2">Note that the reads and writes are performed by independent 
+threads in the echo test application.&nbsp; As a result the order of the output 
+may not exactly match what you see above.</font></p>
+<h2>
+<font size="2">CODE TOUR</font></h2>
+<h3>
+<font size="2">File Manifest</font></h3>
+<table border="1" width="76%" id="table1">
+	<tr>
+		<td align="center" width="180"><font face="Verdana"><b>
+<font size="2">File </font></b></font></td>
+		<td width="747" align="center"><b>
+<font size="2" face="Verdana">Description</font></b></td>
+		</tr>
+		<tr>
+			<td width="180">
+<font size="2" face="Verdana">Echo.htm </font></td>
+			<td width="747">
+<font size="2" face="Verdana">Documentation for this sample (this file).</font></td>
+		</tr>
+		<tr>
+		<td width="161"><font face="Verdana" size="2">comsup.cpp &amp; comsup.h</font></td>
+		<td width="604"><font face="Verdana" size="2">COM Support code - 
+		specifically base classes which provide implementations for the standard 
+		COM interfaces IUnknown and IClassFactory which are used throughout this sample.</font><p>
+		<font face="Verdana" size="2">The implementation of IClassFactory is designed to create instances of 
+		the CMyDriver class. If you should change the name of your base driver 
+		class, you would also need to modify this file.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">dllsup.cpp</font></td>
+		<td width="604"><font face="Verdana" size="2">DLL Support code - 
+		provides the DLL's entry point as well as the single required export 
+		(DllGetClassObject).</font><p><font face="Verdana" size="2">These depend on comsup.cpp to perform the necessary 
+		class creation.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">exports.def</font></td>
+		<td width="604"><font face="Verdana" size="2">This file lists the 
+		functions that the driver DLL exports.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">makefile</font></td>
+		<td width="604"><font face="Verdana" size="2">This file redirects to 
+		the real makefile, which is shared by all the driver components of the 
+		Windows Driver Kit.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">internal.h</font></td>
+		<td width="604"><font face="Verdana" size="2">This is the main header 
+		file for this driver. </font></td>
+	</tr>
+		<tr>
+			<td width="180">
+<font size="2" face="Verdana">Driver.cpp &amp; Driver.h</font></td>
+			<td width="747">
+<font size="2" face="Verdana">DriverEntry and Events on the Driver Object.</font></td>
+		</tr>
+		<tr>
+			<td width="180">
+<font size="2" face="Verdana">Device.cpp &amp; Device.h</font></td>
+			<td width="747">
+<font size="2" face="Verdana">Events on the Device Object.</font></td>
+		</tr>
+		<tr>
+			<td width="180">
+<font size="2" face="Verdana">Queue.cpp &amp; Queue.h</font></td>
+			<td width="747">
+<font size="2" face="Verdana">Contains Events on the I/O Queue Objects.</font></td>
+			</tr>
+				<tr>
+					<td width="180">
+<font size="2" face="Verdana">Echo.rc </font></td>
+					<td width="747">
+<font size="2" face="Verdana">Resource file for the driver.</font></td>
+					</tr>
+									<tr>
+										<td width="180">
+<font size="2" face="Verdana">Sources </font></td>
+										<td width="747">
+<font size="2" face="Verdana">Generic file that lists source files and all the 
+										build options.</font></td>
+										</tr>
+									<tr>
+										<td width="180">
+<font size="2">WUDFEchoDriver.inf</font></td>
+										<td width="747">
+<font size="2">INF file that describes the installation of this driver</font></td>
+										</tr>
+									<tr>
+										<td width="180">
+<font size="2">echodriver.ctl</font></td>
+										<td width="747">
+<font face="Verdana" size="2"><font size="2">This file lists the WPP trace 
+control GUID(s) for the sample driver. This file can be used with the tracelog 
+command's -guid flag to enable the collection of these trace events within an 
+established trace session.</font><p><font size="2">These GUIDs must remain in 
+sync with the trace control guids defined in internal.h</font></td>
+										</tr>
+								</table>
+								</font>
+<p align="center"><font face="Verdana" size="2"><a href="#top">Top of Page</a></font></p>
+<p><font face="Verdana" size="2">© 2005 Microsoft Corporation</font></p>
+
+</body>
+
+</html>
+

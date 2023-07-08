@@ -1,0 +1,14 @@
+TARGETNAME=4mmdat
+TARGETTYPE=MINIPORT
+
+TARGETLIBS=$(DDK_LIB_PATH)\tape.lib
+
+INCLUDES=..\inc
+
+SOURCES=4mmdat.c \
+        wmi.c    \
+        4mmdat.rc
+
+
+TARGET_DESTINATION=retail
+

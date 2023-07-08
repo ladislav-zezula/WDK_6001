@@ -1,0 +1,250 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-
+1252">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 6.0">
+<TITLE>Toaster</TITLE>
+</HEAD>
+<BODY LINK="#0000ff">
+
+<FONT FACE="Verdana" SIZE=5><H2>Toaster - Window Driver Framework</H2>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Summary</h3>
+<blockquote>
+  <p><font face="Verdana" size="2">The Toaster sample provides a starting point 
+  for Windows® driver development. It contains annotated code to illustrate the 
+  functionality of bus driver, function driver, assorted filter drivers, 
+  class-installer, and device-specific co-installer for a hypothetical Toaster 
+  bus and its devices. </font></p>
+</blockquote>
+</FONT> 
+<OL>
+<P ALIGN="left"><FONT FACE="Verdana" SIZE=2>The samples in this 
+directory are a rewrite of the WDM toaster driver (residing under src\general\toaster) 
+using Windows Driver Framework. These samples show how to use driver framework 
+APIs to achieve the equivalent WDM functionality with much less code. Only the 
+drivers (bus, function, filter &amp; toastmon) of the WDM toaster package have been 
+ported to use Driver Framework APIs. The 
+installation instructions and test applications are same as for the WDM version 
+of toaster. So read the instruction and test application files from
+<a href="file:///f:/WINDDK/3790.1830/src/general/toaster/toaster.htm">WDM 
+toaster</a> directory.</FONT></P>
+</ol>
+<blockquote>
+  <h3 ALIGN="left"><font face="Verdana">Introduction to the Toaster Sample</font></h3>
+</blockquote>
+<OL>
+<P ALIGN="left"><font face="Verdana" size="2">This sample contains bus, func, 
+filter and toastmon sub directories. The following summary describes the 
+directories and key files. </font></P>
+<P ALIGN="left"><i><b><font face="Verdana" size="2">bus</font></b></i><font face="Verdana" size="2">&nbsp;
+</font></P><font face="Verdana" size="2">
+<blockquote>
+  The job of this driver is to service the TOASTER bus controller, enumerate 
+  devices that are plugged in, and perform bus-level power management. The bus 
+  driver supports D0 and D3 power states. It also has a WMI interface. This 
+  directory contains two subdirectories that show two different implementation 
+  of toaster bus driver (Busenum.sys).<p><i><b>static</b></i></p>
+  <blockquote>
+    <p>Static version of the bus driver shows how to enumerate child devices 
+    using static child list, one per device, provided by the framework. </p>
+    <p><i>Static enumeration</i> enables a driver to detect and report the 
+    existence of devices during initialization, with a limited ability to report 
+    subsequent changes to the system's configuration. </p>
+    <p>Bus drivers can use static enumeration if the number and type of devices 
+    or functional subunits is predetermined and permanent, and does not depend 
+    on the configuration of the system on which the driver is running.</p>
+    <p>For example, a sound card's driver might act as a bus driver and create 
+    separate physical device objects (PDOs) for each of the card's capabilities, 
+    such as MIDI, audio, and joystick. </p>
+    <p>To enumerate a child, the bus driver:</p>
+    <ol type="1">
+      <li>Call <b><u>WdfPdoInitAllocate</u></b> to obtain a <u>WDFDEVICE_INIT</u> 
+      structure. 
+      </li>
+      <li>Initialize the WDFDEVICE_INIT structure. 
+      </li>
+      <li>Call <b><u>WdfDeviceCreate</u></b> to create a framework device object 
+      that represents a PDO. 
+      </li>
+    </ol>
+    <p>After calling <b>WdfDeviceCreate</b>, the driver calls <b><u>
+    WdfFdoAddStaticChild</u></b> to add the child device to the child list.</p>
+    <p>Because drivers should only use static child lists for device 
+    configurations that are predetermined and permanent, there is little need 
+    for a driver to modify a static child list after creating it. If the driver 
+    determines that a child device has become inaccessible, the driver can call
+    <b><u>WdfPdoMarkMissing</u></b>. (If a child device remains accessible but 
+    becomes unresponsive and unusable, the driver should set the <b>Failed</b> 
+    member of the WDF_DEVICE_STATE structure to <b>WdfTrue</b> and then call <b>
+    WdfDeviceSetDeviceState</b>.)</p>
+  </blockquote>
+  <p><i><b>dynamic</b></i></p>
+  <blockquote>
+    <p>Dynamic version shows how to enumerate child devices using child list 
+    objects. </p>
+    <p><i>Dynamic enumeration</i> enables a driver to detect and report changes 
+    to the number and type of devices that are connected to the system while the 
+    system is running.</p>
+    <p>Bus drivers must use dynamic enumeration if the number or types of 
+    devices that are connected to the parent device depend on a system's 
+    configuration. Some of these devices might be always connected to the 
+    system, and some might be plugged in and unplugged while the system is 
+    running.</p>
+    <p>For example, the number and type of devices that are plugged into a 
+    system's PCI bus are system-dependent, but they are permanent unless a user 
+    turns off power, opens the case, and adds or removes a device by using a 
+    screwdriver. On the other hand, a user can add or remove USB devices by 
+    plugging in or unplugging a cable while the system is running.</p>
+    <p>Each time a bus driver identifies a child device, it must add the child 
+    device's description to a child list. Driver can either use framework 
+    provided device's default child list by calling <u><b>
+    WdfFdoGetDefaultChildList</b></u>, or can create additional child lists, for 
+    grouping children, by calling <b><u>WdfChildListCreate</u></b>. This sample 
+    uses the default child list. A <i>child description</i> consists of a 
+    required <i>identification description</i> and an optional <i>address 
+    description</i>.</p>
+    <dl>
+      <dt><i>Identification Description</i>: An identification description is a 
+      structure that contains information that uniquely identifies each device 
+      that the driver enumerates. The driver defines this structure, but its 
+      first member must be a <u>WDF_CHILD_IDENTIFICATION_DESCRIPTION_HEADER</u> 
+      structure.</dt>
+    </dl>
+    <dl>
+      <dt><i>Address Description</i>: An address description is a structure that 
+      contains information that the driver requires so that it can access the 
+      device on its bus, if the information can change while the device is 
+      plugged in. The driver defines this structure, but its first member must 
+      be a <u>WDF_CHILD_ADDRESS_DESCRIPTION_HEADER</u> structure. Address 
+      descriptions are optional. This sample does not use address descriptions.</dt>
+    </dl>
+    <p>To add children to a child list, the driver calls <b><u>
+    WdfChildListAddOrUpdateChildDescriptionAsPresent</u></b> for each child 
+    device that it finds. This call informs the framework that a driver has 
+    discovered a child device that is connected to a parent device. When your 
+    driver calls <b>WdfChildListAddOrUpdateChildDescriptionAsPresent</b>, it 
+    supplies an identification description and, optionally, an address 
+    description.</p>
+    <p>After the driver calls <b>
+    WdfChildListAddOrUpdateChildDescriptionAsPresent</b> to report a new device, 
+    the framework informs the PnP manager that the new device exists. The PnP 
+    manager then builds a device stack and driver stack for the new device. As 
+    part of this process, the framework calls the bus driver's <i><u>
+    EvtChildListCreateDevice</u></i> callback function. This callback function 
+    must call <b><u>WdfDeviceCreate</u></b> to create a PDO for the new device.</p>
+    <p>To report a children missing, this driver calls 
+    WdfChildListUpdateChildDescriptionAsMissing. For further details on dynmaic 
+    enumeration, please refer to the framework documentation.</p>
+  </blockquote>
+</blockquote>
+</font>
+<P ALIGN="left"><font face="Verdana" size="2"><i><b>Func</b></i></font></P>
+<blockquote>
+  <P ALIGN="left"><font face="Verdana" size="2">The sub-directories under this 
+  one contain the source code of the function driver (Toaster.sys) for standard 
+  toaster devices. To be illustrative and useful learning sample for beginners 
+  to driver development, the sample has been built from almost nothing (simple) 
+  to fully functional. You can either manually install the driver 
+  (root-enumerations) or bus enumerate the driver using the toaster bus driver. 
+  They all share one common header file present in the <i>shared</i> directory.</font></P>
+  <P ALIGN="left"><i><b><font face="Verdana" size="2">Simple</font></b></i></P>
+  <blockquote>
+    <P ALIGN="left"><font face="Verdana" size="2">This is a simple form of 
+    function driver for toaster device. The driver doesn't handle any PnP and 
+    Power events because the framework provides default behavior for those 
+    events. This driver has enough support to allow an user application 
+    (toast/notify.exe) to open the device&nbsp; interface registered by the 
+    driver and send read, write or ioctl requests.</font></P>
+  </blockquote>
+  <P ALIGN="left"><i><b><font face="Verdana" size="2">featured</font></b></i></P>
+  <blockquote>
+    <P ALIGN="left"><font face="Verdana" size="2">This version shows how to 
+    register for PNP and Power events, handle create &amp; close file requests, 
+    handle WMI set and query events, fire WMI notification events. This driver 
+    is functionally equivalent to the feature2 version of toaster WDM driver 
+    present in the DDK<br>
+    (src\general\toaster\func\featured2). By being a power policy owner, it also 
+    registers for idle notification so it can put the device to low power state 
+    when there is no I/O activity.</font></P>
+  </blockquote>
+</blockquote>
+<P ALIGN="left"><font face="Verdana" size="2"><i><b>Filter</b></i></font></P>
+<blockquote>
+  <font face="Verdana" size="2">
+  <p>This directory contains source code of generic filter driver. This sample 
+  also shows how to provide a sideband ioctl interface to an applications by 
+  using control-deviceobjct. This private interfaces enables application to talk 
+  to the filter driver directly, bypassing the functional device stack that 
+  filter is attached to. Unlike the WDM counterpart, this sample only builds an 
+  upper device filter (devupper.sys). You can install the filter sample on an 
+  existing toaster device by using the filter.inf.</p>
+  </font>
+</blockquote>
+<P ALIGN="left"><font face="Verdana" size="2"><i><b>Toastmon</b></i></font></P>
+<blockquote>
+  <font face="Verdana" size="2">
+  <p>The purpose of this sample is to show how to open a device and perform I/O 
+  in kernel mode using remote I/O target interfaces. This sample registers 
+  interface notification with the PNP manager for toaster interface class by 
+  using IoRegisterPlugPlayNotification. When a toaster device is plugged in, PnP 
+  manager notifies the driver by invoking the callback. In the callback, this 
+  sample creates a remote target and opens the device by using the symbolic link 
+  provided in the callback data. This sample uses a periodic timer to 
+  demonstrate how to perform asynchronous read and write to the target device. 
+  It also shows to respond to the device change notification by registering the 
+  EvtIoTargetQueryRemove/EvtIoTargetRemoveCanceled/EvtIoTargetRemoveComplete on 
+  the I/O target object. The technique demonstrated in this sample is useful if 
+  you are writing a driver that talks to another device that your driver is not 
+  controlling. Even though this sample is based on the WDM toastmon, it has been 
+  enhanced to show some additional features of the framework. You install this 
+  driver as a root-enumerate device using the Wdftoastmon.inf. The steps for 
+  installing this sample is identical to installing the toaster bus driver. </p>
+  </font>
+</blockquote>
+<font face="Verdana" size="2">
+<h3>Building the sample</h3>
+<p>To build the sample drivers, you must first set up the DDK environment on 
+your host machine. The “Installation and Release Notes” in the DDK has a 
+complete description on how to do this. </p>
+<ol>
+  <li>Run the build –ceZ command in the Toaster directory to build all the 
+  drivers described above. 
+  </li>
+  <li>Copy the KMDF coinstaller (wdfcoinstallerMMmmm.dll), .sys files and INFs to a floppy disk or a temporary directory 
+  on the target system. You should build the exe and other DLLs from the WDM 
+  toaster sample.</li>
+</ol>
+</font>
+<h3 ALIGN="left"><font face="Verdana">Installation</font></h3>
+<P ALIGN="left">INFs files for each sample driver is provided in the same 
+directory as the source. The steps on how to install the bus driver, function 
+driver, filter and toastmon is given in the readme file of the WDM toaster 
+sample. Please follow that.</P>
+<h3 ALIGN="left"><font face="Verdana">Testing</font></h3>
+<P ALIGN="left"><font face="Verdana" size="2">The instructions and tools for 
+testing the WDF drivers are excactly same as the WDM toaster drivers. So use the 
+exe provided with the WDM sample and follow the instruction given there.</font></P>
+<P>
+<font face="Verdana" size="2">In order to statically enumerate child devices everytime the bus driver starts, you can set a registry value in the Toaster Bus driver's device parameter key.</font><P>
+<font face="Verdana" size="2">&nbsp;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\Root\SYSTEM\&lt;InstanceNumber&gt;\<InstanceNumber>Device 
+Parameters </font>
+<P>
+<font face="Verdana" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+NumberOfToasters: REG_DWORD: 2 </font>
+<P>
+<font face="Verdana" size="2">Maximum number of child devices that can be 
+enumerated throught registry setting is 10. </font>
+
+ 
+<p>
+<font face="Verdana" size="2">You can also configure this value through the Toaster Bus Inf file.
+</font>
+</P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=624>
+<TR><TD VALIGN="MIDDLE" BGCOLOR="#00ffff" HEIGHT=2>
+<P></TD>
+</TR>
+</TABLE>
+
+<FONT FACE="MS Sans Serif" SIZE=1><P>&copy; Microsoft Corporation 2002</FONT><FONT FACE="Verdana" SIZE=2> </P></FONT></BODY>
+</HTML>

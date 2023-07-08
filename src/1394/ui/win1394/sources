@@ -1,0 +1,34 @@
+TARGETNAME=WIN1394
+TARGETTYPE=PROGRAM
+
+USE_MSVCRT=1
+USE_MAPSYM=1
+
+INCLUDES=..\..\inc
+
+TARGETLIBS=$(SDK_LIB_PATH)\kernel32.lib \
+           $(SDK_LIB_PATH)\user32.lib   \
+           $(OBJ_PATH)\..\..\dll\1394api\$(O)\1394api.lib
+
+MSC_WARNING_LEVEL=/W3 /WX
+
+SOURCES= 1394.c       \
+         async.c      \
+         debug.c      \
+         isoch.c      \
+         util.c       \
+         win1394.c    \
+         win1394.rc
+
+UMTYPE=windows
+UMENTRY=winmain
+
+C_DEFINES=/DW32 /DWIN32
+
+
+TARGET_DESTINATION=idw
+ 
+MUI=0 
+
+MUI_COMMENT=LGNEXCLUDE_MOVE, moved from exclusion txt, owners have to contact MUICore to resolve
+

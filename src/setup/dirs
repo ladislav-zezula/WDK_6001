@@ -1,0 +1,5 @@
+DIRS= \
+     cocpyinf \
+     devcon \
+     DIFxAPI \
+     pnpports

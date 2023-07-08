@@ -1,0 +1,968 @@
+
+
+/*****************************************************************************\
+* 
+*  Module Name    r6f.h
+*  Project        Rage5 WindowsNT
+*  Device         Rage
+*
+*  Description    header file for Rage driver
+*  
+*
+*  (c) 1998-2000 ATI Technologies Inc. (unpublished)
+*
+*	 All rights reserved.
+*	 The year included in the foregoing notice is the year of creation of the work.
+*
+\*****************************************************************************/
+
+#ifndef _R6F_H
+#define _R6F_H
+ 
+
+// The following are Rage6 specific alignment constraints.
+// NOTE, these alignment values are all in terms of BYTES. [RA]
+
+// RAGE6_DAC_ALIGNMENT (CRTC_PITCH) unit is 8 pixels (or a max of 32 bytes).
+// Note, since RAGE6 does not support 24bpp, 64 bytes is not required.
+#define RAGE6_DAC_ALIGNMENT                 32 
+// RAGE6_GUI_ALIGNMENT (SRC/DST_PITCH) unit is 64 bytes
+#define RAGE6_GUI_ALIGNMENT                 64
+// RAGE6_CURSOR_ALIGNMENT (CUR_OFFSET) unit is 16 bytes (compat with R128).
+#define RAGE6_CURSOR_ALIGNMENT              16
+// RAGE6_OVERLAY_ALIGNMENT (OV0_VID_BUF_PITCH0/1_VALUE) unit is 16 bytes.
+#define RAGE6_OVERLAY_ALIGNMENT             16
+#define RAGE6_OVERLAY_ALIGNMENT_YV12        32
+#define RAGE6_OVERLAY_ALIGNMENT_IF09_YVU9   64
+// RAGE6_TEXTURE_ALIGNMENT (PP_TXOFFSET_?) unit is 32 bytes.
+#define RAGE6_TEXTURE_ALIGNMENT             32
+// RAGE6_ZBUFFER_ALIGNMENT (RB3D_DEPTH_OFFSET) unit is 16 bytes.
+// Z buffer offset alignment needs to be 4kb (just like all tiled surfaces) [RA]
+#define RAGE6_ZBUFFER_ALIGNMENT             4096
+#define RAGE6_SGRAM_64BIT_ALIGNMENT         128
+#define RAGE6_SGRAM_128BIT_ALIGNMENT        256
+// RAGE6_MEMORY_TILING_ALIGNMENT (for Macrotiling) is 2048 bytes,
+// since each tile is 256 bytes wide and 8 lines high.
+// Due to a HW issue, this value must be 4kb [RA]. 
+#define RAGE6_MEMORY_TILING_ALIGNMENT       4096
+// RAGE6_OFFSET_ALIGNMENT (SRC/DST_OFFSET) unit is 1024 bytes.
+#define RAGE6_OFFSET_ALIGNMENT              1024
+// RAGE6_AGP_ALIGNMENT (AIC_???) unit is 4K bytes (12 bits).
+#define RAGE6_AGP_ALIGNMENT                 (4 * 1024)
+// RAGE6_OFFSCREEN_ALIGNMENT no fancy tweeking for memory banks necessary
+// (as needed for Rage128.  This value is just the normal offset alignment.
+#define RAGE6_OFFSCREEN_ALIGNMENT           RAGE6_OFFSET_ALIGNMENT
+// This offset alignment for display side is really dictated by 
+// tiling.  Since each tile is 256 * 8 bytes, this would normally
+// be 2K; but, due to a bug found under IKOS, it needs to be 4K
+// for Display and 3D pipe.
+#define RAGE6_DISPLAY_OFFSET_ALIGNMENT      (4 * 1024)
+
+// Memory bandwidth calculation constants
+
+#define RAGE6_MBW_MEM_FIFO          64
+#define RAGE6_MBW_MEM_IPC1          1
+#define RAGE6_MBW_MEM_IPC2          2
+#define RAGE6_MBW_MEM_PFC           7
+#define RAGE6_MBW_VID_CLK           27  // 27 MHz
+#define RAGE6_MBW_VID_FLUSH         4   // 0 - 9
+#define RAGE6_MBW_DISP_FIFO         32
+#define RAGE6_MBW_HW_CUR_SIZE       2
+#define RAGE6_MBW_HW_CUR_WIDTH      64
+#define RAGE6_MBW_HW_CUR_HIGHT      64
+#define RAGE6_MBW_HW_ICON_SIZE      0 
+#define RAGE6_MBW_HW_ICON_WIDTH     0
+#define RAGE6_MBW_HW_ICON_HIGHT     0
+#define RAGE6_MBW_SCL_PLANAR_MODE   0
+#define RAGE6_MBW_SCL_PACKED_MODE   1
+#define RAGE6_MBW_DISP_LATENCY      55
+#define RAGE6_MBW_SCL_LATENCY       3
+
+// REGISTER BIOS_0_SCRATCH -- DFP/CRT on/off bits
+#define BIOS_0_SCRATCH__DFP_ENABLED                         0x00040000
+#define BIOS_0_SCRATCH__CRT_ENABLED                         0x00010000
+
+// number of memory accesses per request/2
+#define RAGE6_MBW_ACCESSES_PER_REQUEST    2
+
+// D3D Related defines
+
+// Various defines
+#define RAGE6_MAX_CONTROLLERS                    2
+#define RAGE6_MAX_TILED_SURFACES                 8
+#define RAGE6_MAX_TILED_ZBUFFER_SURFACES         8
+#define RAGE6_TILE_HEIGHT                        8
+#define RAGE6_MAX_FLIP_PENDING_CAPACITY          32
+#define RAGE6_MAX_FLIP_PENDING_ALLOWED           2
+#define RAGE6_TILE_WIDTH                         256
+
+// OffScreen surfaces that has a width (in bytes) smaller 
+// than 128 bytes will not be Aligned on a 8K boundary to get 
+// better performanace.
+#define RAGE6_MIN_ALIGNED_OFFSCREEN_WIDTH      128
+
+// This MAX was tested with Winbench 99 and proved to be the optimal size. [FB]
+#define RAGE6_MAX_CACHEABLE_CURSORS              8
+
+#if TARGET_BUILD > 351
+// Texture Management
+#define RAGE6_MAX_MIPMAP_LEVEL                  11
+// Overlay Management
+#define RAGE6_MAX_OVERLAY_WIDTH               3840
+#define RAGE6_MIN_OVERLAY_SRC_HEIGHT            32
+#define RAGE6_MIN_OVERLAY_SRC_WIDTH             32
+#define RAGE6_MIN_OVERLAY_DST_HEIGHT            32
+#define RAGE6_MIN_OVERLAY_DST_WIDTH             32
+#define RAGE6_MIN_OVERLAY_STRETCH               32
+#define RAGE6_MIN_LIVEVIDEO_STRETCH             32
+#define RAGE6_MIN_HWCODEC_STRETCH               32
+#define RAGE6_MAX_OVERLAY_STRETCH            512000
+#define RAGE6_MAX_LIVEVIDEO_STRETCH          16000
+#define RAGE6_MAX_HWCODEC_STRETCH            16000
+#endif  // TARGET_BUILD > 351
+
+
+// Overlay ColorControl Surface support
+#define RAGE6_MAX_BRIGHTNESS                      127
+#define RAGE6_MAX_BRIGHTNESS_IN_IRE             10000
+#define RAGE6_SATURATION_DEFAULT                10000
+#define RAGE6_LIGHT_MIN_SATURATION                 16
+#define RAGE6_LIGHT_MAX_SATURATION                 23
+#define RAGE6_DARK_MIN_SATURATION                  15
+#define RAGE6_DARK_MAX_SATURATION                   0
+#define RAGE6_MAX_SATURATION                    20000
+#define RAGE6_MIN_SATURATION                        0
+#define RAGE6_COLOR_CONTROL_DEF              0x101000
+
+
+// Define for PAGE_SIZE [TODO] Figure out real RAGE6 value
+#define RAGE6_SGT_PAGE_SIZE                  0x1000
+
+// Offset to CAPS in PCI space
+#define RAGE6_PCI_CAP_ID_PTR                 0x58
+
+// lines coordinate defines
+#define MAX_FIXED_COORDINATE                                0xFFC0000F
+#define MAX_INTEGER_COORDINATE                              0xFFFFC000
+
+// circle
+#define MAX_CIRCLE_DIAMETER                                 0xA
+
+
+// Fields for TV_DAC_CNTL register. Needed for 2nd CRT support
+#define TV_DAC_CNTL__STD_PS2_MASK                           0x00000200
+#define TV_DAC_CNTL__BGADJ_DACADJ_DEFAULT                   0x00880000
+#define TV_DAC_CNTL__BGADJ_DACADJ_DEFAULT__NTSC             0x00480000
+#define TV_DAC_CNTL__BGADJ_DACADJ_DEFAULT__PAL              0x00480000
+#define TV_DAC_CNTL__BGADJ_DACADJ_DEFAULT__PS2              0x00280000
+
+#define TV_PRE_DAC_MUX_CNTL__RED_MX__FORCE_DAC_DATA_MASK    0x00000060
+#define TV_PRE_DAC_MUX_CNTL__GRN_MX__FORCE_DAC_DATA_MASK    0x00000600
+#define TV_PRE_DAC_MUX_CNTL__BLU_MX__FORCE_DAC_DATA_MASK    0x00006000
+
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__8X8_MONO_FG_BG        (0 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__8X8_MONO_FG           (1 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__32X1_MONO_LINE_FG_BG  (6 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__32X1_MONO_LINE_FG     (7 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__8X8_COLOR             (10 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SOLID_COLOR_FG        (13 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SOLID_COLOR_RESERVED  (15 << DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SHIFT)
+
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__SOLID       0x000000D0
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__MONO8x8     0x00000000
+#define DP_GUI_MASTER_CNTL__GMC_BRUSH_DATATYPE__COLOR8x8    0x000000A0
+
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__8BPP_CLUT    (2 << DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__16BPP_1555   (3 << DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__16BPP_565    (4 << DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__32BPP_8888   (6 << DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__SHIFT)
+
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__CI8           0x00000200
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__RGB16_1555    0x00000300
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__RGB16_565     0x00000400
+#define DP_GUI_MASTER_CNTL__GMC_DST_DATATYPE__RGB32         0x00000600
+
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__BUILD(x)     (((x << DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__SHIFT) & DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE_MASK) | (((x >> 2) << DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE2__SHIFT) & DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE2))
+
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__MONO_OPAQUE       (DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__BUILD(0))
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__MONO_TRANSPARENT  (DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__BUILD(1))
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__SAME_AS_DST       (DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__BUILD(3))
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__8BPP_CLUT_XLAT    (DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__BUILD(5))
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__32BPP_CLUT_XLAT   (DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__BUILD(6))
+
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__MONO_FG_BG    0x00000000
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__MONO_FG       0x00001000
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__COLOR         0x00003000
+#define DP_GUI_MASTER_CNTL__GMC_SRC_DATATYPE__DST           0x00003000
+
+
+#define DP_GUI_MASTER_CNTL__GMC_DP_SRC_SOURCE__VIDEO_MEM      (2 << DP_GUI_MASTER_CNTL__GMC_DP_SRC_SOURCE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_DP_SRC_SOURCE__HOSTDATA       (3 << DP_GUI_MASTER_CNTL__GMC_DP_SRC_SOURCE__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_DP_SRC_SOURCE__HOSTDATA_BYTE  (4 << DP_GUI_MASTER_CNTL__GMC_DP_SRC_SOURCE__SHIFT)
+
+#define DP_GUI_MASTER_CNTL__DP_SRC_SOURCE__RECTANGULAR      0x02000000
+#define DP_GUI_MASTER_CNTL__DP_SRC_SOURCE__LINEAR           0x03000000
+#define DP_GUI_MASTER_CNTL__DP_SRC_SOURCE__LINEAR_ALIGNED   0x04000000
+
+#define DP_GUI_MASTER_CNTL__GMC_ROP3__SRCCPY               (0xCC << DP_GUI_MASTER_CNTL__GMC_ROP3__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_ROP3__WHITENESS            (0xFF << DP_GUI_MASTER_CNTL__GMC_ROP3__SHIFT)
+#define DP_GUI_MASTER_CNTL__GMC_ROP3__BLACKNESS            (0x00 << DP_GUI_MASTER_CNTL__GMC_ROP3__SHIFT)
+
+#define DP_GUI_MASTER_CNTL__BRUSH_Y_X                       0x80000000  // TODO: Not defined in Rage5
+
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__FALSE               (0 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__TRUE                (1 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__DRAW_ON_EQ          (4 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__DRAW_ON_NEQ         (5 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__FLIP_ON_EQ          (7 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__FALSE               (0 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__TRUE                (1 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__DRAW_ON_EQ          (4 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__DRAW_ON_NEQ         (5 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+
+#define CLR_CMP_CNTL__CLR_CMP_SRC__DESTINATION             (0 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__SOURCE                  (1 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__DESTINATION_AND_SOURCE  (2 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+
+//Here are the CLR_CMP_CNTL names for NT (for compat with Rage128...)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__FALSE                (0 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__TRUE                 (1 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__DRAW_ON_EQ           (4 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__DRAW_ON_NEQ          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__FLIP_ON_EQ           (7 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__FALSE                (0 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__TRUE                 (1 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__DRAW_ON_EQ           (4 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__DRAW_ON_NEQ          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+
+#define DST_PITCH_OFFSET__DST_TILE__MACRO                  (1 << DST_PITCH_OFFSET__DST_TILE__SHIFT)
+#define DST_PITCH_OFFSET__DST_TILE__MICRO                  (2 << DST_PITCH_OFFSET__DST_TILE__SHIFT)
+
+#define DST_TILE__DST_TILE__MACRO                          (1 << DST_TILE__DST_TILE__SHIFT)
+#define DST_TILE__DST_TILE__MICRO                          (2 << DST_TILE__DST_TILE__SHIFT)
+
+#define CLR_CMP_MSK__8BPP                                   0x000000FF
+#define CLR_CMP_MSK__15BPP                                  0x00007FFF
+#define CLR_CMP_MSK__16BPP                                  0x0000FFFF
+#define CLR_CMP_MSK__32BPP                                  0x00FFFFFF
+
+// Inserted the following for Win9x
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__ALWAYS_DRAW         (0 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__NEVER_DRAW          (1 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__DRAW_ON_EQ          (4 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__DRAW_ON_NE          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__FLIP_ON_EQ          (7 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__ALWAYS_DRAW         (0 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__NEVER_DRAW          (1 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__DRAW_ON_EQ          (4 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__DRAW_ON_NE          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__CK_DST                  (0 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__CK_SRC                  (1 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__CK_SRC_AND_DST          (2 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED0       0x00000000
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED1       0x00000100
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED2       0x00000200
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__16BPP_ARGB      0x00000300
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__16BPP_RGB       0x00000400
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED5       0x00000500
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__32BPP_ARGB      0x00000600
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED7       0x00000700
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED8       0x00000800
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__IF09_PLANAR     0x00000900
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__YV12_PLANAR     0x00000A00
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__YUY2_PACKED     0x00000B00
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__UYVY_PACKED     0x00000C00
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__YYUV9_PLANAR    0x00000D00  //RAGE6 ONLY!
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__YYUV12_PLANAR   0x00000E00  //RAGE6 ONLY!
+#define OV0_SCALE_CNTL__OV0_SURFACE_FORMAT__RESERVED15      0x00000F00
+#define OV0_SCALE_CNTL__OV0_OVERLAY_EN__ENABLE              0x40000000
+#define OV0_SCALE_CNTL__OV0_SOFT_RESET__RESET               0x80000000
+
+
+#define OV0_KEY_CNTL__OV0_GRAPHICS_KEY_FN__NEVER_DRAW       0x00000000  
+#define OV0_KEY_CNTL__OV0_GRAPHICS_KEY_FN__ALWAYS_DRAW      0x00000010  
+#define OV0_KEY_CNTL__OV0_GRAPHICS_KEY_FN__DRAW_ON_EQ       0x00000020  
+#define OV0_KEY_CNTL__OV0_GRAPHICS_KEY_FN__DRAW_ON_NE       0x00000030  
+
+#define OV0_KEY_CNTL__OV0_VIDEO_KEY_FN__NEVER_DRAW          0x00000000  
+#define OV0_KEY_CNTL__OV0_VIDEO_KEY_FN__ALWAYS_DRAW         0x00000001  
+#define OV0_KEY_CNTL__OV0_VIDEO_KEY_FN__DRAW_ON_EQ          0x00000002  
+#define OV0_KEY_CNTL__OV0_VIDEO_KEY_FN__DRAW_ON_NE          0x00000003  
+
+//////////////////////////////////////////////
+// Rage6 Texture Formats.....
+#define TXFORMAT_DATATYPE__8BPP_GREYSCALE_I         0x00000000
+#define TXFORMAT_DATATYPE__16BPP_GREYSCALE_AI       0x00000001
+#define TXFORMAT_DATATYPE__8BPP_RGB332              0x00000002
+#define TXFORMAT_DATATYPE__16BPP_ARGB1555           0x00000003
+#define TXFORMAT_DATATYPE__16BPP_RGB565             0x00000004
+#define TXFORMAT_DATATYPE__16BPP_ARGB4444           0x00000005
+#define TXFORMAT_DATATYPE__32BPP_ARGB8888           0x00000006
+#define TXFORMAT_DATATYPE__32BPP_RGBA8888           0x00000007
+#define TXFORMAT_DATATYPE__8BPP_Y8                  0x00000008
+#define TXFORMAT_DATATYPE__AYUV444_8888             0x00000009
+#define TXFORMAT_DATATYPE__VYUY422_8888             0x0000000A
+#define TXFORMAT_DATATYPE__YVYU422_8888             0x0000000B
+#define TXFORMAT_DATATYPE__CCC_NO_TO_1_ALPHA        0x0000000C
+#define TXFORMAT_DATATYPE__CCC_EXP_ALPHA            0x0000000E
+#define TXFORMAT_DATATYPE__CCC_CMP_ALPHA            0x0000000F
+#define TXFORMAT_DATATYPE__16BPP_SHADOW             0x00000010
+#define TXFORMAT_DATATYPE__32BPP_SHADOW             0x00000011
+#define TXFORMAT_DATATYPE__8U8V_BUMP_MAP	    0x00000014
+#define TXFORMAT_DATATYPE__5U5V6L_BUMP_MAP	    0x00000015	
+#define TXFORMAT_DATATYPE__8U8V8L_BUMP_MAP	    0x00000016	
+
+
+#define RB3D_CNTL__COLORFORMAT_ARGB1555             (0x00000003 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_RGB565               (0x00000004 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_ARGB8888             (0x00000006 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_RGB332               (0x00000007 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_Y8                   (0x00000008 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_RGB8                 (0x00000009 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_VYUY422_8888         (0x0000000B << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_YVYU422_8888         (0x0000000C << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_AYUV444_8888         (0x0000000E << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT_ARGB4444             (0x0000000F << RB3D_CNTL__COLORFORMAT__SHIFT)
+
+#define RB3D_BLENDCNTL__COMB_FCN__ADD_CLAMP                 ( 0 << RB3D_BLENDCNTL__COMB_FCN__SHIFT)
+#define RB3D_BLENDCNTL__COMB_FCN__ADD_NOCLAMP               ( 1 << RB3D_BLENDCNTL__COMB_FCN__SHIFT)
+#define RB3D_BLENDCNTL__COMB_FCN__SUB_CLAMP                 ( 2 << RB3D_BLENDCNTL__COMB_FCN__SHIFT)
+#define RB3D_BLENDCNTL__COMB_FCN__SUB_NOCLAMP               ( 3 << RB3D_BLENDCNTL__COMB_FCN__SHIFT)
+
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_ZERO                  ( 1 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_ONE                   ( 2 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_SRCCOLOR              ( 3 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_INVSRCCOLOR           ( 4 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_SRCALPHA              ( 5 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_INVSRCALPHA           ( 6 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_DESTALPHA             ( 7 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_INVDESTALPHA          ( 8 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_DESTCOLOR             ( 9 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_INVDESTCOLOR          (10 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_SRCALPHASAT           (11 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_BOTHSRCALPHA          (12 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__D3D_BOTHINVSRCALPHA       (13 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_ZERO                   (32 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_ONE                    (33 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_SRC_COLOR              (34 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_ONE_MINUS_SRC_COLOR    (35 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_DST_COLOR              (36 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_ONE_MINUS_DST_COLOR    (37 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_SRC_ALPHA              (38 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_ONE_MINUS_SRC_ALPHA    (39 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_DST_ALPHA              (40 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+#define RB3D_BLENDCNTL__SRCBLEND__GL_ONE_MINUS_DST_ALPHA    (41 << RB3D_BLENDCNTL__SRCBLEND__SHIFT)
+
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_ZERO                 ( 1 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_ONE                  ( 2 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_SRCCOLOR             ( 3 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_INVSRCCOLOR          ( 4 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_SRCALPHA             ( 5 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_INVSRCALPHA          ( 6 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_DESTALPHA            ( 7 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_INVDESTALPHA         ( 8 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_DESTCOLOR            ( 9 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_INVDESTCOLOR         (10 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_SRCALPHASAT          (11 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_BOTHSRCALPHA         (12 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__D3D_BOTHINVSRCALPHA      (13 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_ZERO                  (32 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_ONE                   (33 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_SRC_COLOR             (34 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_ONE_MINUS_SRC_COLOR   (35 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_DST_COLOR             (36 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_ONE_MINUS_DST_COLOR   (37 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_SRC_ALPHA             (38 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_ONE_MINUS_SRC_ALPHA   (39 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_DST_ALPHA             (40 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+#define RB3D_BLENDCNTL__DESTBLEND__GL_ONE_MINUS_DST_ALPHA   (41 << RB3D_BLENDCNTL__DESTBLEND__SHIFT)
+
+
+#define SE_VF_CNTL__PRIM_TYPE__TRIANGLE_FAN      0x00000005
+#define SE_VF_CNTL__PRIM_WALK__VTX_DATA          0x00000030
+
+//
+// Define ATI's Rage6 internal revision numbers.
+//
+#define INTERNAL_REV_RAGE5_A11    0x00  // The first Rage5 ASIC.
+
+//
+// CRTC_GEN_CNTL
+//
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__4BPP                 0x00000100
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__8BPP                 0x00000200
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__15BPP                0x00000300
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__16BPP                0x00000400
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__24BPP                0x00000500
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__34BPP                0x00000600
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__16BPP_4444           0x00000700
+#define CRTC_GEN_CNTL__CRTC_PIX_WIDTH__16BPP_88             0x00000800
+#define CRTC_GEN_CNTL__CRTC_CUR_MODE__PREMULTI_ALPHA        (2 << CRTC_GEN_CNTL__CRTC_CUR_MODE__SHIFT)
+#define CRTC_GEN_CNTL__CRTC_CUR_MODE__COLOR24BPP            (1 << CRTC_GEN_CNTL__CRTC_CUR_MODE__SHIFT)
+
+// [TODO] Are KC fields compatible with other Radeon products? [RA]
+/////////////////////////////////////////////////////////////
+// King City constants used to program the PAL and DAC     //
+/////////////////////////////////////////////////////////////
+
+// These are all Output signals
+#define  KCPAL_0_WANT_DISPLAY      0x004 // Pulse this bit 0-4-0 to req 
+#define  KCPAL_0_DONE_DISPLAY      0x000 //  switch of display
+#define  KCPAL_TRIGGER_EVENT       0x002 //
+#define  KCPAL_0_MASTER_J2OFF      0x080 // set on master (chip1) only
+#define  KCPAL_0_MASTER_C2ON       0x100 // set on master (chip1) only
+#define  KCPAL_0_MASTER_C1ON       0x010 // set on master (chip1) only
+#define  KCPAL_0_MASTER_C0ON       0x008 // set on master (chip1) only
+
+// This is an input signal used to synchronize rendering on both chips.
+#define  KCPAL_0_TRIGGER_EVENT     0x002
+
+// These are all Input signals used to read status of PAL 
+// switching mechanism
+
+#define  KCPAL_1_VLOCK             0x08  // VID3 on VIPPAD1_A = VLOCK?
+#define  KCPAL_1_HLOCK             0x04  // VID2 on VIPPAD1_A = HLOCK?
+#define  KCPAL_1_VLOCK_HLOCK       (KCPAL_1_HLOCK | KCPAL_1_VLOCK)
+#define  KCPAL_1_GCOMP_MAS         0x02  // VID1 on VIPPAD1_A = GCOMP(dacadj)
+                                         // On MASTER (AGP/chip1) only
+#define  KCPAL_1_FLIP1_SLV         0x02  // VID1 on VIPPAD1_A = FLIP1?
+                                         // On SLAVE (PCI/chip2) only
+#define  KCPAL_1_FLIP0_SLV         0x01  // VID1 on VIPPAD1_A = FLIP0?
+                                         // On SLAVE (PCI/chip2) only
+#define  KCPAL_1_MASTER_SLV        0x01  // VID0 on VIPPAD1_A = Status of PAL
+                                         // 0 = AGP displayed, 1 = PCI 
+                                         // On SLAVE (PCI/chip2) only
+
+// WARNING --- The following KCPAL BITS MUST NOT CHANGE WHILE MAXX MODE RUNS
+// eg ::  TVODATA[0] is used as the WAITEXTERNAL_EVENT input, and TVODATA[1] 
+//          is used as set external event (which goes to other chip).
+//          If the above 2 bits are not set correctly, then the 
+//          WAIT_EXTERNAL_EVENT thing breaks.
+#define  KCPAL_0_SETMASK          0x3ff   // enable TVODATA[8:0]
+#define  KCPAL_0_SETENABLE        0x3fe   // TVODATA[8:1] = output, [0]=input.
+#define  KCPAL_1_SETMASK          0xff    // enable VID[7:0]
+#define  KCPAL_1_SETENABLE        0x0     // VID[7:0] all input
+
+// -- These two are used to set mmI2C_CNTL_0, mmI2C_CNTL_1
+#define  KCI2C_MAGIC1              0x14140027
+#define  KCI2C_MAGIC2              0x28030000
+
+// These are used when doing ASIC flips
+#define  KCPAL_0_MASTER_FN_HSYNCFLIP  0
+#define  KCPAL_0_MASTER_FN_ALT_LINES  (KCPAL_0_MASTER_C0ON)
+#define  KCPAL_0_MASTER_FN_VSYNCFLIP  (KCPAL_0_MASTER_C1ON)
+#define  KCPAL_0_MASTER_FN_FORCESLAVE (KCPAL_0_MASTER_C1ON | KCPAL_0_MASTER_C1ON)
+
+/////////////////////////////////////////////////////////////
+// King City constants used to program the PAL and DAC -END//
+/////////////////////////////////////////////////////////////
+
+//
+// CLOCK_CNTL_INDEX - addresses for PLL registers
+//
+#define CLK_PIN_CNTL            0x00000001
+#define PPLL_CNTL               0x00000002
+#define PPLL_REF_DIV            0x00000003
+#define PPLL_DIV_0              0x00000004
+#define PPLL_DIV_1              0x00000005
+#define PPLL_DIV_2              0x00000006
+#define PPLL_DIV_3              0x00000007
+#define VCLK_ECP_CNTL           0x00000008
+#define HTOTAL_CNTL             0x00000009
+#define M_SPLL_REF_FB_DIV       0x0000000A
+#define AGP_PLL_CNTL            0x0000000B
+#define SPLL_CNTL               0x0000000C
+#define SCLK_CNTL               0x0000000D
+#define MPLL_CNTL               0x0000000E
+#define MDLL_CKO                0x0000000F
+#define MDLL_RDCKA              0x00000010
+#define MDLL_RDCKB              0x00000011
+#define MCLK_CNTL               0x00000012
+#define PLL_TEST_CNTL           0x00000013
+#define CLK_PWRMGT_CNTL         0x00000014
+#define PLL_PWRMGT_CNTL         0x00000015
+#define MCLK_MISC               0x0000001F	 
+#define SPLL_AUX_CNTL           0x00000024
+#define P2PLL_CNTL              0x0000002A
+#define P2PLL_REF_DIV           0x0000002B
+#define P2PLL_DIV_0             0x0000002C 
+#define PIXCLKS_CNTL            0x0000002D
+
+// Inserted the following for Win9x
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__ALWAYS_DRAW         (0 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__NEVER_DRAW          (1 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__DRAW_ON_EQ          (4 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__DRAW_ON_NE          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_SRC__FLIP_ON_EQ          (7 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__ALWAYS_DRAW         (0 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__NEVER_DRAW          (1 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__DRAW_ON_EQ          (4 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FCN_DST__DRAW_ON_NE          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__CK_DST                  (0 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__CK_SRC                  (1 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__CK_SRC_AND_DST          (2 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+
+//Here are the CLR_CMP_CNTL names for NT (for compat with Rage128...)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__FALSE                (0 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__TRUE                 (1 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__DRAW_ON_EQ           (4 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__DRAW_ON_NEQ          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_SRC__FLIP_ON_EQ           (7 << CLR_CMP_CNTL__CLR_CMP_FCN_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__FALSE                (0 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__TRUE                 (1 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__DRAW_ON_EQ           (4 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_FN_DST__DRAW_ON_NEQ          (5 << CLR_CMP_CNTL__CLR_CMP_FCN_DST__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__DESTINATION             (0 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__SOURCE                  (1 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+#define CLR_CMP_CNTL__CLR_CMP_SRC__DESTINATION_AND_SOURCE  (2 << CLR_CMP_CNTL__CLR_CMP_SRC__SHIFT)
+
+// For updating SCRATCH_REG0,1,2 & 3 [epoon] Jan17,00
+#define SCRATCH_UMSK__SCRATCH_UMSK_REG0123                 0x0000000F
+
+// HDTV definitions
+#define DISP_OUTPUT_CNTL__DISP_DAC_SOURCE__YPbPr      0x00000003
+#define DAC_CNTL__DAC_RANGE_CNTL__PS2                 0x00000002
+#define DAC_CNTL__DAC_RANGE_CNTL__YPbPr               0x00000003
+
+// Tiling codes changes between R6 and R6x. 
+// Note, shift value is hard since different defines.
+// [TODO] - Need to clean this up in tile.c....[RA]
+// Note, CMM code no longer depends on these defines... [RA]
+#define SURFACE0_INFO__SURF0_TILE_MODE__NO_TILING(p)             (TILECODE_NONE(p) << 16) 
+#define SURFACE0_INFO__SURF0_TILE_MODE__MACRO_TILING(p)          (TILECODE_MACRO(p) << 16) 
+#define SURFACE0_INFO__SURF0_TILE_MODE__MICRO_TILING(p)          (TILECODE_MICRO(p) << 16) 
+#define SURFACE0_INFO__SURF0_TILE_MODE__MACRO_MICRO_TILING(p)    (TILECODE_MACRO_MICRO(p) << 16) 
+#define SURFACE0_INFO__SURF0_TILE_MODE__32_BIT_Z_TILING(p)       (TILECODE_32Z(p) << 16) 
+#define SURFACE0_INFO__SURF0_TILE_MODE__16_BIT_Z_TILING(p)       (TILECODE_16Z(p) << 16) 
+
+//////////////////////////////////////////////////////////////////////////////
+// NOTE, These fields are specific to ONLY Rage6 (and are not compatible with other
+// RADEON products...
+//////////////////////////////////////////////////////////////////////////////
+
+#define SE_CNTL__FFACE_CULL_DIR__CW                        (0 << SE_CNTL__FFACE_CULL_DIR__SHIFT)
+#define SE_CNTL__FFACE_CULL_DIR__CCW                       (1 << SE_CNTL__FFACE_CULL_DIR__SHIFT)
+
+#define SE_CNTL__BFACE_CULL_FCN__DONT_DRAW                 (0 << SE_CNTL__BFACE_CULL_FCN__SHIFT)
+#define SE_CNTL__BFACE_CULL_FCN__DRAW                      (3 << SE_CNTL__BFACE_CULL_FCN__SHIFT)
+
+#define SE_CNTL__FFACE_CULL_FCN__DONT_DRAW                 (0 << SE_CNTL__FFACE_CULL_FCN__SHIFT)
+#define SE_CNTL__FFACE_CULL_FCN__DRAW                      (3 << SE_CNTL__FFACE_CULL_FCN__SHIFT)
+
+#define SE_CNTL__VTX_PIXCENTER__AT_ZERO                    (0 << SE_CNTL__VTX_PIXCENTER__SHIFT)
+#define SE_CNTL__VTX_PIXCENTER__AT_POINT_5                 (1 << SE_CNTL__VTX_PIXCENTER__SHIFT)
+
+#define SE_CNTL__ROUND_MODE__TRUNCATE                      (0 << SE_CNTL__ROUND_MODE__SHIFT)
+#define SE_CNTL__ROUND_MODE__ROUND                         (1 << SE_CNTL__ROUND_MODE__SHIFT)
+#define SE_CNTL__ROUND_MODE__ROUND_TO_EVEN                 (2 << SE_CNTL__ROUND_MODE__SHIFT)
+#define SE_CNTL__ROUND_MODE__ROUND_TO_ODD                  (3 << SE_CNTL__ROUND_MODE__SHIFT)
+
+#define SE_CNTL__ROUND_PRECISION__ONE_SIXTEENTH            (0 << SE_CNTL__ROUND_PRECISION__SHIFT)
+#define SE_CNTL__ROUND_PRECISION__ONE_EIGHTH               (1 << SE_CNTL__ROUND_PRECISION__SHIFT)
+#define SE_CNTL__ROUND_PRECISION__ONE_FOURTH               (2 << SE_CNTL__ROUND_PRECISION__SHIFT)
+#define SE_CNTL__ROUND_PRECISION__ONE_HALF                 (3 << SE_CNTL__ROUND_PRECISION__SHIFT)
+
+#define SE_VF_CNTL__VC_PRIM_TYPE__RECTANGLE             0x00000008
+#define SE_VF_CNTL__PRIM_WALK__VERTEX_DATA              0x00000030
+#define PP_TXCBLEND_0__COLOR_ARG_A__ZERO                   (0 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__CURRENT_COLOR          (2 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__CURRENT_ALPHA          (3 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__DIFFUSE_COLOR          (4 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__SPECULAR_COLOR         (6 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__SPECULAR_ALPHA         (7 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__TFACTOR_COLOR          (8 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__TFACTOR_ALPHA          (9 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__T0_COLOR               (10 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__T0_ALPHA               (11 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__T1_COLOR               (12 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__T1_ALPHA               (13 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__T2_COLOR               (14 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_A__T2_ALPHA               (15 << PP_TXCBLEND_0__COLOR_ARG_A__SHIFT)
+
+#define PP_TXCBLEND_0__COLOR_ARG_B__ZERO                   (0 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__CURRENT_COLOR          (2 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__CURRENT_ALPHA          (3 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__DIFFUSE_COLOR          (4 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__SPECULAR_COLOR         (6 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__SPECULAR_ALPHA         (7 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__TFACTOR_COLOR          (8 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__TFACTOR_ALPHA          (9 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__T0_COLOR               (10 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__T0_ALPHA               (11 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__T1_COLOR               (12 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__T1_ALPHA               (13 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__T2_COLOR               (14 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_B__T2_ALPHA               (15 << PP_TXCBLEND_0__COLOR_ARG_B__SHIFT)
+
+#define PP_TXCBLEND_0__COLOR_ARG_C__ZERO                   (0 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__CURRENT_COLOR          (2 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__CURRENT_ALPHA          (3 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__DIFFUSE_COLOR          (4 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__SPECULAR_COLOR         (6 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__SPECULAR_ALPHA         (7 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__TFACTOR_COLOR          (8 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__TFACTOR_ALPHA          (9 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__T0_COLOR               (10 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__T0_ALPHA               (11 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__T1_COLOR               (12 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__T1_ALPHA               (13 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__T2_COLOR               (14 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_0__COLOR_ARG_C__T2_ALPHA               (15 << PP_TXCBLEND_0__COLOR_ARG_C__SHIFT)
+
+#define PP_TXCBLEND_0__BLEND_CTL__ADD                      (0 << PP_TXCBLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_0__BLEND_CTL__SUBTRACT                 (1 << PP_TXCBLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_0__BLEND_CTL__ADDSIGNED                (2 << PP_TXCBLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_0__BLEND_CTL__BLEND                    (3 << PP_TXCBLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_0__BLEND_CTL__DOT3                     (4 << PP_TXCBLEND_0__BLEND_CTL__SHIFT)
+
+#define PP_TXABLEND_0__ALPHA_ARG_A__ZERO                   (0 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__CURRENT_ALPHA          (1 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__DIFFUSE_ALPHA          (2 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__SPECULAR_ALPHA         (3 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__TFACTOR_ALPHA          (4 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__T0_ALPHA               (5 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__T1_ALPHA               (6 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__T2_ALPHA               (7 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_A__T3_ALPHA               (8 << PP_TXABLEND_0__ALPHA_ARG_A__SHIFT)
+
+#define PP_TXABLEND_0__ALPHA_ARG_B__ZERO                   (0 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__CURRENT_ALPHA          (1 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__DIFFUSE_ALPHA          (2 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__SPECULAR_ALPHA         (3 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__TFACTOR_ALPHA          (4 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__T0_ALPHA               (5 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__T1_ALPHA               (6 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__T2_ALPHA               (7 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_B__T3_ALPHA               (8 << PP_TXABLEND_0__ALPHA_ARG_B__SHIFT)
+
+#define PP_TXABLEND_0__ALPHA_ARG_C__ZERO                   (0 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__CURRENT_ALPHA          (1 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__DIFFUSE_ALPHA          (2 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__SPECULAR_ALPHA         (3 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__TFACTOR_ALPHA          (4 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__T0_ALPHA               (5 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__T0_TEXEL_0             (5 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__T1_ALPHA               (6 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__T2_ALPHA               (7 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+#define PP_TXABLEND_0__ALPHA_ARG_C__T3_ALPHA               (8 << PP_TXABLEND_0__ALPHA_ARG_C__SHIFT)
+
+#define PP_TXABLEND_0__BLEND_CTL__ADD                      (0 << PP_TXABLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXABLEND_0__BLEND_CTL__SUBTRACT                 (1 << PP_TXABLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXABLEND_0__BLEND_CTL__ADDSIGNED                (2 << PP_TXABLEND_0__BLEND_CTL__SHIFT)
+#define PP_TXABLEND_0__BLEND_CTL__BLEND                    (3 << PP_TXABLEND_0__BLEND_CTL__SHIFT)
+
+#define PP_TXFORMAT_0__TXFORMAT__8BPP_I                    (0 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__16BPP_AI                  (1 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__8BPP_RGB                  (2 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__16BPP_ARGB_1555           (3 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__16BPP_RGB                 (4 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__16BPP_ARGB_4444           (5 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__32BPP_ARGB                (6 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__32BPP_RGBA                (7 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__8BPP_Y                    (8 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__AYUV_444                  (9 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__YUV_422_VYUY              (10 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__YUV_422_YVYU              (11 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__CCC_NO_ALPHA              (12 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__CCC_EXPLICIT_ALPHA        (14 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__CCC_COMPRESSED_ALPHA      (15 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__16BPP_SHADOW_MAP          (16 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_0__TXFORMAT__32BPP_SHADOW_MAP          (17 << PP_TXFORMAT_0__TXFORMAT__SHIFT)
+
+#define PP_TXFORMAT_0__ST_ROUTE__USE_ST0                   (0 << PP_TXFORMAT_0__ST_ROUTE__SHIFT)
+#define PP_TXFORMAT_0__ST_ROUTE__USE_ST1                   (1 << PP_TXFORMAT_0__ST_ROUTE__SHIFT)
+#define PP_TXFORMAT_0__ST_ROUTE__USE_ST2                   (2 << PP_TXFORMAT_0__ST_ROUTE__SHIFT)
+
+#define PP_TXFORMAT_0__MICRO_TILE__LINEAR                  (0 << PP_TXFORMAT_0__MICRO_TILE__SHIFT)
+#define PP_TXFORMAT_0__MICRO_TILE__X2                      (1 << PP_TXFORMAT_0__MICRO_TILE__SHIFT)
+#define PP_TXFORMAT_0__MICRO_TILE__OPTIMIZED               (2 << PP_TXFORMAT_0__MICRO_TILE__SHIFT)
+
+#define PP_TXFILTER_0__MAG_FILTER__NEAREST                 (0 << PP_TXFILTER_0__MAG_FILTER__SHIFT)
+#define PP_TXFILTER_0__MAG_FILTER__LINEAR                  (1 << PP_TXFILTER_0__MAG_FILTER__SHIFT)
+
+#define PP_TXFILTER_0__MIN_FILTER__NEAREST                          (0 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__LINEAR                           (1 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__NEAREST_MIP_NEAREST              (2 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__NEAREST_MIP_LINEAR               (3 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__LINEAR_MIP_NEAREST               (6 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__LINEAR_MIP_LINEAR                (7 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__ANISOTROPY_NEAREST               (8 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__ANISOTROPY_LINEAR                (9 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__ANISOTROPY_NEAREST_MIP_NEAREST   (10 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_0__MIN_FILTER__ANISOTROPY_NEAREST_MIP_LINEAR    (11 << PP_TXFILTER_0__MIN_FILTER__SHIFT)
+
+#define PP_TXFILTER_0__WRAPEN_S__DISABLE                   (0 << PP_TXFILTER_0__WRAPEN_S__SHIFT)
+#define PP_TXFILTER_0__WRAPEN_S__ENABLE                    (1 << PP_TXFILTER_0__WRAPEN_S__SHIFT)
+
+#define PP_TXFILTER_0__CLAMP_S__WRAP                       (0 << PP_TXFILTER_0__CLAMP_S__SHIFT)
+#define PP_TXFILTER_0__CLAMP_S__MIRROR                     (1 << PP_TXFILTER_0__CLAMP_S__SHIFT)
+#define PP_TXFILTER_0__CLAMP_S__CLAMP_LAST                 (2 << PP_TXFILTER_0__CLAMP_S__SHIFT)
+#define PP_TXFILTER_0__CLAMP_S__CLAMP_BORDER               (3 << PP_TXFILTER_0__CLAMP_S__SHIFT)
+
+#define PP_TXFILTER_0__WRAPEN_T__DISABLE                   (0 << PP_TXFILTER_0__WRAPEN_T__SHIFT)
+#define PP_TXFILTER_0__WRAPEN_T__ENABLE                    (1 << PP_TXFILTER_0__WRAPEN_T__SHIFT)
+
+#define PP_TXFILTER_0__CLAMP_T__WRAP                       (0 << PP_TXFILTER_0__CLAMP_T__SHIFT)
+#define PP_TXFILTER_0__CLAMP_T__MIRROR                     (1 << PP_TXFILTER_0__CLAMP_T__SHIFT)
+#define PP_TXFILTER_0__CLAMP_T__CLAMP_LAST                 (2 << PP_TXFILTER_0__CLAMP_T__SHIFT)
+#define PP_TXFILTER_0__CLAMP_T__CLAMP_BORDER               (3 << PP_TXFILTER_0__CLAMP_T__SHIFT)
+
+#define PP_TXFILTER_0__BORDER_MODE__OPENGL                 (0 << PP_TXFILTER_0__BORDER_MODE__SHIFT)
+#define PP_TXFILTER_0__BORDER_MODE__D3D                    (1 << PP_TXFILTER_0__BORDER_MODE__SHIFT)
+
+#define PP_TXCBLEND_1__COLOR_ARG_A__ZERO                   (0 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__CURRENT_COLOR          (2 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__CURRENT_ALPHA          (3 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__DIFFUSE_COLOR          (4 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__SPECULAR_COLOR         (6 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__SPECULAR_ALPHA         (7 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__TFACTOR_COLOR          (8 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__TFACTOR_ALPHA          (9 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__T0_COLOR               (10 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__T0_ALPHA               (11 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__T1_COLOR               (12 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__T1_ALPHA               (13 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__T2_COLOR               (14 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_A__T2_ALPHA               (15 << PP_TXCBLEND_1__COLOR_ARG_A__SHIFT)
+
+#define PP_TXCBLEND_1__COLOR_ARG_B__ZERO                   (0 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__CURRENT_COLOR          (2 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__CURRENT_ALPHA          (3 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__DIFFUSE_COLOR          (4 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__SPECULAR_COLOR         (6 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__SPECULAR_ALPHA         (7 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__TFACTOR_COLOR          (8 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__TFACTOR_ALPHA          (9 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__T0_COLOR               (10 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__T0_ALPHA               (11 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__T1_COLOR               (12 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__T1_ALPHA               (13 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__T2_COLOR               (14 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_B__T2_ALPHA               (15 << PP_TXCBLEND_1__COLOR_ARG_B__SHIFT)
+
+#define PP_TXCBLEND_1__COLOR_ARG_C__ZERO                   (0 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__CURRENT_COLOR          (2 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__CURRENT_ALPHA          (3 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__DIFFUSE_COLOR          (4 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__SPECULAR_COLOR         (6 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__SPECULAR_ALPHA         (7 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__TFACTOR_COLOR          (8 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__TFACTOR_ALPHA          (9 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__T0_COLOR               (10 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__T0_ALPHA               (11 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__T1_COLOR               (12 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__T1_ALPHA               (13 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__T2_COLOR               (14 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_1__COLOR_ARG_C__T2_ALPHA               (15 << PP_TXCBLEND_1__COLOR_ARG_C__SHIFT)
+
+#define PP_TXCBLEND_1__BLEND_CTL__ADD                      (0 << PP_TXCBLEND_1__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_1__BLEND_CTL__SUBTRACT                 (1 << PP_TXCBLEND_1__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_1__BLEND_CTL__ADDSIGNED                (2 << PP_TXCBLEND_1__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_1__BLEND_CTL__BLEND                    (3 << PP_TXCBLEND_1__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_1__BLEND_CTL__DOT3                     (4 << PP_TXCBLEND_1__BLEND_CTL__SHIFT)
+
+#define PP_TXFORMAT_1__TXFORMAT__8BPP_I                    (0 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__16BPP_AI                  (1 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__8BPP_RGB                  (2 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__16BPP_ARGB_1555           (3 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__16BPP_RGB                 (4 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__16BPP_ARGB_4444           (5 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__32BPP_ARGB                (6 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__32BPP_RGBA                (7 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__8BPP_Y                    (8 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__AYUV_444                  (9 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__YUV_422_VYUY              (10 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__YUV_422_YVYU              (11 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__CCC_NO_ALPHA              (12 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__CCC_EXPLICIT_ALPHA        (14 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__CCC_COMPRESSED_ALPHA      (15 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__16BPP_SHADOW_MAP          (16 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_1__TXFORMAT__32BPP_SHADOW_MAP          (17 << PP_TXFORMAT_1__TXFORMAT__SHIFT)
+
+#define PP_TXFORMAT_1__ST_ROUTE__USE_ST0                   (0 << PP_TXFORMAT_1__ST_ROUTE__SHIFT)
+#define PP_TXFORMAT_1__ST_ROUTE__USE_ST1                   (1 << PP_TXFORMAT_1__ST_ROUTE__SHIFT)
+#define PP_TXFORMAT_1__ST_ROUTE__USE_ST2                   (2 << PP_TXFORMAT_1__ST_ROUTE__SHIFT)
+
+#define PP_TXFILTER_1__MAG_FILTER__NEAREST                 (0 << PP_TXFILTER_1__MAG_FILTER__SHIFT)
+#define PP_TXFILTER_1__MAG_FILTER__LINEAR                  (1 << PP_TXFILTER_1__MAG_FILTER__SHIFT)
+
+#define PP_TXFILTER_1__MIN_FILTER__NEAREST                          (0 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__LINEAR                           (1 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__NEAREST_MIP_NEAREST              (2 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__NEAREST_MIP_LINEAR               (3 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__LINEAR_MIP_NEAREST               (6 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__LINEAR_MIP_LINEAR                (7 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__ANISOTROPY_NEAREST               (8 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__ANISOTROPY_LINEAR                (9 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__ANISOTROPY_NEAREST_MIP_NEAREST   (10 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_1__MIN_FILTER__ANISOTROPY_NEAREST_MIP_LINEAR    (11 << PP_TXFILTER_1__MIN_FILTER__SHIFT)
+
+#define PP_TXFILTER_1__WRAPEN_S__DISABLE                   (0 << PP_TXFILTER_1__WRAPEN_S__SHIFT)
+#define PP_TXFILTER_1__WRAPEN_S__ENABLE                    (1 << PP_TXFILTER_1__WRAPEN_S__SHIFT)
+
+#define PP_TXFILTER_1__CLAMP_S__WRAP                       (0 << PP_TXFILTER_1__CLAMP_S__SHIFT)
+#define PP_TXFILTER_1__CLAMP_S__MIRROR                     (1 << PP_TXFILTER_1__CLAMP_S__SHIFT)
+#define PP_TXFILTER_1__CLAMP_S__CLAMP_LAST                 (2 << PP_TXFILTER_1__CLAMP_S__SHIFT)
+#define PP_TXFILTER_1__CLAMP_S__CLAMP_BORDER               (3 << PP_TXFILTER_1__CLAMP_S__SHIFT)
+
+#define PP_TXFILTER_1__WRAPEN_T__DISABLE                   (0 << PP_TXFILTER_1__WRAPEN_T__SHIFT)
+#define PP_TXFILTER_1__WRAPEN_T__ENABLE                    (1 << PP_TXFILTER_1__WRAPEN_T__SHIFT)
+
+#define PP_TXFILTER_1__CLAMP_T__WRAP                       (0 << PP_TXFILTER_1__CLAMP_T__SHIFT)
+#define PP_TXFILTER_1__CLAMP_T__MIRROR                     (1 << PP_TXFILTER_1__CLAMP_T__SHIFT)
+#define PP_TXFILTER_1__CLAMP_T__CLAMP_LAST                 (2 << PP_TXFILTER_1__CLAMP_T__SHIFT)
+#define PP_TXFILTER_1__CLAMP_T__CLAMP_BORDER               (3 << PP_TXFILTER_1__CLAMP_T__SHIFT)
+
+#define PP_TXFILTER_1__BORDER_MODE__OPENGL                 (0 << PP_TXFILTER_1__BORDER_MODE__SHIFT)
+#define PP_TXFILTER_1__BORDER_MODE__D3D                    (1 << PP_TXFILTER_1__BORDER_MODE__SHIFT)
+
+#define PP_TXCBLEND_2__COLOR_ARG_A__ZERO                   (0 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__CURRENT_COLOR          (2 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__CURRENT_ALPHA          (3 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__DIFFUSE_COLOR          (4 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__SPECULAR_COLOR         (6 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__SPECULAR_ALPHA         (7 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__TFACTOR_COLOR          (8 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__TFACTOR_ALPHA          (9 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__T0_COLOR               (10 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__T0_ALPHA               (11 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__T1_COLOR               (12 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__T1_ALPHA               (13 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__T2_COLOR               (14 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_A__T2_ALPHA               (15 << PP_TXCBLEND_2__COLOR_ARG_A__SHIFT)
+
+#define PP_TXCBLEND_2__COLOR_ARG_B__ZERO                   (0 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__CURRENT_COLOR          (2 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__CURRENT_ALPHA          (3 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__DIFFUSE_COLOR          (4 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__SPECULAR_COLOR         (6 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__SPECULAR_ALPHA         (7 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__TFACTOR_COLOR          (8 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__TFACTOR_ALPHA          (9 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__T0_COLOR               (10 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__T0_ALPHA               (11 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__T1_COLOR               (12 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__T1_ALPHA               (13 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__T2_COLOR               (14 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_B__T2_ALPHA               (15 << PP_TXCBLEND_2__COLOR_ARG_B__SHIFT)
+
+#define PP_TXCBLEND_2__COLOR_ARG_C__ZERO                   (0 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__CURRENT_COLOR          (2 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__CURRENT_ALPHA          (3 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__DIFFUSE_COLOR          (4 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__DIFFUSE_ALPHA          (5 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__SPECULAR_COLOR         (6 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__SPECULAR_ALPHA         (7 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__TFACTOR_COLOR          (8 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__TFACTOR_ALPHA          (9 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__T0_COLOR               (10 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__T0_ALPHA               (11 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__T1_COLOR               (12 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__T1_ALPHA               (13 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__T2_COLOR               (14 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+#define PP_TXCBLEND_2__COLOR_ARG_C__T2_ALPHA               (15 << PP_TXCBLEND_2__COLOR_ARG_C__SHIFT)
+
+#define PP_TXCBLEND_2__BLEND_CTL__ADD                      (0 << PP_TXCBLEND_2__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_2__BLEND_CTL__SUBTRACT                 (1 << PP_TXCBLEND_2__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_2__BLEND_CTL__ADDSIGNED                (2 << PP_TXCBLEND_2__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_2__BLEND_CTL__BLEND                    (3 << PP_TXCBLEND_2__BLEND_CTL__SHIFT)
+#define PP_TXCBLEND_2__BLEND_CTL__DOT3                     (4 << PP_TXCBLEND_2__BLEND_CTL__SHIFT)
+
+#define PP_TXFORMAT_2__TXFORMAT__8BPP_I                    (0 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__16BPP_AI                  (1 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__8BPP_RGB                  (2 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__16BPP_ARGB_1555           (3 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__16BPP_RGB                 (4 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__16BPP_ARGB_4444           (5 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__32BPP_ARGB                (6 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__32BPP_RGBA                (7 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__8BPP_Y                    (8 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__AYUV_444                  (9 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__YUV_422_VYUY              (10 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__YUV_422_YVYU              (11 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__CCC_NO_ALPHA              (12 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__CCC_EXPLICIT_ALPHA        (14 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__CCC_COMPRESSED_ALPHA      (15 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__16BPP_SHADOW_MAP          (16 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+#define PP_TXFORMAT_2__TXFORMAT__32BPP_SHADOW_MAP          (17 << PP_TXFORMAT_2__TXFORMAT__SHIFT)
+
+#define PP_TXFORMAT_2__ST_ROUTE__USE_ST0                   (0 << PP_TXFORMAT_2__ST_ROUTE__SHIFT)
+#define PP_TXFORMAT_2__ST_ROUTE__USE_ST1                   (1 << PP_TXFORMAT_2__ST_ROUTE__SHIFT)
+#define PP_TXFORMAT_2__ST_ROUTE__USE_ST2                   (2 << PP_TXFORMAT_2__ST_ROUTE__SHIFT)
+
+#define PP_TXFILTER_2__MAG_FILTER__NEAREST                 (0 << PP_TXFILTER_2__MAG_FILTER__SHIFT)
+#define PP_TXFILTER_2__MAG_FILTER__LINEAR                  (1 << PP_TXFILTER_2__MAG_FILTER__SHIFT)
+
+#define PP_TXFILTER_2__MIN_FILTER__NEAREST                          (0 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__LINEAR                           (1 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__NEAREST_MIP_NEAREST              (2 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__NEAREST_MIP_LINEAR               (3 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__LINEAR_MIP_NEAREST               (6 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__LINEAR_MIP_LINEAR                (7 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__ANISOTROPY_NEAREST               (8 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__ANISOTROPY_LINEAR                (9 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__ANISOTROPY_NEAREST_MIP_NEAREST   (10 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+#define PP_TXFILTER_2__MIN_FILTER__ANISOTROPY_NEAREST_MIP_LINEAR    (11 << PP_TXFILTER_2__MIN_FILTER__SHIFT)
+
+#define PP_TXFILTER_2__WRAPEN_S__DISABLE                   (0 << PP_TXFILTER_2__WRAPEN_S__SHIFT)
+#define PP_TXFILTER_2__WRAPEN_S__ENABLE                    (1 << PP_TXFILTER_2__WRAPEN_S__SHIFT)
+
+#define PP_TXFILTER_2__CLAMP_S__WRAP                       (0 << PP_TXFILTER_2__CLAMP_S__SHIFT)
+#define PP_TXFILTER_2__CLAMP_S__MIRROR                     (1 << PP_TXFILTER_2__CLAMP_S__SHIFT)
+#define PP_TXFILTER_2__CLAMP_S__CLAMP_LAST                 (2 << PP_TXFILTER_2__CLAMP_S__SHIFT)
+#define PP_TXFILTER_2__CLAMP_S__CLAMP_BORDER               (3 << PP_TXFILTER_2__CLAMP_S__SHIFT)
+
+#define PP_TXFILTER_2__WRAPEN_T__DISABLE                   (0 << PP_TXFILTER_2__WRAPEN_T__SHIFT)
+#define PP_TXFILTER_2__WRAPEN_T__ENABLE                    (1 << PP_TXFILTER_2__WRAPEN_T__SHIFT)
+
+#define PP_TXFILTER_2__CLAMP_T__WRAP                       (0 << PP_TXFILTER_2__CLAMP_T__SHIFT)
+#define PP_TXFILTER_2__CLAMP_T__MIRROR                     (1 << PP_TXFILTER_2__CLAMP_T__SHIFT)
+#define PP_TXFILTER_2__CLAMP_T__CLAMP_LAST                 (2 << PP_TXFILTER_2__CLAMP_T__SHIFT)
+#define PP_TXFILTER_2__CLAMP_T__CLAMP_BORDER               (3 << PP_TXFILTER_2__CLAMP_T__SHIFT)
+
+#define PP_TXFILTER_2__BORDER_MODE__OPENGL                 (0 << PP_TXFILTER_2__BORDER_MODE__SHIFT)
+#define PP_TXFILTER_2__BORDER_MODE__D3D                    (1 << PP_TXFILTER_2__BORDER_MODE__SHIFT)
+
+#define PP_MISC__CHROMA_FUNC__CULL_ALL_PIXELS              (0 << PP_MISC__CHROMA_FUNC__SHIFT)
+#define PP_MISC__CHROMA_FUNC__CULL_NO_PIXELS               (1 << PP_MISC__CHROMA_FUNC__SHIFT)
+#define PP_MISC__CHROMA_FUNC__CULL_IF_NOT_EQUAL            (2 << PP_MISC__CHROMA_FUNC__SHIFT)
+#define PP_MISC__CHROMA_FUNC__CULL_IF_EQUAL                (3 << PP_MISC__CHROMA_FUNC__SHIFT)
+
+#define PP_MISC__CHROMA_KEY_MODE__NEAREST                  (0 << PP_MISC__CHROMA_KEY_MODE__SHIFT)
+#define PP_MISC__CHROMA_KEY_MODE__ZERO                     (1 << PP_MISC__CHROMA_KEY_MODE__SHIFT)
+
+#define RB3D_CNTL__COLORFORMAT__ARGB1555                   (3 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__RGB565                     (4 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__ARGB8888                   (6 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__RGB332                     (7 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__Y8                         (8 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__RGB8                       (9 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__YUV422_VYUY                (11 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__YUV422_YVYU                (12 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__aYUV444                    (14 << RB3D_CNTL__COLORFORMAT__SHIFT)
+#define RB3D_CNTL__COLORFORMAT__ARGB4444                   (15 << RB3D_CNTL__COLORFORMAT__SHIFT)
+
+#define	RB3D_ZSTENCILCNTL__DEPTHFORMAT__16                 (0  << RB3D_ZSTENCILCNTL__DEPTHFORMAT__SHIFT)
+#define	RB3D_ZSTENCILCNTL__DEPTHFORMAT__32                 (4  << RB3D_ZSTENCILCNTL__DEPTHFORMAT__SHIFT)
+#define	RB3D_ZSTENCILCNTL__ZFUNC__ALWAYS                   (7  << RB3D_ZSTENCILCNTL__ZFUNC__SHIFT)
+
+#define DST_PITCH_OFFSET__DST_TILE__MACRO                  (1 << DST_PITCH_OFFSET__DST_TILE__SHIFT)
+#define DST_PITCH_OFFSET__DST_TILE__MICRO                  (2 << DST_PITCH_OFFSET__DST_TILE__SHIFT)
+
+//For Prefetch chip bug fix [YC]
+#define BUS_CNTL__BUS_PREFETCH_ACT_REQ_MASK                0x00000200L
+
+#define BUS_CNTL1__MOBILE_PLATFORM_SEL__INTELSOLANO2_M     (1 << BUS_CNTL1__MOBILE_PLATFORM_SEL__SHIFT)
+#define BUS_CNTL1__MOBILE_PLATFORM_SEL__INTEL440BX         (2 << BUS_CNTL1__MOBILE_PLATFORM_SEL__SHIFT)
+#endif /* end _R6F_H */
+

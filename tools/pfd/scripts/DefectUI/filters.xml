@@ -1,0 +1,109 @@
+<?xml version='1.0'?>
+<DefectFilters defaultPreset="drivers_recommended">
+    <preset name="Recommended Filters" recommended="1">
+    </preset>
+
+    <preset name="(all defects)">
+    </preset>
+
+    <preset name="(no defects)" invert="1">
+    </preset>
+	<preset name="winpft" invert="1">
+		<excludeWarnings>6029;6053;6056;6057;6059;6063;6067;6201;6202;6205;6207;6241;6243;6248;6252;6259;6260;6268;6276;6277;6281;6282;6287;6288;6289;6290;6291;6296;6298;6299;6305;6306;6308;</excludeWarnings>
+		<excludeRegExps>pft</excludeRegExps>
+	</preset>
+
+	<preset name="buffer_overrun" invert="1">
+		<excludeWarnings>6029;6057;6200;6201;6202;6203;6204;6205;6207;6327;6385;6386;6391;6394;6411;6412;</excludeWarnings>
+		<excludeRegExps>pft</excludeRegExps>
+	</preset>
+
+	<!--
+	<preset name="integer_overflow" invert="1">
+		<excludeWarnings>6415;6420;6421;6422;6423;6424;6425;6426;6427;6428;6429;6430;</excludeWarnings>
+		<excludeRegExps>pft;NTPub;VC6;MFC;ATL;LKRH;MIDL</excludeRegExps>
+	</preset>
+	-->
+
+	<preset name="drivers_only" invert="1">
+		<excludeWarnings>
+		6001;6011;6014;6211;6262;28112;28113;28114;28120;28121;28122;28123;28124;28125;28126;28128;28129;28131;28132;28134;28135;28136;28137;28138;28139;28141;28143;28144;28145;28146;28147;28150;28151;28152;28159;28160;28163;28164;28181;28182;28183;28185;28193;28194;28196;99204;99205;99206;99209;
+		</excludeWarnings>
+		<excludeRegExps>pft;NTPub;VC6;MFC;ATL;LKRH;MIDL;INC</excludeRegExps>
+	</preset>
+
+	<preset name="drivers_all" invert="1">
+		<excludeWarnings>
+		6029;6053;6056;6057;6059;6063;6067;6201;6202;6205;6207;6241;6243;6248;6252;6259;6260;6268;6276;6277;6281;6282;6287;6288;6289;6290;6291;6296;6298;6299;6305;6306;6308;61;611;614;6211;6262;28112;28113;28114;28120;28121;28122;28123;28124;28125;28126;28128;28129;28131;28132;28134;28135;28136;28137;28138;28139;28141;28143;28144;28145;28146;28147;28150;28151;28152;28159;28160;28163;28164;28181;28182;28183;28185;28193;28194;28196;99204;99205;99206;99209;
+		</excludeWarnings>
+		<excludeRegExps>pft;NTPub;VC6;MFC;ATL;LKRH;MIDL;INC</excludeRegExps>
+	</preset>
+
+	<preset name="drivers_recommended" invert="1">
+		<excludeWarnings>
+		6029;6053;6056;6057;6059;6063;6067;6201;6202;6205;6207;6241;6243;6248;6252;6259;6260;6268;6276;6277;6281;6282;6287;6288;6289;6290;6291;6296;6298;6299;6305;6306;6308;61;611;614;6211;6262;28112;28113;28114;28120;28121;28122;28123;28124;28125;28126;28128;28129;28131;28132;28134;28135;28136;28137;28138;28139;28141;28143;28145;28146;28147;28150;28151;28152;28159;28160;28163;28164;28181;28182;28183;28185;28193;28194;28196;99204;99205;99206;99209;
+		</excludeWarnings>
+		<excludeRegExps>pft;NTPub;VC6;MFC;ATL;LKRH;MIDL;INC</excludeRegExps>
+	</preset>
+
+	<preset name="wspmin" invert="1">
+		<excludeWarnings>6029;6053;6056;6057;6059;6063;6067;6201;6202;6205;6207;6241;6243;6248;6252;6259;6260;6268;6276;6277;6281;6282;6287;6288;6289;6290;6291;6296;6298;6299;6305;6306;6308;</excludeWarnings>
+		<excludeRegExps>pft</excludeRegExps>
+	</preset>
+
+	<Filter id="pft" enableByDefault="1">
+		<description>PREfast Internal Errors</description>
+		<field>DEFECTCODE</field>
+		<regexp>99[0-9]{3}</regexp>
+	</Filter>
+
+	<Filter id="NTPub" enableByDefault="1">
+		<description>NT Public files</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*\\public\\.*$</regexp>
+	</Filter>
+
+	<Filter id="VC6" enableByDefault="1">
+		<description>VC6 includes</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*\\vc98\\include\\.*$</regexp>
+	</Filter>
+
+	<Filter id="MFC" enableByDefault="1">
+		<description>MFC includes</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*\\mfc\\include\\.*$</regexp>
+		<regexp>^.*\\atlmfc\\.*$</regexp>        
+		<regexp>^.*\\mfcatl\\.*$</regexp>                                
+	</Filter>
+
+	<Filter id="ATL" enableByDefault="1">
+		<description>ATL includes</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*\\atl\\.*$</regexp>
+		<regexp>^.*\\atl30\\.*$</regexp>        
+		<regexp>^.*\\atl70\\.*$</regexp> 
+		<regexp>^.*\\atlmfc\\.*$</regexp>        
+		<regexp>^.*\\mfcatl\\.*$</regexp>                        
+	</Filter>
+
+	<Filter id="LKRH" enableByDefault="1">
+		<description>LKRHash.h</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*\\lkrhash\.h$</regexp>
+	</Filter>
+
+	<Filter id="MIDL" enableByDefault="1">
+		<description>generated MIDL files</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*_[psc]\.c$</regexp>
+	</Filter>
+
+	<Filter id="INC" enableByDefault="0">
+		<description>all include files</description>
+		<field>SFA/FILEPATH;SFA/FILENAME</field>
+		<regexp>^.*\\include\\.*$</regexp>
+		<regexp>^.*\\inc\\.*$</regexp>
+	</Filter>
+
+</DefectFilters>

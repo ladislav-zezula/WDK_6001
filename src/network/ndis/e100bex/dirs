@@ -1,0 +1,4 @@
+DIRS= \
+     5x \
+     60 \
+     testwmi

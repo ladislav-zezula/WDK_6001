@@ -1,0 +1,63 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Description: 
+
+	This rule is not applicable to bus drivers.  It verifies that
+	the driver passes PnP IRPs to the lower driver.
+*/
+
+#include "ntddk_slic.h"
+
+
+state {
+     int completed = 0;
+     int passed = 0;
+}  with guard(sdv_main,sdv_irp)
+
+
+
+IoCallDriver.entry [guard $2]
+{
+    passed = 1;
+}
+
+
+IoCompleteRequest.entry [guard $1]
+{
+    completed = 1;
+}
+
+
+
+fun_IRP_MJ_PNP.entry [guard $2]
+{
+    completed = 0;
+    passed = 0;
+}
+
+
+
+fun_IRP_MJ_PNP.exit [guard $2]
+{
+    if (  $2->STACKL->MajorFunction == IRP_MJ_PNP
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_STOP_DEVICE
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_REMOVE_DEVICE
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_DEVICE_RELATIONS
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_INTERFACE
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_CAPABILITIES
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_RESOURCES
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_RESOURCE_REQUIREMENTS
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_DEVICE_TEXT
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_ID
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_PNP_DEVICE_STATE
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_BUS_INFORMATION
+       && $2->STACKL->MinorFunction != IRP_MN_QUERY_LEGACY_BUS_INFORMATION
+       && $return != STATUS_NOT_SUPPORTED
+       && NT_SUCCESS($return)
+       && completed
+       && !passed
+       ) {
+         abort "The driver is completing an IRP without passing it down.";
+    } 
+}

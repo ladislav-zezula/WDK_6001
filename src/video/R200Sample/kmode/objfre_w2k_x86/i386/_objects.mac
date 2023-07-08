@@ -1,0 +1,28 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\vidlog.h \
+ $(MC_SOURCEDIR)\vidlog.rc \
+ $(OBJ_PATH)\$O\wmimof.mof \
+ $(OBJ_PATH)\$O\wmimof.bmf \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\dma.obj \
+ $(OBJ_PATH)\$O\dmamem.obj \
+ $(OBJ_PATH)\$O\r2d3dddi.obj \
+ $(OBJ_PATH)\$O\miniport.obj \
+ $(OBJ_PATH)\$O\init.obj \
+ $(OBJ_PATH)\$O\debug.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\rage.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\video\r200sample\kmode
+MAKEDIR_RELATIVE_TO_BASEDIR=src\video\r200sample\kmode
+OBJ_PATH=e:\sdk\wdk_6001\src\video\r200sample\kmode
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

@@ -1,0 +1,26 @@
+TARGETNAME=1394DIAG
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+
+C_DEFINES=-DDRIVER
+C_DEFINES=$(C_DEFINES) /wd4996
+
+USE_MAPSYM=1
+NO_PDB_PATHS=1
+
+INCLUDES=..\..\inc;..\common;
+
+SOURCES= \
+        1394diag.c \
+        1394diag.rc \
+        ioctl.c \
+        pnp.c \
+        power.c
+
+PASS0_PUBLISH=      \
+        {..\common\1394common.h=$(DRIVERS_TST_INC_PATH)\1394common.h}
+
+BUILD_PASS2_PRODUCES=drivers_wdm_1394_tools_test_driver_1394diag
+
+TARGET_DESTINATION=test
+

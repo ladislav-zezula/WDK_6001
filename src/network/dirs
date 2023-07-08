@@ -1,0 +1,9 @@
+DIRS= \
+     config \
+     irda \
+     modem \
+     ndis \
+     trans \
+     usbnwifi \
+     wlan \
+     WSK

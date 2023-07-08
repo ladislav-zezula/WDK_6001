@@ -1,0 +1,22 @@
+PASS0_386_OBJECTS=\
+ $(OBJ_PATH)\$O\wmisamp.mof \
+ $(OBJ_PATH)\$O\wmisamp.bmf \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\wmisamp.obj \
+ $(OBJ_PATH)\$O\wmihandler.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\wmisamp.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\kmdf\wmisamp
+MAKEDIR_RELATIVE_TO_BASEDIR=src\kmdf\wmisamp
+OBJ_PATH=e:\sdk\wdk_6001\src\kmdf\wmisamp
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

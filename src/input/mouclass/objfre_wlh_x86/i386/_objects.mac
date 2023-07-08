@@ -1,0 +1,21 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\moulog.h \
+ $(MC_SOURCEDIR)\moulog.rc \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\mouclass.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\mouclass.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\input\mouclass
+MAKEDIR_RELATIVE_TO_BASEDIR=src\input\mouclass
+OBJ_PATH=e:\sdk\wdk_6001\src\input\mouclass
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

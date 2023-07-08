@@ -1,0 +1,1051 @@
+#line 1 ".\\ihvuiinc.idl"
+#line 1 "e:\\SDK\\WDK_6001\\inc\\api\\wlanihvui.idl"
+
+import "unknwn.idl";
+import "wtypes.idl";
+
+cpp_quote ("#if 0")
+#line 1 "e:\\SDK\\WDK_6001\\inc\\api\\WlanIhvTypes.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 1 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+
+#line 1 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef struct {
+    unsigned long  Data1;
+    unsigned short Data2;
+    unsigned short Data3;
+    byte           Data4[ 8 ];
+} GUID;
+
+
+
+
+
+
+
+#line 29 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 30 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+#line 37 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 38 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+#line 45 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 46 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+#line 53 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 54 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+
+
+
+
+
+#line 67 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+
+typedef GUID *LPGUID;
+#line 77 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+typedef const GUID *LPCGUID;
+#line 82 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+typedef GUID IID;
+typedef IID *LPIID;
+
+
+typedef GUID CLSID;
+typedef CLSID *LPCLSID;
+
+
+typedef GUID FMTID;
+typedef FMTID *LPFMTID;
+
+
+
+
+
+
+
+#line 104 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+#line 112 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 113 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+#line 121 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 122 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+#line 130 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 131 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+#line 139 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 140 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+#line 142 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#line 205 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+#line 206 "e:\\SDK\\WDK_6001\\inc\\api\\guiddef.h"
+
+#line 16 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef DWORD EAP_SESSIONID;
+
+
+typedef struct _EAP_TYPE
+{
+   BYTE type;
+   DWORD dwVendorId;
+   DWORD dwVendorType;
+} EAP_TYPE;
+
+
+
+typedef struct _EAP_METHOD_TYPE
+{
+   EAP_TYPE eapType;
+   DWORD dwAuthorId;
+} EAP_METHOD_TYPE;
+
+
+
+typedef struct _EAP_METHOD_INFO
+{
+   EAP_METHOD_TYPE eaptype;
+   LPWSTR pwszAuthorName;
+   LPWSTR pwszFriendlyName;
+   DWORD eapProperties;
+   struct _EAP_METHOD_INFO* pInnerMethodInfo;
+} EAP_METHOD_INFO;
+
+
+
+
+struct _EAP_METHOD_INFO_ARRAY_EX;
+
+
+typedef struct _EAP_METHOD_INFO_EX
+{
+   EAP_METHOD_TYPE eaptype;
+   LPWSTR pwszAuthorName;
+   LPWSTR pwszFriendlyName;
+   DWORD eapProperties;
+   struct _EAP_METHOD_INFO_ARRAY_EX* pInnerMethodInfoArray;
+} EAP_METHOD_INFO_EX;
+
+
+typedef struct _EAP_METHOD_INFO_ARRAY
+{
+   DWORD dwNumberOfMethods;
+   EAP_METHOD_INFO* pEapMethods;
+} EAP_METHOD_INFO_ARRAY;
+
+
+
+typedef struct _EAP_METHOD_INFO_ARRAY_EX
+{
+   DWORD dwNumberOfMethods;
+   EAP_METHOD_INFO_EX* pEapMethods;
+} EAP_METHOD_INFO_ARRAY_EX;
+
+typedef struct _EAP_ERROR
+{
+   DWORD dwWinError;
+   EAP_METHOD_TYPE type;
+   DWORD dwReasonCode;
+
+   GUID   rootCauseGuid;
+   GUID   repairGuid;
+   GUID   helpLinkGuid;
+
+   LPWSTR pRootCauseString;
+   LPWSTR pRepairString;
+} EAP_ERROR;
+
+
+extern const CLSID GUID_EapHost_Default;
+
+extern const CLSID GUID_EapHost_Cause_MethodDLLNotFound;
+extern const CLSID GUID_EapHost_Cause_EapNegotiationFailed;    
+extern const CLSID GUID_EapHost_Cause_ThirdPartyMethod_Host_Reset;
+extern const CLSID GUID_EapHost_Cause_XmlMalformed;
+extern const CLSID GUID_EapHost_Cause_MethodDoesNotSupportOperation;
+extern const CLSID GUID_EapHost_Cause_EapQecInaccessible;      
+
+extern const CLSID GUID_EapHost_Cause_Generic_AuthFailure;
+extern const CLSID GUID_EapHost_Cause_IdentityUnknown;
+
+extern const CLSID GUID_EapHost_Cause_CertStoreInaccessible;
+
+extern const CLSID GUID_EapHost_Cause_User_CertExpired;
+extern const CLSID GUID_EapHost_Cause_User_CertInvalid;
+extern const CLSID GUID_EapHost_Cause_User_CertNotFound;
+extern const CLSID GUID_EapHost_Cause_User_CertOtherError;
+extern const CLSID GUID_EapHost_Cause_User_CertRejected;
+extern const CLSID GUID_EapHost_Cause_User_CertRevoked;
+extern const CLSID GUID_EapHost_Cause_User_Account_OtherProblem;
+extern const CLSID GUID_EapHost_Cause_User_CredsRejected;
+
+extern const CLSID GUID_EapHost_Cause_Server_CertExpired;
+extern const CLSID GUID_EapHost_Cause_Server_CertInvalid;
+extern const CLSID GUID_EapHost_Cause_Server_CertNotFound;
+extern const CLSID GUID_EapHost_Cause_Server_CertOtherError;
+extern const CLSID GUID_EapHost_Cause_Server_CertRevoked;
+
+extern const CLSID GUID_EapHost_Cause_User_Root_CertExpired;
+extern const CLSID GUID_EapHost_Cause_User_Root_CertInvalid;
+extern const CLSID GUID_EapHost_Cause_User_Root_CertNotFound;
+
+extern const CLSID GUID_EapHost_Cause_Server_Root_CertNotFound;
+extern const CLSID GUID_EapHost_Cause_Server_Root_CertNameRequired;
+
+extern const CLSID GUID_EapHost_Repair_ContactSysadmin;
+extern const CLSID GUID_EapHost_Repair_Retry_Authentication;
+
+extern const CLSID GUID_EapHost_Repair_User_AuthFailure;
+extern const CLSID GUID_EapHost_Repair_User_GetNewCert;
+extern const CLSID GUID_EapHost_Repair_User_SelectValidCert;
+
+extern const CLSID GUID_EapHost_Repair_Server_ClientSelectServerCert;
+
+extern const CLSID GUID_EapHost_Help_ObtainingCerts;
+extern const CLSID GUID_EapHost_Help_Troubleshooting;
+
+
+
+
+typedef
+
+   [v1_enum]
+#line 177 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+
+
+enum _EAP_ATTRIBUTE_TYPE
+{
+    eatMinimum = 0,                
+    eatUserName,                   
+    eatUserPassword,               
+    eatMD5CHAPPassword,            
+    eatNASIPAddress,               
+    eatNASPort,                    
+    eatServiceType,                
+    eatFramedProtocol,             
+    eatFramedIPAddress,            
+    eatFramedIPNetmask,            
+    eatFramedRouting = 10,         
+    eatFilterId,                   
+    eatFramedMTU,                  
+    eatFramedCompression,          
+    eatLoginIPHost,                
+    eatLoginService,               
+    eatLoginTCPPort,               
+    eatUnassigned17,               
+    eatReplyMessage,               
+    eatCallbackNumber,             
+    eatCallbackId =20,             
+    eatUnassigned21,               
+    eatFramedRoute,                
+    eatFramedIPXNetwork,           
+    eatState,                      
+    eatClass,                      
+    eatVendorSpecific,             
+    eatSessionTimeout,             
+    eatIdleTimeout,                
+    eatTerminationAction,          
+    eatCalledStationId = 30,       
+    eatCallingStationId,           
+    eatNASIdentifier,              
+    eatProxyState,                 
+    eatLoginLATService,            
+    eatLoginLATNode,               
+    eatLoginLATGroup,              
+    eatFramedAppleTalkLink,        
+    eatFramedAppleTalkNetwork,     
+    eatFramedAppleTalkZone,        
+    eatAcctStatusType = 40,        
+    eatAcctDelayTime,              
+    eatAcctInputOctets,            
+    eatAcctOutputOctets,           
+    eatAcctSessionId,              
+    eatAcctAuthentic,              
+    eatAcctSessionTime,            
+    eatAcctInputPackets,           
+    eatAcctOutputPackets,          
+    eatAcctTerminateCause,         
+    eatAcctMultiSessionId = 50,    
+    eatAcctLinkCount,              
+    eatAcctEventTimeStamp = 55,    
+    eatMD5CHAPChallenge = 60,      
+    eatNASPortType,                
+    eatPortLimit,                  
+    eatLoginLATPort,               
+    eatTunnelType,                 
+    eatTunnelMediumType,           
+    eatTunnelClientEndpoint,       
+    eatTunnelServerEndpoint,       
+    eatARAPPassword = 70,          
+    eatARAPFeatures,               
+    eatARAPZoneAccess,             
+    eatARAPSecurity,               
+    eatARAPSecurityData,           
+    eatPasswordRetry,              
+    eatPrompt,                     
+    eatConnectInfo,                
+    eatConfigurationToken,         
+    eatEAPMessage,                 
+    eatSignature = 80,             
+    eatARAPChallengeResponse = 84, 
+    eatAcctInterimInterval = 85,   
+    eatNASIPv6Address = 95,  
+    eatFramedInterfaceId, 
+    eatFramedIPv6Prefix, 
+    eatLoginIPv6Host, 
+    eatFramedIPv6Route, 
+    eatFramedIPv6Pool, 
+    eatARAPGuestLogon = 8096,      
+    eatCertificateOID,             
+    eatEAPConfiguration,           
+    eatPEAPEmbeddedEAPTypeId,      
+    eatPEAPFastRoamedSession,      
+    eatEAPTLV = 8102,              
+    eatCredentialsChanged,        
+                                   
+    eatInnerEapMethodType,         
+                                   
+                                   
+    eatClearTextPassword = 8107,   
+                                   
+                                   
+                                   
+    eatQuarantineSoH     = 8150, 
+    eatPeerId                 = 9000,  
+    eatServerId,                          
+    eatMethodId,                          
+    eatEMSK,                               
+    eatSessionId,                               
+    eatReserved = 0xFFFFFFFF       
+} EAP_ATTRIBUTE_TYPE, EapAttributeType;
+
+
+
+typedef struct _EAP_ATTRIBUTE
+{
+        EAP_ATTRIBUTE_TYPE eaType;
+        DWORD dwLength;
+
+        [size_is(dwLength)] BYTE* pValue;
+
+
+#line 296 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+} EAP_ATTRIBUTE, EapAttribute;
+
+
+
+typedef struct _EAP_ATTRIBUTES
+{
+        DWORD dwNumberOfAttributes;
+
+        [size_is(dwNumberOfAttributes)] EAP_ATTRIBUTE* pAttribs;
+
+
+#line 308 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+} EAP_ATTRIBUTES, EapAttributes;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef enum _EAP_CONFIG_INPUT_FIELD_TYPE {
+    EapConfigInputUsername,
+    EapConfigInputPassword,
+    EapConfigInputNetworkUsername,
+    EapConfigInputNetworkPassword,
+    EapConfigInputPin,
+    EapConfigInputPSK,
+    EapConfigInputEdit
+} EAP_CONFIG_INPUT_FIELD_TYPE, *PEAP_CONFIG_INPUT_FIELD_TYPE;
+
+
+
+
+
+
+
+
+
+
+typedef struct _EAP_CONFIG_INPUT_FIELD_DATA {
+    DWORD dwSize;
+    EAP_CONFIG_INPUT_FIELD_TYPE Type;
+    DWORD dwFlagProps;
+    LPWSTR pwszLabel;
+    LPWSTR pwszData;
+    DWORD dwMinDataLength;
+    DWORD dwMaxDataLength;
+} EAP_CONFIG_INPUT_FIELD_DATA, *PEAP_CONFIG_INPUT_FIELD_DATA;
+
+
+
+typedef struct _EAP_CONFIG_INPUT_FIELD_ARRAY {
+    DWORD dwVersion; 
+    DWORD dwNumberOfFields;
+
+    [size_is(dwNumberOfFields)] EAP_CONFIG_INPUT_FIELD_DATA* pFields;
+
+
+#line 430 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+} EAP_CONFIG_INPUT_FIELD_ARRAY, *PEAP_CONFIG_INPUT_FIELD_ARRAY;
+
+
+
+typedef enum _EAP_INTERACTIVE_UI_DATA_TYPE {
+    EapCredReq,
+    EapCredResp,
+    EapCredExpiryReq,
+    EapCredExpiryResp,
+} EAP_INTERACTIVE_UI_DATA_TYPE;
+
+
+
+
+typedef EAP_CONFIG_INPUT_FIELD_ARRAY EAP_CRED_REQ;
+typedef EAP_CONFIG_INPUT_FIELD_ARRAY EAP_CRED_RESP;
+
+
+
+typedef struct _EAP_CRED_EXPIRY_REQ {
+    EAP_CONFIG_INPUT_FIELD_ARRAY curCreds;
+    EAP_CONFIG_INPUT_FIELD_ARRAY newCreds;
+} EAP_CRED_EXPIRY_REQ, EAP_CRED_EXPIRY_RESP;
+
+
+    typedef [switch_type(EAP_INTERACTIVE_UI_DATA_TYPE)]
+    union {
+       [case(EapCredReq, EapCredResp)]      EAP_CRED_REQ*  credData;
+       [case(EapCredExpiryReq,EapCredExpiryResp)] EAP_CRED_EXPIRY_REQ* credExpiryData;
+       [default]      ;
+    } EAP_UI_DATA_FORMAT;
+
+
+
+
+
+#line 467 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+
+
+
+typedef struct _EAP_INTERACTIVE_UI_DATA {
+    
+    DWORD dwVersion;
+    
+    DWORD dwSize;
+    
+    EAP_INTERACTIVE_UI_DATA_TYPE dwDataType;
+    
+    DWORD cbUiData;
+    
+    
+    
+
+    [switch_is (dwDataType)] EAP_UI_DATA_FORMAT pbUiData;
+
+
+#line 487 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+} EAP_INTERACTIVE_UI_DATA ;
+
+
+#line 491 "e:\\SDK\\WDK_6001\\inc\\api\\EapTypes.h"
+
+#line 19 "e:\\SDK\\WDK_6001\\inc\\api\\WlanIhvTypes.h"
+#line 1 "e:\\SDK\\WDK_6001\\inc\\api\\WlanTypes.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+typedef enum _DOT11_BSS_TYPE {
+    dot11_BSS_type_infrastructure = 1,
+    dot11_BSS_type_independent = 2,
+    dot11_BSS_type_any = 3
+} DOT11_BSS_TYPE, * PDOT11_BSS_TYPE;
+
+
+typedef struct _DOT11_SSID {
+
+
+
+    ULONG uSSIDLength;
+    UCHAR ucSSID[32];
+} DOT11_SSID, * PDOT11_SSID;
+
+
+
+
+
+typedef [v1_enum] enum _DOT11_AUTH_ALGORITHM {
+
+
+#line 41 "e:\\SDK\\WDK_6001\\inc\\api\\WlanTypes.h"
+    DOT11_AUTH_ALGO_80211_OPEN = 1,
+    DOT11_AUTH_ALGO_80211_SHARED_KEY = 2,
+    DOT11_AUTH_ALGO_WPA = 3,
+    DOT11_AUTH_ALGO_WPA_PSK = 4,
+    DOT11_AUTH_ALGO_WPA_NONE = 5,               
+    DOT11_AUTH_ALGO_RSNA = 6,
+    DOT11_AUTH_ALGO_RSNA_PSK = 7,
+    DOT11_AUTH_ALGO_IHV_START = 0x80000000,
+    DOT11_AUTH_ALGO_IHV_END = 0xffffffff
+} DOT11_AUTH_ALGORITHM, * PDOT11_AUTH_ALGORITHM;
+
+
+
+
+
+
+
+
+
+
+
+
+typedef [v1_enum] enum _DOT11_CIPHER_ALGORITHM {
+
+
+#line 67 "e:\\SDK\\WDK_6001\\inc\\api\\WlanTypes.h"
+    DOT11_CIPHER_ALGO_NONE = 0x00,
+    DOT11_CIPHER_ALGO_WEP40 = 0x01,
+    DOT11_CIPHER_ALGO_TKIP = 0x02,
+    DOT11_CIPHER_ALGO_CCMP = 0x04,
+    DOT11_CIPHER_ALGO_WEP104 = 0x05,
+    DOT11_CIPHER_ALGO_WPA_USE_GROUP = 0x100,
+    DOT11_CIPHER_ALGO_RSN_USE_GROUP = 0x100,
+    DOT11_CIPHER_ALGO_WEP = 0x101,
+    DOT11_CIPHER_ALGO_IHV_START = 0x80000000,
+    DOT11_CIPHER_ALGO_IHV_END = 0xffffffff
+} DOT11_CIPHER_ALGORITHM, * PDOT11_CIPHER_ALGORITHM;
+
+typedef struct DOT11_AUTH_CIPHER_PAIR {
+    DOT11_AUTH_ALGORITHM AuthAlgoId;
+    DOT11_CIPHER_ALGORITHM CipherAlgoId;
+} DOT11_AUTH_CIPHER_PAIR, * PDOT11_AUTH_CIPHER_PAIR;
+
+
+#line 86 "e:\\SDK\\WDK_6001\\inc\\api\\WlanTypes.h"
+
+#line 20 "e:\\SDK\\WDK_6001\\inc\\api\\WlanIhvTypes.h"
+
+
+
+typedef
+struct _DOT11_MSSECURITY_SETTINGS
+{
+   DOT11_AUTH_ALGORITHM dot11AuthAlgorithm;
+   DOT11_CIPHER_ALGORITHM dot11CipherAlgorithm;
+   BOOL fOneXEnabled;
+   EAP_METHOD_TYPE eapMethodType;
+   DWORD dwEapConnectionDataLen;
+
+   [size_is(dwEapConnectionDataLen)] 
+#line 34 "e:\\SDK\\WDK_6001\\inc\\api\\WlanIhvTypes.h"
+   BYTE* pEapConnectionData;
+}
+DOT11_MSSECURITY_SETTINGS, *PDOT11_MSSECURITY_SETTINGS;
+
+
+typedef
+struct _DOT11EXT_IHV_SSID_LIST
+{
+    ULONG                                   ulCount;
+
+    [unique, size_is(ulCount)] DOT11_SSID   SSIDs[*];
+
+
+#line 48 "e:\\SDK\\WDK_6001\\inc\\api\\WlanIhvTypes.h"
+}
+DOT11EXT_IHV_SSID_LIST, * PDOT11EXT_IHV_SSID_LIST;
+
+
+
+
+
+typedef
+struct _DOT11EXT_IHV_PROFILE_PARAMS
+{
+   PDOT11EXT_IHV_SSID_LIST      pSsidList;
+   DOT11_BSS_TYPE               BssType;
+   PDOT11_MSSECURITY_SETTINGS   pMSSecuritySettings;
+}
+DOT11EXT_IHV_PROFILE_PARAMS, *PDOT11EXT_IHV_PROFILE_PARAMS;
+
+
+
+
+
+
+
+
+
+
+
+typedef
+struct _DOT11EXT_IHV_PARAMS
+{
+   DOT11EXT_IHV_PROFILE_PARAMS  dot11ExtIhvProfileParams;
+   WCHAR                        wstrProfileName[256];
+   DWORD                        dwProfileTypeFlags;
+   GUID                         interfaceGuid;
+}
+DOT11EXT_IHV_PARAMS, *PDOT11EXT_IHV_PARAMS;
+
+
+#line 86 "e:\\SDK\\WDK_6001\\inc\\api\\WlanIhvTypes.h"
+
+#line 7 "e:\\SDK\\WDK_6001\\inc\\api\\wlanihvui.idl"
+cpp_quote ("#endif")
+cpp_quote ("#include <WlanIhvTypes.h>")
+
+
+
+
+typedef enum _DOT11_EXT_UI_PROPERTY_TYPE	
+{
+    DOT11_EXT_UI_CONNECTION,
+    DOT11_EXT_UI_SECURITY,
+    DOT11_EXT_UI_KEYEXTENSION
+} DOT11_EXT_UI_PROPERTY_TYPE;
+
+
+
+typedef enum _DOT11_EXT_UI_DISPLAY_INFO_TYPE
+{
+	DOT11_EXT_UI_DISPLAY_INFO_CIPHER
+} DOT11_EXT_UI_DISPLAY_INFO_TYPE;
+
+
+
+typedef struct _DOT11_EXT_UI_PROPERTY_DISPLAY_INFO
+{
+	DWORD dwDataKey;
+	DOT11_EXT_UI_DISPLAY_INFO_TYPE dot11ExtUIDisplayInfoType;
+	BSTR bstrDisplayText;
+} DOT11_EXT_UI_PROPERTY_DISPLAY_INFO;
+
+
+
+typedef enum _DOT11_EXT_UI_SECURITY_TYPE
+{
+    DOT11_EXT_UI_SECURITY_8021X,
+    DOT11_EXT_UI_SECURITY_WPA_ENTERPRISE,
+    DOT11_EXT_UI_SECURITY_WPA2_ENTERPRISE
+} DOT11_EXT_UI_SECURITY_TYPE;
+
+
+
+interface IDot11ExtUI;
+interface IDot11ExtUIProperty;
+
+
+
+[
+    uuid(F2B676C7-DA6A-4167-A696-F55F5DFCBC8F),  
+    helpstring(" Dot11 Extensibility UI Interface"),
+    dual
+]
+
+interface IDot11ExtUI: IUnknown
+{  
+
+    
+    [id(1), hidden, helpstring("method GetDot11ExtUIFriendlyName")]
+    HRESULT 
+    GetDot11ExtUIFriendlyName(
+        [out] BSTR* bstrFriendlyName  
+        );
+
+    
+    [id(2), hidden, helpstring("method GetDot11ExtUIProperties")]
+    HRESULT 
+    GetDot11ExtUIProperties(
+        [in] DOT11_EXT_UI_PROPERTY_TYPE ExtType, 
+        [out] ULONG *pcExtensions,  
+        [out, size_is(, *pcExtensions)] 
+      	IDot11ExtUIProperty **ppDot11ExtUIProperty
+        );
+
+    [id(3), hidden, helpstring("method GetDot11ExtUIBalloonText")]
+    HRESULT 
+    GetDot11ExtUIBalloonText(
+        [in] BSTR pIHVUIRequest, 
+        [out] BSTR* pwszBalloonText 
+        );
+}
+
+
+
+[
+    uuid(5938b49c-684a-48fa-8569-6bed64ca970d),  
+    helpstring(" Dot11 Extensibility UI Property Pages"),
+    dual
+]
+
+interface IDot11ExtUIProperty: IUnknown
+{  
+    
+    [id(1), hidden, helpstring("method GetDot11ExtUIPropertyFriendlyName")]
+    HRESULT 
+    GetDot11ExtUIPropertyFriendlyName(
+        [out] BSTR* bstrPropertyName  
+        );
+
+    
+    [id(2), hidden, helpstring("method DisplayDot11ExtUIProperty")]
+    HRESULT 
+    DisplayDot11ExtUIProperty(
+        [in] HWND hParent, 
+        [in] BSTR bstrIHVProfile, 
+        [in] PDOT11EXT_IHV_PARAMS pIHVProfileParams, 
+        [out] BSTR* bstrModifiedIHVProfile, 
+        [out] BOOL* pbIsModified 
+        );
+	
+	
+	[id(3), hidden, helpstring("method Dot11ExtUIPropertyGetSelected")]
+    HRESULT 
+    Dot11ExtUIPropertyGetSelected(
+        [in] BSTR bstrIHVProfile, 
+        [in] PDOT11EXT_IHV_PARAMS pIHVProfileParams, 
+        [out] BOOL* pfIsSelected 
+        );
+
+	
+	[id(4), hidden, helpstring("method Dot11ExtUIPropertySetSelected")]
+    HRESULT 
+    Dot11ExtUIPropertySetSelected(
+        [in] BSTR bstrIHVProfile, 
+        [in] PDOT11EXT_IHV_PARAMS pIHVProfileParams, 
+        [out] BSTR* bstrModifiedIHVProfile, 
+        [out] BOOL* pbIsModified 
+        );
+
+     
+	[id(5), hidden, helpstring("method Dot11ExtUIPropertyHasConfigurationUI")]
+    HRESULT 
+    Dot11ExtUIPropertyHasConfigurationUI(
+        [out] BOOL *fHasConfigurationUI 
+        );
+
+    
+	[id(6), hidden, helpstring("method Dot11ExtUIPropertyGetDisplayInfo")]
+    HRESULT 
+    Dot11ExtUIPropertyGetDisplayInfo(
+    	[in] DOT11_EXT_UI_DISPLAY_INFO_TYPE dot11ExtUIDisplayInfoType, 
+        [in] BSTR bstrIHVProfile, 
+        [in] PDOT11EXT_IHV_PARAMS pIHVProfileParams, 
+        [out] ULONG *pcEntries, 
+        [out] ULONG *puDefaultSelection, 
+        [out, size_is(, *pcEntries)] 
+      	DOT11_EXT_UI_PROPERTY_DISPLAY_INFO **ppDot11ExtUIProperty 
+        );
+
+    
+	[id(7), hidden, helpstring("method Dot11ExtUIPropertySetDisplayInfo")]
+    HRESULT 
+    Dot11ExtUIPropertySetDisplayInfo(
+    	[in] DOT11_EXT_UI_DISPLAY_INFO_TYPE dot11ExtUIDisplayInfoType, 
+        [in] BSTR bstrIHVProfile, 
+        [in] PDOT11EXT_IHV_PARAMS pIHVProfileParams, 
+        [in] DOT11_EXT_UI_PROPERTY_DISPLAY_INFO *pDot11ExtUIProperty, 
+        [out] BSTR* bstrModifiedIHVProfile, 
+        [out] BOOL* pbIsModified 
+        );
+
+    
+	[id(8), hidden, helpstring("method Dot11ExtUIPropertyGetDisplayInfo")]
+    HRESULT 
+    Dot11ExtUIPropertyIsStandardSecurity(
+        [out] BOOL *fIsStandardSecurity, 
+        [out] DOT11_EXT_UI_SECURITY_TYPE *dot11ExtUISecurityType  
+        );
+}
+             
+
+
+#line 2 ".\\ihvuiinc.idl"

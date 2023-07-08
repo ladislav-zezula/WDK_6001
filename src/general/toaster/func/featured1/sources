@@ -1,0 +1,14 @@
+TARGETNAME=toaster
+TARGETTYPE=DRIVER
+
+NTTARGETFILE0 = $(OBJ_PATH)\$(O)\toaster.bmf
+
+TARGETLIBS= $(DDK_LIB_PATH)\ntstrsafe.lib
+
+INCLUDES = ..\..\inc;..\shared
+
+SOURCES= toaster.rc \
+         toaster.c  \
+         power.c \
+         wmi.c 
+

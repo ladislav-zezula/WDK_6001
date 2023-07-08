@@ -1,0 +1,18 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\ac97cpl.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\ac97cpl.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\audio\ac97\cpl
+MAKEDIR_RELATIVE_TO_BASEDIR=src\audio\ac97\cpl
+OBJ_PATH=e:\sdk\wdk_6001\src\audio\ac97\cpl
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

@@ -1,0 +1,26 @@
+TARGETNAME=1394VDEV
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+
+C_DEFINES=-DDRIVER
+C_DEFINES=$(C_DEFINES) /wd4996
+
+USE_MAPSYM=1
+NO_PDB_PATHS=1
+
+INCLUDES=..\..\inc;..\common;
+
+SOURCES= \
+        1394vdev.c \
+        1394vdev.rc \
+        ioctl.c \
+        pnp.c \
+        power.c
+
+PASS2_BINPLACE=\
+    -:DEST $(TARGET_DESTINATION) 1394vdev.inf
+
+BUILD_PASS2_PRODUCES=drivers_wdm_1394_tools_test_driver_1394vdev
+
+TARGET_DESTINATION=test
+

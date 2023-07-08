@@ -1,0 +1,10 @@
+CancelSpinLock
+CriticalRegions
+ExclusiveResourceAccess
+QueuedSpinLock
+SharedResourceAccess
+SpinLock
+SpinLockSafe
+WithinCriticalRegion
+WmiComplete
+WmiForward

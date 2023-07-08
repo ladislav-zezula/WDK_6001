@@ -1,0 +1,14 @@
+TARGETNAME=mars
+TARGETTYPE=DRIVER
+
+KMDF_VERSION=1
+MISCFILES=mars.inf
+
+INF_NAME=mars
+
+INCLUDES = $(INCLUDES)
+
+TARGETLIBS=     $(DDK_LIB_PATH)\sdbus.lib \
+                $(DDK_LIB_PATH)\ntstrsafe.lib
+
+SOURCES= mars.c

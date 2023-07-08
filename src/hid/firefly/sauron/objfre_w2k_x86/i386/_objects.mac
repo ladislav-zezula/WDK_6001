@@ -1,0 +1,25 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\effects.h \
+ $(PASS0_HEADERDIR)\isauron.h \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\saurondll.obj \
+ $(OBJ_PATH)\$O\sauron.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\saurondll.res
+PRECOMPILED_INCLUDE_BASENAME=stdafx.h
+
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\hid\firefly\sauron
+MAKEDIR_RELATIVE_TO_BASEDIR=src\hid\firefly\sauron
+OBJ_PATH=e:\sdk\wdk_6001\src\hid\firefly\sauron
+_CONCURRENT_MIDL_UUID=4fe13233a72b181010cdaf7cccb81ca6
+_CONCURRENT_MIDL_LOCKDIR=$(OBJ_PATH)\$O\$(_CONCURRENT_MIDL_UUID)
+CONCURRENT_MANIFEST_BUILD=0

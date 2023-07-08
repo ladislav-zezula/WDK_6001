@@ -1,0 +1,14 @@
+TARGETNAME=ddsmc
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\mcd.lib
+
+INCLUDES=..\inc;..\..\inc;..\..\..\inc
+
+SOURCES=ddsmc.c \
+        wmi.c \
+        ddsmc.rc
+
+
+TARGET_DESTINATION=retail
+

@@ -1,0 +1,23 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\msg.h \
+ $(MC_SOURCEDIR)\msg.rc \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\devcon.obj \
+ $(OBJ_PATH)\$O\dump.obj \
+ $(OBJ_PATH)\$O\cmds.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\devcon.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\setup\devcon
+MAKEDIR_RELATIVE_TO_BASEDIR=src\setup\devcon
+OBJ_PATH=e:\sdk\wdk_6001\src\setup\devcon
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

@@ -1,0 +1,42 @@
+# Copyright (c) Microsoft Corporation.  All rights reserved.
+#
+#    THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+#    EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+#    WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+#
+# Module Name:
+#
+#    sources
+#
+# Abstract:
+#
+#    Sources file for the sample Toaster function driver.
+#
+
+TARGETNAME=wdffeatured
+TARGETTYPE=DRIVER
+
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=wdffeatured
+
+INCLUDES = $(INCLUDES);..\..\inc;..\shared
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+MISCFILES=$(NTTARGETFILES)
+
+NTTARGETFILE0 = $(OBJ_PATH)\$(O)\toaster.bmf
+
+#
+# List of source files to compile.
+#
+SOURCES=            \
+        toaster.rc  \
+        toaster.c   \
+          power.c   \
+            wmi.c
+
+C_DEFINES=
+

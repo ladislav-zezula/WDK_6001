@@ -1,0 +1,139 @@
+;/*++
+;
+;Copyright (c) Microsoft Corporation.  All rights reserved.
+;
+;Module Name:
+;
+;    wdf1394vdev.INF
+;
+;Abstract:
+;    INF file for installing 1394 virtual device hybrid w/ the umdf component
+;    as an upper filter.
+; 
+;
+;--*/
+[Version]
+signature="$CHICAGO$"
+Class=Sample
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171}
+Provider=%MSFTWDF%
+CatalogFile=KmdfSamples.cat
+DriverVer=06/01/2007,0.0.0.1
+
+[SourceDisksNames]
+1 = %MediaDescription%,,,""
+
+[SourceDisksFiles]
+kmdf1394vdev.sys=1
+umdf1394vdev.dll=1
+WudfUpdate_01007.dll=1
+WdfCoInstaller01007.dll=1
+
+
+[DestinationDirs]
+DefaultDestDir = 12
+UMDF1394VDEV.CopyDriver=12,UMDF
+
+; =================== Class Sections ===========================
+[ClassInstall32]
+Addreg=1394DevicesClassReg
+
+[1394DevicesClassReg]
+HKR,,,,%ClassName%
+HKR,,Icon,,-21
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GA;;;BA)"  ; ACL allowing System and Admin
+
+[Manufacturer]
+%MSFTWDF%=Microsoft,NT$ARCH$
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+; =================== Microsoft ========================
+
+[Microsoft.NT$ARCH$]
+%kmdf1394vdevDeviceDesc%=KMDF1394VDEV,V1394\1394_VIRTUAL_DEVICE
+
+; =================== 1394 Hybrid Installation ======================
+
+[KMDF1394VDEV.NT]
+CopyFiles=KMDF1394VDEV.CopyDriver, UMDF1394VDEV.CopyDriver
+
+[KMDF1394VDEV.NT.hw]
+AddReg=kmdf1394vdev_Device_AddReg
+
+[KMDF1394VDEV.NT.Services]
+AddService=KMDF1394VDEV,0x00000002,KMDF1394VDEV_ServiceInstall
+AddService=UMDF1394VDEV,0x00000000,UMDF1394VDEV_ServiceInstall ; Install the UMDF driver as filter
+
+[KMDF1394VDEV_ServiceInstall]
+DisplayName=%kmdf1394vdevDeviceDesc%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\kmdf1394vdev.sys
+
+[UMDF1394VDEV_ServiceInstall]
+DisplayName = %WudfRd_SvcDesc%
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary = %12%\WUDFRd.sys
+
+
+[kmdf1394vdev_Device_AddReg]
+; Load the redirector as an upperfilter on this specific device.
+; 0x00010008 - FLG_ADDREG_TYPE_MULTI_SZ | FLG_ADDREG_APPEND
+HKR,,"UpperFilters",0x00010008,"WUDFRd" 
+
+[KMDF1394VDEV.CopyDriver]
+kmdf1394vdev.sys
+
+[UMDF1394VDEV.CopyDriver]
+umdf1394vdev.dll
+
+;================ WDF installation ==================
+
+[KMDF1394VDEV.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+wdfcoinstaller01007.dll
+WudfUpdate_01007.dll
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000,"wdfcoinstaller01007.dll,WdfCoInstaller","WUDFUpdate_01007.dll"
+
+[KMDF1394VDEV.NT.Wdf]
+KmdfService = KMDF1394VDEV, KMDF1394VDEV_wdfsect
+UmdfService = umdf1394vdev, umdf1394vdev_Install
+UmdfServiceOrder = umdf1394vdev
+
+[umdf1394vdev_Install]
+UmdfLibraryVersion=1.7.0
+;
+;{d202f373-3aae-45ee-ae7345766cef14b4}
+;
+DriverCLSID= "{d202f373-3aae-45ee-ae73-45766cef14b4}"
+ServiceBinary= "%12%\UMDF\umdf1394vdev.dll"
+
+[KMDF1394VDEV_wdfsect]
+KmdfLibraryVersion = 1.7
+
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+        
+;
+; Strings
+;
+[Strings]
+MSFTWDF ="Microsoft (WDF)"
+MediaDescription ="Microsoft Sample Driver Installation Media"
+ClassName ="WDF Samples"
+WudfRd_SvcDesc ="WDF Hybrid Reflector"
+umdf1394vdevDeviceName ="UMDF 1394 Virtual Device Hybrid Driver" 
+kmdf1394vdevDeviceDesc ="WDF Hybrid 1394 Virtual Device"
+
+
+

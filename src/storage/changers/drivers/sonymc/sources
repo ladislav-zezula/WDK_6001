@@ -1,0 +1,13 @@
+TARGETNAME=sonymc
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\mcd.lib
+
+INCLUDES=..\inc;..\..\inc;..\..\..\inc
+
+SOURCES=sonymc.c \
+        sonymc.rc
+
+
+TARGET_DESTINATION=retail
+

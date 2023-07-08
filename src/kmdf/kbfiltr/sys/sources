@@ -1,0 +1,26 @@
+TARGETNAME=kbfiltr
+TARGETTYPE=DRIVER
+
+
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=kbfiltr
+
+TARGETLIBS=$(TARGETLIBS) \
+           $(DDK_LIB_PATH)\wdmsec.lib \
+           $(DDK_LIB_PATH)\ntstrsafe.lib
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+
+
+MISCFILES=$(NTTARGETFILES)
+
+
+SOURCES=kbfiltr.c \
+        kbfiltr.rc \
+        rawpdo.c \
+
+
+

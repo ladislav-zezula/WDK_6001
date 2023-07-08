@@ -1,0 +1,266 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>User-Mode OSR USB-FX2 Sample Function Driver</title>
+<style type="text/css">
+.style1 {
+	font-family: Verdana;
+	font-size: x-small;
+}
+</style>
+</head>
+
+<body>
+
+<h1><font face="Verdana" size="2">WUDFOSRUSB</font></h1>
+<h2>
+<font face="Verdana" size="2">SUMMARY</font></h2>
+<p>
+<font face="Verdana" size="2">This sample demonstrates how to use the User-Mode 
+Driver Framework to write a 
+driver and shows best practices. In demonstrates the use of a default Parallel 
+Dispatch I/O Queue and its request-start events and cancellation events. It also 
+demonstrates how to communicate with a device by using a USB I/O target and how
+to handle cancellation, completion and cleanup requests. </font>
+<p>
+<font face="Verdana" size="2">This driver loads on and controls the OSR USB-FX2 
+Learning Kit device from <a href="http://www.osronline.com">OSR</a>.&nbsp; More 
+information about the programming model for the device can be found
+<a href="http://www.osronline.com/hardware/OSRFX2_32.pdf">here</a>.&nbsp; It 
+uses the WUDF USB I/O target to send USB requests to the device.&nbsp; 
+<font face="Verdana" size="2">This sample driver is a minimal driver meant to demonstrate the usage of the 
+User-Mode Driver Framework. It is not intended for use in a production 
+environment.</font></font><p class="style1">Se<font size="2">e the UMDF 
+Readme.htm file for more information about
+<a href="../../readme.htm#Supported_Environments">supported operating systems</a> 
+and <a href="../../readme.htm#BuildEnv">building the samples</a>.</font></p>
+<font face="Verdana" size="2"><h2>
+
+<table border="1" width="100%" id="table2" style="border-collapse: collapse" bgcolor="#CCCCCC">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana"><Strong>Note:</Strong></font></td>
+		<td><font face="Verdana" size="2">This sample requires installation of WinUsb runtime on Windows XP and would not work without that.&nbsp; 
+		The WinUsb co-installer will install WinUsb during your driver's 
+		installation and can be found in the \winddk\&lt;bld&gt;\redist directory.</font></td>
+	</tr>
+</table>
+
+<p>
+
+<font face="Verdana" size="2"><strong>BUILDING THE SAMPLE</strong></font><p><font face="Verdana" size="2">Start a build environment window as described 
+under<b> <a href="../../readme.htm#buildenv">Building and Testing the Samples</a>
+</b>the UMDF Readme file.</font></p>
+<p>
+<font face="Verdana" size="2">Change to the directory containing the device 
+source code, such as &quot;</font>CD c:\WINDDK\&lt;build 
+number&gt;\src\umdf\usb\echo_driver&quot; (the WINDDK location and build 
+number may vary).<p>
+<font face="Verdana" size="2">Run build -ceZ, or use the macro BLD. This command invokes the Microsoft make 
+routines to build the components. If the build succeeds, you will find the 
+driver, WUDFOsrUsbDriver.dll in the </font>%_BuildArch% subdirectory of the %TARGETPATH% 
+directory specified in the Sources file. If it fails you can find errors and 
+warnings in the build error (.err) and warning (.wrn) log files respectively 
+(buildfre_wlh_x86.err for example). 
+<h2><font face="Verdana" size="2">INSTALLATION</font></h2>
+<p><font face="Verdana" size="2">To test the sample you will need to setup your 
+test system as described <b><a href="../../readme.htm#buildenv">Building and 
+Testing the Samples</a> </b>the UMDF Readme file.</font></p>
+<p>You will also need to copy the co-installer for the Kernel-Mode Driver 
+Framework into the directory with your driver binary and INF (and include it in 
+the catalog file if you're signing the driver package).&nbsp; This sample driver 
+makes use of WinUSB, which is a KMDF based driver and so requires the KMDF 
+co-installer for proper installation. </p>
+<p><font face="Verdana" size="2">This sample's INF allows you to install the 
+driver on the OSR USB-FX2 Learning Kit board from
+<a href="http://www.osronline.com">OSR</a>.&nbsp; </font></p>
+<blockquote>
+	<p><font face="Verdana" size="2">To install the USB-FX2 echo driver on Windows 
+	Vista (or Windows XP SP2 and above, subject to the availability of WinUsb runtime):</font></p>
+	<ol>
+		<li><font face="Verdana" size="2">Copy the driver binary (WUDFOsrUsbDriver.dll) and the 
+		WUDFOsrUsbDriver.inf file to a directory on your test machine (for 
+		example c:\usbSample).</font></li>
+ 		C<font size="2">opy the required coinstallers for this sample from c:\winddk\&lt;bld&gt;\redist to the 
+		same directory (for example c:\skeletonSample)</font><ol>
+			<li class="style1">w<font size="2">df\WUDFUpdate_01007.dll - the 
+			UMDF 1.7 coinstaller</font></li>
+			<li class="style1">w<font size="2">inusb\WinUsbCoinstaller.dll - the 
+			WinUsb coinstaller (required for USB support)</font></li>
+			<li class="style1">w<font size="2">df\WdfCoinstaller01007.dll - the 
+			KMDF 1.7 coinstaller (required by WinUsb)</font></li>
+		</ol>
+		<li><font face="Verdana" size="2">Attach the OSR USB-FX2 device to your 
+		computer.</font></li>
+		<li><font face="Verdana" size="2">At the &quot;Welcome to the Found New 
+		Hardware Wizard&quot; choose &quot;No, not this time&quot; and click Next.</font></li>
+		<li><font face="Verdana" size="2">Select &quot;Install from a list or 
+		specific location (Advanced)&quot; and click Next.</font></li>
+		<li><font face="Verdana" size="2">Select &quot;Search for the best 
+		driver in these locations&quot;.</font></li>
+		<li><font face="Verdana" size="2">Clear the &quot;Search removable media 
+		(floppy, CD-ROM ...)&quot; check box.</font></li>
+		<li><font face="Verdana" size="2">Select the &quot;Include this location in 
+		the search&quot; check box.</font></li>
+		<li><font face="Verdana" size="2">Enter the path to the files (for 
+		example: c:\usbSample) under that check box and click Next.</font></li>
+		<li><font face="Verdana" size="2">Click Finish at 'Completing the Found 
+		New Hardware Wizard.'</font></li>
+	</ol>
+</blockquote>
+<table border="1" width="100%" id="table2" style="border-collapse: collapse" bgcolor="#CCCCCC">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana">Note:</font></td>
+		<td><font face="Verdana" size="2">Between steps 8 and 9 you may see a 
+		&quot;Please select the best match for your hardware from the list below&quot; 
+		page.&nbsp; This happens when there are multiple INFs which match your 
+		hardware.&nbsp; If this happens you should select an entry with 
+		&quot;<b>Microsoft OSR USB Driver</b>&quot; in the 'Description' column and the directory 
+		which holds the INF (for example c:\usbSample) in the 'Location' column.&nbsp; 
+		If you have multiple versions of an INF in that directory, you may also 
+		need to check the 'Version' column to find the highest version number.</font><p>
+		<font face="Verdana" size="2">Occasionally you may be told that no newer 
+		driver could be found for your device in this case.&nbsp; If that should 
+		happen use the alternate installation instructions below.</font></td>
+	</tr>
+</table>
+<blockquote>
+	<p><font face="Verdana" size="2">Alternately you may use DevCon to install 
+	the sample driver for the OSR USB device:</font></p>
+	<ol>
+		<li><font face="Verdana" size="2">Copy the driver binary (WUDFOsrUsbDriver.dll) and the 
+		WUDFOsrUsbDriver.inf file to a directory on your test machine (for 
+		example c:\usbSample).</font></li>
+ 		<li>C<font size="2">opy the required coinstallers for this sample from c:\winddk\&lt;bld&gt;\redist to the 
+		same directory (for example c:\skeletonSample)</font></li>
+		</li>
+		<ol>
+			<li class="style1">w<font size="2">df\WUDFUpdate_01007.dll - the 
+			UMDF 1.7 coinstaller</font></li>
+			<li class="style1">w<font size="2">inusb\WinUsbCoinstaller.dll - the 
+			WinUsb coinstaller (required for USB support)</font></li>
+			<li class="style1">w<font size="2">df\WdfCoinstaller01007.dll - the 
+			KMDF 1.7 coinstaller (required by WinUsb)</font></li>
+		</ol>
+		<li><font face="Verdana" size="2">Attach the OSR USB-FX2 device to your 
+		computer.</font></li>
+		<li><font face="Verdana" size="2">At the &quot;Welcome to the Found New 
+		Hardware Wizard&quot; click Cancel.</font></li>
+		<li><font face="Verdana" size="2">Change to the directory containing the 
+		inf and binaries (for example <b>cd /d c:\usbSample</b>.)</font></li>
+		<li><font face="Verdana" size="2">Run devcon.exe as follows:<br>
+		<br>
+		</font><font size="2" face="Courier New">devcon.exe update 
+		WUDFOsrUsbDriver.inf &quot;USB\Vid_0547&amp;Pid_1002&quot;</font><font face="Verdana" size="2">
+		<br>
+		(note: the quotes are important because of the &amp;)<br>
+		<br>
+		DevCon can be found in the tools directory of your WDK enlistment (for 
+		example: d:\winddk\5048\tools\devcon\i386\devcon.exe.)</font></li>
+	</ol>
+	<p><font face="Verdana" size="2">To update the sample driver after making 
+	any changes:</font></p>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<font face="Verdana">
+		<li>Increment the version number found in the INF.&nbsp; While this is 
+		not strictly necessary, it will help ensure PnP selects your new driver 
+		as a better match for the device.</li>
+		<li><font face="Verdana" size="2">Copy the driver binary and the 
+		WUDFOsrUsbDriver.inf file to a directory on your test machine (for 
+		example c:\usbSample).</font></li>
+        <li>Follow instruction 4 above</li>
+        <li>Follow instruction 5 above, using the update command rather than the install command</li>
+		</font>
+	</ol>
+</blockquote>
+		<h2>
+<font face="Verdana" size="2">CODE TOUR</font></h2>
+		<table border="1" width="75%" id="table1">
+			<tr>
+				<td width="161"><font face="Verdana" size="2">File Manifest</font></td>
+				<td width="766"><font face="Verdana" size="2">File Description</font></td>
+			</tr>
+			<tr>
+				<td width="161"><font face="Verdana" size="2">Usb.htm</font></td>
+				<td width="766"><font face="Verdana" size="2">Documentation for this sample (this file).</font></td>
+			</tr>
+            <tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">comsup.cpp &amp; comsup.h</font></td>
+		<td width="604"><font face="Verdana" size="2">COM Support code - 
+		specifically base classes which provide implementations for the standard 
+		COM interfaces IUnknown and IClassFactory which are used throughout the 
+		sample.</font><p>
+		<font face="Verdana" size="2">The implementation of IClassFactory is designed to create instances of 
+		the CMyDriver class. If you should change the name of your base driver 
+		class, you would also need to modify this file.</font></td>
+								</font>
+			</tr>
+			<tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">dllsup.cpp</font></td>
+		<td width="604"><font face="Verdana" size="2">DLL Support code - 
+		provides the DLL's entry point as well as the single required export 
+		(DllGetClassObject).</font><p><font face="Verdana" size="2">These depend on comsup.cpp to perform the necessary 
+		class creation.</font></td>
+								</font>
+			</tr>
+			<tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">exports.def</font></td>
+		<td width="604"><font face="Verdana" size="2">This file lists the 
+		functions that the driver DLL exports.</font></td>
+								</font>
+			</tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">internal.h</font></td>
+                <td width="766"><font face="Verdana" size="2">This is the main header file for the sample driver.
+                </font> </td>
+            </tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">driver.cpp &amp; driver.h</font></td>
+                <td width="766"><font face="Verdana" size="2">Definition and implementation of the driver callback class 
+                        (CMyDriver) for the sample. </font> </td>
+            </tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">device.cpp &amp; driver.h</font></td>
+                <td width="766"><font face="Verdana" size="2">Definition and implementation of the device callback class 
+                        (CMyDriver) for the sample.</font></td>
+            </tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">queue.cpp &amp; queue.h</font></td>
+                <td width="766"><font face="Verdana" size="2">Definition and implementation of the queue callback class 
+                        (CMyQueue) for the sample. This file also contains the code that invokes the USB I/O target. </font></td>
+            </tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">osrusbdriver.rc</font></td>
+                <td width="766"><font face="Verdana" size="2">This file defines resource information for the sample driver.</font></td>
+                            </tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">sources</font></td>
+                <td width="766"><font face="Verdana" size="2">Generic file that lists source files and all the build options</font></td>
+                            </tr>
+            <tr>
+                <td width="161"><font face="Verdana" size="2">WUDFOsrUsbDriver.inf</font></td>
+                <td width="766"><font face="Verdana" size="2">Sample INF for installing the sample driver to control the 
+                        OSR USB-FX2 Learning Kit device</font></td>
+                            </tr>
+            <tr>
+                <td width="161"><font size="2">osrusbdriver.ctl</font></td>
+                <td width="766"><font size="2">This file lists the WPP trace 
+				control GUID(s) for the sample driver. This file can be used 
+				with the tracelog command's -guid flag to enable the collection 
+				of these trace events within an established trace session.</font><p>
+				<font size="2">These GUIDs must remain in sync with the trace 
+				control guids defined in internal.h</font></td>
+                            </tr>
+		</table>
+<p align="center"><font face="Verdana" size="2"><a href="#top">Top of Page</a></font></p>
+<p><font face="Verdana" size="2">© 2005 Microsoft Corporation</font></p>
+<p>&nbsp;</p>
+</body>
+
+</html>
+

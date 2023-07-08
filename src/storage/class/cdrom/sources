@@ -1,0 +1,37 @@
+TARGETNAME=cdrom
+TARGETTYPE=DRIVER
+TARGET_DESTINATION=retail
+
+TARGETLIBS=\
+        $(DDK_LIB_PATH)\classpnp.lib \
+        $(DDK_LIB_PATH)\ntoskrnl.lib
+
+# Uncomment this to allow CDROM to "pretend" that
+# AACS ioctls are actually succeeding.
+# C_DEFINES=$(C_DEFINES) -DENABLE_AACS_TESTING
+
+# Comment this to disable RPC0 support.
+# Uncomment this to re-enable RPC0 support.
+# (pre-1999 DVD CSS support, data disc support unchanged)
+# C_DEFINES=$(C_DEFINES) -DENABLE_RPC0
+
+SOURCES=\
+	guid.c         \
+	aacs.c         \
+        data.c         \
+        cdrom.c        \
+        ioctl.c        \
+        mmc.c          \
+	sec.c          \
+        sense.c        \
+        scsicdrm.rc    
+
+
+!if $(FREEBUILD)
+RUN_WPP=$(SOURCES) -km -func:TracePrint((LEVEL,FLAGS,MSG,...))
+!else
+C_DEFINES=$(C_DEFINES) -DDEBUG_USE_KDPRINT
+!endif
+
+LOC_DRIVER_INFS= \
+    cdrom.inf

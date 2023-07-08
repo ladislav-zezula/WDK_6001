@@ -1,0 +1,17 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Description: 
+
+	This rule verifies that ExFreePool is not called with NULL
+	argument.
+*/
+
+#include "ntddk_slic.h"
+
+ExFreePool.entry 
+{
+    if ($1 == NULL) {
+        abort "The driver is passing NULL to ExFreePool, which can cause a bugcheck.";
+    }
+}

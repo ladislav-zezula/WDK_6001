@@ -1,0 +1,37 @@
+<instrumentationManifest xsi:schemaLocation="http://schemas.microsoft.com/win/2004/08/events eventman.xsd" xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events" xmlns="http://schemas.microsoft.com/win/2004/08/events" xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <instrumentation>
+        <events>
+            <provider name="Sample Driver" guid="{b5a0bda9-50fe-4d0e-a83d-bae3f58c94d6}" symbol="DriverControlGuid"
+                      resourceFileName="%SystemDrive%\ETWDriverSample\Eventdrv.sys" messageFileName="%SystemDrive%\ETWDriverSample\Eventdrv.sys">
+                <channels>
+                    <importChannel name="System" chid="SYSTEM" />
+                </channels>
+                <templates>
+                    <template tid="tid_load_template">
+                        <data name="DeviceNameLength" inType="win:UInt16" outType="xs:unsignedShort" />
+                        <data name="name" inType="win:UnicodeString" outType="xs:string" />
+			<data name="Status" inType="win:UInt32" outType="xs:unsignedInt" />
+                    </template>
+                    <template tid="tid_unload_template">
+                        <data name="DeviceObjPtr" inType="win:Pointer" outType="win:HexInt64" />
+                    </template>
+                </templates>
+                <events>
+                    <event value="1" symbol="StartEvent" template="tid_load_template" opcode="win:Start" channel="SYSTEM" level="win:Informational" message="$(string.StartEvent.EventMessage)" />
+                    <event value="2" symbol="SampleEventA" opcode="win:Info" channel="SYSTEM" level="win:Informational" message="$(string.SampleEventA.EventMessage)" />
+                    <event value="3" symbol="UnloadEvent" opcode="win:Stop" channel="SYSTEM" level="win:Informational" template="tid_unload_template" message="$(string.UnloadEvent.EventMessage)" />
+                </events>
+            </provider>
+        </events>
+    </instrumentation>
+    <localization xmlns="http://schemas.microsoft.com/win/2004/08/events">
+        <resources culture="en-US">
+            <stringTable>
+                <string id="StartEvent.EventMessage" value="Driver Loaded" />
+                <string id="SampleEventA.EventMessage" value="IRP A Occurred" />
+                <string id="UnloadEvent.EventMessage" value="Driver Unloaded" />
+            </stringTable>
+        </resources>
+    </localization>
+</instrumentationManifest>
+

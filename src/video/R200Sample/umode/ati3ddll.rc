@@ -1,0 +1,128 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+#include "resource.h"
+#include "..\..\inc\asic_reg\drivercalls.h"
+#include "..\..\2d\ntx\r6\inc\ver_nt2d.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#define ATI_D3DLOADER_API_VERSION  D3D_LOADER_API_VERSION_STR
+#define ATI_COPYRIGHTS_INFO        "Copyright (C) 1998-2003 ATI Technologies Inc.\0"
+#define ATI_TRADEMARK_INFO         "Radeon (TM) is a Trademark of ATI Technologies Inc.\0"
+#define ATI_SPECIAL_BUILD_INFO     "DevStudio Build\0"
+#define ATI_COMPANY_NAME           "ATI Technologies Inc. \0"
+#define ATI_NULL_CHAR              " \0"
+
+#define ATI_D3D_BUILD_VERSION      R200_VER_PRODUCTVERSION_STR
+#define ATI_FILE_VERSION           R200_VER_PRODUCTVERSION_NUM
+
+#ifdef R200
+
+#define ATI_D3D_BINARY_NAME "r200umd.dll\0"
+#define ATI_DESCRIPTION  "Radeon (R200 Family) Longhorn DirectDraw/Direct3D Universal Driver\0"
+#define ATI_PRODUCTNAME  "ATI Technologies Inc. Radeon DirectX Universal Driver\0"
+
+#endif // R200
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION  ATI_FILE_VERSION
+ PRODUCTVERSION ATI_FILE_VERSION
+ FILEFLAGSMASK 0x0L
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName",      ATI_COMPANY_NAME
+            VALUE "Description",      ATI_DESCRIPTION
+            VALUE "FileDescription",  ATI_D3D_BINARY_NAME
+            VALUE "FileVersion",      ATI_D3D_BUILD_VERSION
+            VALUE "InternalName",     ATI_D3D_BINARY_NAME
+            VALUE "LegalCopyright",   ATI_COPYRIGHTS_INFO
+            VALUE "LegalTrademarks",  ATI_TRADEMARK_INFO
+            VALUE "OriginalFilename", ATI_D3D_BINARY_NAME
+            VALUE "PrivateBuild",     ATI_D3DLOADER_API_VERSION
+            VALUE "ProductName",      ATI_PRODUCTNAME
+            VALUE "ProductVersion",   ATI_D3D_BUILD_VERSION
+            VALUE "SpecialBuild",     ATI_SPECIAL_BUILD_INFO
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#include ""afxres.h""\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+

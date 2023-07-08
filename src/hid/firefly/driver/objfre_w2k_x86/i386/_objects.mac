@@ -1,0 +1,21 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\driver.obj \
+ $(OBJ_PATH)\$O\device.obj \
+ $(OBJ_PATH)\$O\wmi.obj \
+ $(OBJ_PATH)\$O\vfeature.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\firefly.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\hid\firefly\driver
+MAKEDIR_RELATIVE_TO_BASEDIR=src\hid\firefly\driver
+OBJ_PATH=e:\sdk\wdk_6001\src\hid\firefly\driver
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

@@ -1,0 +1,26 @@
+DIRS= \
+     1394 \
+     audio \
+     AVStream \
+     bth \
+     filesys \
+     general \
+     hid \
+     input \
+     ir \
+     kernel \
+     kmdf \
+     mmedia \
+     network \
+     print \
+     setup \
+     smartcrd \
+     storage \
+     Swtuner \
+     Test \
+     umdf \
+     usb \
+     video \
+     videocap \
+     wia \
+     wmi

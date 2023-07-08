@@ -1,0 +1,23 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\1394.obj \
+ $(OBJ_PATH)\$O\async.obj \
+ $(OBJ_PATH)\$O\debug.obj \
+ $(OBJ_PATH)\$O\isoch.obj \
+ $(OBJ_PATH)\$O\util.obj \
+ $(OBJ_PATH)\$O\win1394.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\win1394.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\1394\ui\win1394
+MAKEDIR_RELATIVE_TO_BASEDIR=src\1394\ui\win1394
+OBJ_PATH=e:\sdk\wdk_6001\src\1394\ui\win1394
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

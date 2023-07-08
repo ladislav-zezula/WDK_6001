@@ -1,0 +1,14 @@
+TARGETNAME=examc
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\mcd.lib
+
+INCLUDES=..\inc;..\..\inc;..\..\..\inc
+
+SOURCES=exabyte.c \
+        wmi.c     \
+        exabyte.rc
+
+
+TARGET_DESTINATION=retail
+

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Supplemental models for standard functions -->
+<Models>
+
+  <Function name="free">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsValidPointer value="always"/>
+      </PreConditions>
+      <PostConditions>
+	<IsReleased value="always"/>
+        <IsValidPointer value="never"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PreConditions>
+	<IsWritableString value="never"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="HeapFree">
+    <External>
+      <ExternalID type="param" index="2"/>
+      <PostConditions>
+        <IsReleased value="always"/>
+        <IsValidPointer value="never"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="_freea">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+	<IsReleased value="always"/>
+        <IsValidPointer value="never"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PreConditions>
+	<IsWritableString value="never"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="MIDL_user_free">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsValidPointer value="always"/>
+      </PreConditions>
+      <PostConditions>
+	<IsReleased value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PreConditions>
+	<IsWritableString value="never"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="CoTaskMemFree">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsValidPointer value="always"/>
+      </PreConditions>
+      <PostConditions>
+	    <IsReleased value="always"/>
+        <IsValidPointer value="never"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PreConditions>
+	<IsWritableString value="never"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="MNLS_lstrlenW">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsWritableString value="never"/>
+        <IsNullOk value="never"/>
+        <RequiresZeroTermination value="always"/>
+        <IsValidPointer value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+    <External>
+      <ExternalID type="retval"/>
+      <PostConditions>
+        <MustBeChecked value="always"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="malloc">
+    <External>
+      <ExternalID type="retval"/>
+      <PostConditions>
+        <IsSetToNull value="sometimes"/>
+        <NeedsRelease value="sometimes"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="realloc">
+    <External>
+      <ExternalID type="retval"/>
+      <PostConditions>
+        <IsSetToNull value="sometimes"/>
+        <NeedsRelease value="sometimes"/>
+        <MustBeChecked value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <IsAliased value="never"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="_snprintf">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="2"/>
+      <PreConditions>
+        <IsFormatString value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="_vsnprintf">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="2"/>
+      <PreConditions>
+        <IsFormatString value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="_snwprintf">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="2"/>
+      <PreConditions>
+        <IsFormatString value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="_vsnwprintf">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="2"/>
+      <PreConditions>
+        <IsFormatString value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+
+  <Function name="_mbsncpy">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="scanf">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsFormatString value="always" style="scanf"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="fscanf">
+    <External>
+      <ExternalID type="param" index="1"/>
+      <PreConditions>
+        <IsFormatString value="always" style="scanf"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="sscanf">
+    <External>
+      <ExternalID type="param" index="1"/>
+      <PreConditions>
+        <IsFormatString value="always" style="scanf"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="GetModuleFileNameW">
+    <External>
+      <ExternalID type="param" index="1"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="GetModuleFileNameA">
+    <External>
+      <ExternalID type="param" index="1"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="_mbsnbcpy">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsNullOk value="never"/>
+        <IsMinSize value="always">
+          <ValueOfExternal>
+            <Multiplier value="1"/>
+            <ExternalID type="param" index="2"/>
+          </ValueOfExternal>
+        </IsMinSize>
+      </PreConditions>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="1"/>
+      <PreConditions>
+        <IsNullOk value="never"/>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+    <External>
+      <ExternalID type="param" index="2"/>
+      <PreConditions>
+        <MustBeTrusted value="always"/>
+      </PreConditions>
+      <PostConditions/>
+    </External>
+  </Function>
+
+  <Function name="WinExec">
+    <External>
+      <ExternalID type="retval"/>
+      <PreConditions>
+        <preferredFunction stringvalue="CreateProcess, Deprecated. See MSDN for details"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="OemToCharA">
+    <External>
+      <ExternalID type="retval"/>
+      <PreConditions>
+        <preferredFunction stringvalue="OemToCharBuffA, Does not validate buffer size"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="OemToCharW">
+    <External>
+      <ExternalID type="retval"/>
+      <PreConditions>
+        <preferredFunction stringvalue="OemToCharBuffW, Does not validate buffer size"/>
+      </PreConditions>
+    </External>
+  </Function>
+
+  <Function name="strncpy">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+  <Function name="wcsncpy">
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <RequiresZeroTermination value="sometimes"/>
+        <IsValidPointer value="always"/>
+      </PostConditions>
+    </External>
+  </Function>
+
+<!--
+__in : __pre __valid (=isNullOK=never, ShouldBeInitialized=always) __pre __deref __readonly
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsNullOk value="never"/>
+        <ShouldBeInitialized value="always"/>
+      </PreConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PreConditions>
+        <IsWritableString value="never"/>
+      </PreConditions>
+    </External>
+
+__out : __ecount(1) __post __valid (=IsValidPointer=always IsSetToNull=naver"(deref=1) __refparam (== __deref __notreadonly)
+__ecount(size) __notnull __elem_writableTo(size)
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PostConditions>
+        <IsNullOk value="never"/>
+        <WritableTo value="always">
+          <SizeSpec kind="elementcount" qualifier="post">
+			<NumberSpec kind="int" longvalue="1"/>
+          </SizeSpec>
+        </WritableTo>				
+      </PostConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PostConditions>
+        <IsWritableString value="always"/>
+        <IsSetToNull value="never"/>
+      </PostConditions>
+    </External>
+
+__inout :  __pre __valid __post __valid __refparam
+    <External>
+      <ExternalID type="param" index="0"/>
+      <PreConditions>
+        <IsNullOk value="never"/>
+        <ShouldBeInitialized value="always"/>
+      </PreConditions>
+    </External>
+    <External>
+      <ExternalID type="param" index="0" deref="1"/>
+      <PostConditions>
+        <IsWritableString value="always"/>
+        <IsSetToNull value="never"/>
+      </PostConditions>
+    </External>
+-->
+</Models>

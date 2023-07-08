@@ -1,0 +1,13 @@
+TARGETNAME=miniqic
+TARGETTYPE=MINIPORT
+
+TARGETLIBS=$(DDK_LIB_PATH)\tape.lib
+
+INCLUDES=..\inc
+
+SOURCES=miniqic.c \
+        miniqic.rc
+
+
+TARGET_DESTINATION=retail
+

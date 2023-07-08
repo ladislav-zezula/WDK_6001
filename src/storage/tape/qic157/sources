@@ -1,0 +1,18 @@
+TARGETNAME=qic157
+TARGETTYPE=MINIPORT
+
+TARGETLIBS=$(DDK_LIB_PATH)\tape.lib
+
+!IF $(ALPHA)
+TARGETLIBS=$(TARGETLIBS) $(SDK_LIB_PATH)\libcntpr.lib
+!ENDIF
+
+INCLUDES=..\inc
+
+SOURCES=qic157.c \
+        wmi.c    \
+        qic157.rc
+
+
+TARGET_DESTINATION=retail
+

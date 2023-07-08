@@ -1,0 +1,14 @@
+!INCLUDE ..\SOURCES.INC
+
+TARGETNAME=r200umd
+TARGETPATH=..\..\lib\obj$(BUILD_ALT_DIR)
+
+!if $(FREEBUILD)
+LINKLIBS=$(LINKLIBS)    \
+    ..\..\lib\*\free\r2umdd.lib \
+    ..\..\lib\*\free\r2um.lib
+!else
+LINKLIBS=$(LINKLIBS)    \
+    ..\..\lib\*\chk\r2umdd.lib \
+    ..\..\lib\*\chk\r2um.lib
+!endif

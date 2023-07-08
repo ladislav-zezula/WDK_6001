@@ -1,0 +1,1452 @@
+<html>
+
+<head>
+<!-- saved from url=(0014)about:internet -->
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<base target="_self">
+
+<title>Windows Driver Kit Installation Guide</title>
+
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-1610611985 1107304683 0 0 159 0;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-1610611985 1073750139 0 0 159 0;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-520082689 -1073717157 41 0 66047 0;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-1593833729 1073750107 16 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
+h1
+	{mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-link:"Heading 1 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	font-weight:bold;}
+h2
+	{mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-link:"Heading 2 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:14.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	font-weight:bold;
+	font-style:italic;}
+h3
+	{mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-link:"Heading 3 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:13.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	font-weight:bold;}
+p.MsoCommentText, li.MsoCommentText, div.MsoCommentText
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Comment Text Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
+span.MsoCommentReference
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-ansi-font-size:8.0pt;
+	mso-bidi-font-size:8.0pt;}
+a:link, span.MsoHyperlink
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
+p.MsoCommentSubject, li.MsoCommentSubject, div.MsoCommentSubject
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Comment Subject Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Calibri","sans-serif";
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;
+	font-weight:bold;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Balloon Text Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Heading 1";
+	mso-ansi-font-size:14.0pt;
+	mso-bidi-font-size:14.0pt;
+	font-family:"Cambria","serif";
+	mso-ascii-font-family:Cambria;
+	mso-ascii-theme-font:major-latin;
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:major-fareast;
+	mso-hansi-font-family:Cambria;
+	mso-hansi-theme-font:major-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:major-bidi;
+	color:#365F91;
+	mso-themecolor:accent1;
+	mso-themeshade:191;
+	font-weight:bold;}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-noshow:yes;
+	mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Heading 2";
+	mso-ansi-font-size:13.0pt;
+	mso-bidi-font-size:13.0pt;
+	font-family:"Cambria","serif";
+	mso-ascii-font-family:Cambria;
+	mso-ascii-theme-font:major-latin;
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:major-fareast;
+	mso-hansi-font-family:Cambria;
+	mso-hansi-theme-font:major-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:major-bidi;
+	color:#4F81BD;
+	mso-themecolor:accent1;
+	font-weight:bold;}
+span.Heading3Char
+	{mso-style-name:"Heading 3 Char";
+	mso-style-noshow:yes;
+	mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Heading 3";
+	mso-ansi-font-size:12.0pt;
+	mso-bidi-font-size:12.0pt;
+	font-family:"Cambria","serif";
+	mso-ascii-font-family:Cambria;
+	mso-ascii-theme-font:major-latin;
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:major-fareast;
+	mso-hansi-font-family:Cambria;
+	mso-hansi-theme-font:major-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:major-bidi;
+	color:#4F81BD;
+	mso-themecolor:accent1;
+	font-weight:bold;}
+span.CommentTextChar
+	{mso-style-name:"Comment Text Char";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Comment Text";
+	font-family:"Times New Roman","serif";
+	mso-ascii-font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";}
+span.CommentSubjectChar
+	{mso-style-name:"Comment Subject Char";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-parent:"Comment Text Char";
+	mso-style-link:"Comment Subject";
+	font-family:"Times New Roman","serif";
+	mso-ascii-font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-hansi-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Balloon Text";
+	mso-ansi-font-size:8.0pt;
+	mso-bidi-font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";
+	mso-ascii-font-family:Tahoma;
+	mso-fareast-font-family:"Times New Roman";
+	mso-fareast-theme-font:minor-fareast;
+	mso-hansi-font-family:Tahoma;
+	mso-bidi-font-family:Tahoma;}
+p.lb1, li.lb1, div.lb1
+	{mso-style-name:lb1;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	margin-top:0in;
+	margin-right:5.75pt;
+	margin-bottom:3.0pt;
+	margin-left:.25in;
+	text-indent:-12.0pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;}
+p.lp1, li.lp1, div.lp1
+	{mso-style-name:lp1;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	margin-top:0in;
+	margin-right:5.75pt;
+	margin-bottom:3.0pt;
+	margin-left:.25in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;}
+p.text, li.text, div.text
+	{mso-style-name:text;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	line-height:12.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	color:black;}
+p.th, li.th, div.th
+	{mso-style-name:th;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	margin-top:0in;
+	margin-right:5.75pt;
+	margin-bottom:3.0pt;
+	margin-left:5.75pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	font-weight:bold;}
+p.tp, li.tp, div.tp
+	{mso-style-name:tp;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	margin-top:0in;
+	margin-right:5.75pt;
+	margin-bottom:3.0pt;
+	margin-left:5.75pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:10.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;}
+p.tes, li.tes, div.tes
+	{mso-style-name:tes;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	margin-top:0in;
+	margin-right:5.75pt;
+	margin-bottom:0in;
+	margin-left:5.75pt;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	punctuation-wrap:simple;
+	text-autospace:none;
+	font-size:6.0pt;
+	font-family:"Arial","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;}
+p.normalverdana, li.normalverdana, div.normalverdana
+	{mso-style-name:normalverdana;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Verdana","sans-serif";
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
+span.bulletedlist1char
+	{mso-style-name:bulletedlist1char;
+	mso-style-unhide:no;
+	font-family:"Arial","sans-serif";
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;}
+span.hhyperlink
+	{mso-style-name:hhyperlink;
+	mso-style-unhide:no;
+	color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+span.emailstyle33
+	{mso-style-name:emailstyle33;
+	mso-style-unhide:no;
+	font-family:"Arial","sans-serif";
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	color:windowtext;}
+span.heading1char0
+	{mso-style-name:heading1char;
+	mso-style-unhide:no;
+	font-family:"Arial","sans-serif";
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	font-weight:bold;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-size:10.0pt;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;}
+@page Section1
+	{size:11.0in 11.0in;
+	margin:1.0in 1.5in 1.0in 1.5in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:835919974;
+	mso-list-template-ids:-1926176124;}
+@list l0:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l0:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1
+	{mso-list-id:953904506;
+	mso-list-template-ids:1651176844;}
+@list l1:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2
+	{mso-list-id:1180701611;
+	mso-list-template-ids:-1926176124;}
+@list l2:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l2:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3
+	{mso-list-id:1512406569;
+	mso-list-template-ids:1496076602;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l3:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l3:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4
+	{mso-list-id:1654604100;
+	mso-list-template-ids:165834028;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l4:level2
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level3
+	{mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level4
+	{mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level5
+	{mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level6
+	{mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level7
+	{mso-level-tab-stop:3.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level8
+	{mso-level-tab-stop:4.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4:level9
+	{mso-level-tab-stop:4.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
+</style>
+<![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="3074"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%"
+ style='width:100.0%;border-collapse:collapse;mso-yfti-tbllook:1184;mso-padding-alt:
+ 0in 0in 0in 0in'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;height:.2in'>
+  <td width="31%" rowspan=2 valign=top style='width:31.0%;padding:0in 0in 0in 0in;
+  height:.2in'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  line-height:115%;font-family:"Verdana","sans-serif";mso-no-proof:yes'><img
+  width=225 height=59 id="_x0000_i1029"
+  src="help\img\image001.png"></span><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif";
+  mso-fareast-font-family:"Times New Roman";mso-fareast-theme-font:minor-fareast'><o:p></o:p></span></p>
+  </td>
+  <td width="1%" rowspan=2 valign=top style='width:1.78%;padding:0in 0in 0in 0in;
+  height:.2in'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='mso-no-proof:
+  yes'><img width=18 height=20 id="_x0000_i1028"
+  src="help\img\image002.png"></span><span
+  style='font-size:12.0pt;line-height:115%;mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast'><o:p></o:p></span></p>
+  </td>
+  <td width="8%" valign=top style='width:8.04%;background:black;padding:0in 0in 0in 0in;
+  height:.2in'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'>&nbsp;<span style='font-size:
+  12.0pt;line-height:115%;mso-fareast-font-family:"Times New Roman";mso-fareast-theme-font:
+  minor-fareast'><o:p></o:p></span></p>
+  </td>
+  <td width="59%" style='width:59.0%;background:black;padding:0in 0in 0in 0in;
+  height:.2in'>
+  <p class=MsoNormal align=right style='margin-bottom:2.0pt;text-align:right'><b><span
+  style='font-size:7.0pt;line-height:115%;font-family:"Verdana","sans-serif";
+  color:white'><a href="http://support.microsoft.com/"><span style='color:white;
+  text-decoration:none;text-underline:none'>Links to the Web: Support</span></a>
+  | <a href="http://search.microsoft.com/"><span style='color:white;text-decoration:
+  none;text-underline:none'>Search</span></a> | <a
+  href="http://www.msdn.microsoft.com/"><span style='color:white;text-decoration:
+  none;text-underline:none'>MSDN</span></a> | <a
+  href="http://www.microsoft.com/whdc/devtools/ddk/default.mspx"><span
+  style='color:white;text-decoration:none;text-underline:none'>Windows Driver
+  Kits</span></a>&nbsp;</span></b><span style='font-size:12.0pt;line-height:
+  115%;mso-fareast-font-family:"Times New Roman";mso-fareast-theme-font:minor-fareast'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:1;height:22.1pt'>
+  <td width="8%" valign=top style='width:8.04%;padding:0in 0in 0in 0in;
+  height:22.1pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'>&nbsp;<span style='font-size:
+  12.0pt;line-height:115%;mso-fareast-font-family:"Times New Roman";mso-fareast-theme-font:
+  minor-fareast'><o:p></o:p></span></p>
+  </td>
+  <td width="59%" valign=top style='width:59.0%;padding:0in 0in 0in 0in;
+  height:22.1pt'>
+  <p class=MsoNormal align=right style='margin-bottom:2.0pt;text-align:right'><span
+  style='mso-no-proof:yes'><img border=0 width=112 height=40 id="_x0000_i1027"
+  src="help\img\image003.png"></span><span
+  style='font-size:12.0pt;line-height:115%;mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast'><o:p></o:p></span></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes;height:.2in'>
+  <td width="100%" colspan=4 style='width:100.0%;background:#336699;padding:
+  0in 0in 0in 0in;height:.2in'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  7.0pt;line-height:115%;font-family:"Verdana","sans-serif";color:white'>&nbsp;Quick
+  Links: <a
+  href="relnote.htm"><span
+  style='color:white;text-decoration:none;text-underline:none'>Release&nbsp;Notes</span></a>&nbsp;</span></b><span
+  style='font-size:12.0pt;line-height:115%;mso-fareast-font-family:"Times New Roman";
+  mso-fareast-theme-font:minor-fareast'><o:p></o:p></span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-size:14.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Windows&nbsp;Driver&nbsp;Kit Installation
+Guide </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>This document provides an overview of the Microsoft®
+Windows® Driver Kit (WDK) and provides essential installation information. Read
+this document to learn how to set up your computer(s) before installing any
+components.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Images displayed throughout these documents are for
+illustration purposes only, and may appear different. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Verdana","sans-serif"'>Table of
+Contents </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#LegalInfo">Legal Information</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#ReleaseNotes">Release Notes</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#Overview">Overview</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#Requirements">System Requirements</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#InstWdk">Install the Windows Driver Kit</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#VerifyWdkInst">Verify the WDK Build Environments
+Installed Correctly</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#InstDebugger">Install Debugger(s)</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#InstDsf">Install Device Simulation Framework
+(DSF)</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#SupplementalInfo">Supplemental WDK
+Information</a> </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><a href="#TechSupt">Technical Support for the WDK Build
+Environments</a> </span></p>
+
+<p class=MsoNormal><a name=LegalInfo><b><span style='font-family:"Verdana","sans-serif"'>Legal
+Information</span></b></a><b><span style='font-family:"Verdana","sans-serif"'> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>This document supports a commercial release of a
+software product. This document is provided for informational purposes only and
+Microsoft makes no warranties, either express or implied, in this
+document.&nbsp; Information in this document, including URL and other Internet
+Web site references, is subject to change without notice.&nbsp; The entire risk
+of the use or the results from the use of this document remains with the
+user.&nbsp; Unless otherwise noted, the example companies, organizations,
+products, domain names, e&#8209;mail addresses, logos, people, places, and
+events depicted herein are fictitious, and no association with any real
+company, organization, product, domain name, e&#8209;mail address, logo,
+person, place, or event is intended or should be inferred.&nbsp; Complying with
+all applicable copyright laws is the responsibility of the user.&nbsp; Without
+limiting the rights under copyright, no part of this document may be
+reproduced, stored in or introduced into a retrieval system, or transmitted in
+any form or by any means (electronic, mechanical, photocopying, recording, or
+otherwise), or for any purpose, without the express written permission of
+Microsoft Corporation. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Microsoft may have patents, patent applications,
+trademarks, copyrights, or other intellectual property rights covering subject
+matter in this document.&nbsp; Except as expressly provided in any written
+license agreement from Microsoft, the furnishing of this document does not give
+you any license to these patents, trademarks, copyrights, or other intellectual
+property.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>© 2008 Microsoft Corporation.&nbsp; All rights
+reserved.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Microsoft, MS&#8209;DOS, Windows, Windows NT, and
+Windows Server are either registered trademarks or trademarks of Microsoft
+Corporation in the United States and/or other countries.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>All other trademarks are property of their respective
+owners.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>To print out the End-user License Agreement open the <b>license.rtf</b>
+file in the WDK folder of the installation media or in the root directory where
+you installed the product. </span></p>
+
+<p class=MsoNormal><a name=ReleaseNotes><b><span style='font-family:"Verdana","sans-serif"'>Release
+Notes</span></b></a><b><span style='font-family:"Verdana","sans-serif"'> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Read the <a
+href="relnote.htm">release
+notes</a> for last&#8209;minute changes and additions to the WDK. The release
+notes provide late&#8209;breaking information, including last&#8209;minute
+changes to the WDK that could affect driver compatibility among different
+versions of the Windows operating systems. </span></p>
+
+<p class=MsoNormal><a name=Overview><b><span style='font-family:"Verdana","sans-serif"'>Overview</span></b></a><b><span
+style='font-family:"Verdana","sans-serif"'> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The WDK provides a platform on which to develop, compile
+and test drivers for Windows. To obtain a logo for your driver, use the WLK,
+available separately. The WDK provides driver&#8209;specific headers,
+libraries, sources, tools, and documentation for developing drivers that are
+compatible with the following operating systems: </span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;Server®&nbsp;2008
+</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;Vista™
+</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;Server®&nbsp;2003
+</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;XP
+</span></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;2000 </span></li>
+</ul>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The WDK build environments <u>do not support</u> the
+development of drivers for the following operating systems: </span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;Millennium&nbsp;Edition
+</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;98
+</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;95
+</span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Microsoft&nbsp;Windows&nbsp;NT&nbsp;4.0
+</span></p>
+
+
+<p class=MsoNormal><a name=Requirements><b><span style='font-family:"Verdana","sans-serif"'>System
+Requirements</span></b></a><b><span style='font-family:"Verdana","sans-serif"'>
+</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>You can install the WDK Build Environments when you run
+the WDK installer executable. </span></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=782 colspan=2 valign=top style='width:8.15in;border:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+  font-family:"Verdana","sans-serif"'>System Requirements for WDK Build
+  Environments </span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:1.75in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span style='font-family:"Verdana","sans-serif"'>&nbsp;</span></p>
+  </td>
+  <td width=614 valign=top style='width:6.4in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+  font-family:"Verdana","sans-serif"'>Minimum </span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:1.75in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=right style='text-align:right'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Processor</span></p>
+  </td>
+  <td width=614 valign=top style='width:6.4in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+  "Verdana","sans-serif"'>x86&#8209;based processor, 500 MHz or faster </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:1.75in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=right style='text-align:right'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>System
+  Memory</span></p>
+  </td>
+  <td width=614 valign=top style='width:6.4in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+  "Verdana","sans-serif"'>256 MB main memory </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:1.75in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=right style='text-align:right'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Free
+  Hard Disk Capacity</span></p>
+  </td>
+  <td width=614 valign=top style='width:6.4in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+  "Verdana","sans-serif"'>1750 MB to install, and 2700 MB (total) to compile
+  all samples </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:1.75in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=right style='text-align:right'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Optical
+  Storage</span></p>
+  </td>
+  <td width=614 valign=top style='width:6.4in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+  "Verdana","sans-serif"'>CD&#8209;ROM drive or DVD&#8209;ROM drive</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:1.75in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=right style='text-align:right'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Operating
+  System</span></p>
+  </td>
+  <td width=614 valign=top style='width:6.4in;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>1.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Windows&nbsp;Server&nbsp;2008,
+  or </span></p>
+  <p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>2.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Windows&nbsp;Vista
+  (all versions), or </span></p>
+  <p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>3.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Windows&nbsp;Server&nbsp;2003
+  with Service&nbsp;Pack&nbsp;1&nbsp;(SP1) or later, or </span></p>
+  <p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>4.<span
+  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span><span
+  style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Windows&nbsp;XP
+  with Service&nbsp;Pack&nbsp;2&nbsp;(SP2) or later</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>&nbsp;</span></p>
+
+<p class=MsoNormal><a name=InstWdk><b><span style='font-family:"Verdana","sans-serif"'>Install
+the Windows Driver Kit</span></b></a><b><span style='font-family:"Verdana","sans-serif"'>
+</span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Use<i> KitSetup.exe</i> to install the WDK Development
+Environment, WDK Documentation, the Kernel Debugger, and Device Simulation
+Framework. All prerequisite software,
+such as .NET version 2.0, and Windows Document Explorer will be installed as
+well. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><img border=0 width=811 height=611
+src="help\img\image004.png"></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The WDK installer, <i>KitSetup.exe</i>, allows you to
+select the components you want to install by providing checkboxes which you can
+check and uncheck. On first install, all checkboxes will be empty, indicating
+that none of the WDK components has yet been installed. By clicking on the
+checkboxes you can select and deselect components for installation. As you
+check and uncheck components, the top right window of the <i>KitSetup</i> dialog
+will reflect the pending installation tasks to be performed when you click OK. You
+can install the following components using <i>KitSetup</i>:</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Full Development Environment</span></b><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'> -
+Use this checkbox to control installation of the WDK Build Environments, Samples, Tools and Documentation. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Build Environments/Samples/Tools</span></b><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'> -
+Use this checkbox to control installation of the WDK Build Environments, Samples and Tools. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Help (Documentation Collection) </span></b><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>- Use
+this checkbox to control installation the documentation for the WDK. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Microsoft Windows Debuggers</span></b><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'> -
+Use this checkbox to control installation of the Debugging Tools for Windows. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Device Simulation Framework</span></b><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'> -
+Use this checkbox to control installation of the Device Simulation Framework
+(DSF). </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>You can click Undo at any time to revert back to the
+WDK installation state of the target machine at <i>KitSetup</i> invocation. The
+circle icons next to the check boxes indicate the installed/installation state
+of each component: </span></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Green icons indicate that a component is
+     installable, but not currently installed. </span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Blue icons indicate that a component is already
+     installed. </span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Grey icons indicate that a component cannot be
+     installed due to incompatibilities with the target machine’s hardware or
+     software configuration. </span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Red icons indicate that a component cannot be
+     installed due to an error in the setup information for the component. This
+     typically means that the distribution media has been damaged. </span></li>
+</ul>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Detailed component status is displayed in the bottom
+window of the <i>KitSetup</i> dialog by clicking on the component name in the
+upper right <i>KitSetup</i> window.</span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Selecting the Help button displays this help document, <i>install.htm</i>.
+Click Cancel to exit <i>KitSetup</i> without performing any pending setup
+tasks, and the state of the target machine will remain unchanged. Click OK to
+continue with the installation. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Verdana","sans-serif"'>Installation
+Location Dialog </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The Installation Dialog displays the default
+installation location for the WDK. You may type in a different location, however, the path should not have
+any spaces. You can cancel this dialog and
+return to the <i>KitSetup</i> dialog at any time by clicking Cancel. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><img border=0 width=481 height=385
+src="help\img\image005.png"></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>After you click OK installation continues to the <i>End-User-License-Agreement</i>
+dialog. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Verdana","sans-serif"'>End-User-License-Agreement
+(EULA) Dialog </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>In order to continue WDK Installation you must read and
+agree to the end user license agreement displayed in the EULA dialog. To agree,
+read the entire agreement by scrolling the text all the way to the bottom of
+the document, click the “I Agree” checkbox and click OK. You will not be able
+to click OK until you have read to the end the EULA and checked “I Agree”
+checkbox. You can select the Cancel button at any time to return to the main <i>KitSetup</i>
+dialog. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><img border=0 width=711 height=512
+src="help\img\image006.png"></span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>After you click OK installation continues to the <i>KitSetup
+Progress</i> dialog. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Verdana","sans-serif"'>KitSetup
+Progress Dialog </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The <i>KitSetup</i> Progress dialog shows the list of
+components being installed, and also displays the installation progress. The
+top window shows each component that has been installed as well as the
+component currently being installed. If there is an error with installing a
+component, that status is also shown. The top progress bar shows the progress
+of the current component being installed. The bottom progress bar shows the
+overall WDK installation progress. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>You can click Cancel to undo the installation process,
+which uninstalls any components just installed, exits the Installation Progress
+Dialog, and returns you to the <i>KitSetup</i> Dialog. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The Finish button becomes active only after all
+selected components have been installed. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'><img border=0 width=481 height=385
+src="help\img\image007.png"></span></p>
+
+<p class=MsoNormal><a name=VerifyWdkInst><b><span style='font-family:"Verdana","sans-serif"'>Verify
+the WDK Build Environments Installed Correctly</span></b></a><b><span
+style='font-family:"Verdana","sans-serif"'> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Verify the installation succeeded. </span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>Note</span></b><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'>: The default installation
+path is </span><i><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>x:\WinDDK\&lt;BldNum&gt;</span></i><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>.
+The icons are located at </span><i><span style='font-size:10.0pt;line-height:
+115%;font-family:"Courier New"'>Programs\Windows Driver Kits\Build Number\</span></i><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>.</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>To verify that the WDK Build Environments installed
+successfully </span></b></p>
+
+<ol style='margin-top:0in' start=1 type=1>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Click <b>Start</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>All Programs</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>Windows Driver Kits</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>&lt;build#&gt;</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>Build Environments</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>Windows Vista and Windows Server 2008</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>If you are running Windows Vista, right&#8209;click
+     the <b>Windows Vista and Windows Server 2008 Checked x86 Build Environment</b>
+     menu item and click <b>Run as administrator</b>. Otherwise, click <b>Windows
+     Vista and Windows Server 2008 Checked x86 Build Environment</b>. </span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>At the command prompt, type </span><b><span
+     style='font-size:10.0pt;line-height:115%;font-family:"Courier New"'>build
+     -cZ</span></b><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>. </span></li>
+</ol>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>This build command compiles and links the complete set
+of installed sources. The build process can take more than 30 minutes to
+complete, depending on the WDK components installed and the system on which the
+build is being performed. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The build command should complete with no errors and no
+warnings. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The WDK installation process copies the release notes
+file from the installation media to the root directory of the WDK installation.
+</span></p>
+
+<p class=MsoNormal><b><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'>To read the WDK Release Notes after you
+install the WDK</span></b></p>
+
+<ol style='margin-top:0in' start=1 type=1>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Click <b>Start</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>All Programs</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>Windows Driver Kits</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>&lt;build#&gt;</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Point to <b>Help</b>.</span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>Click <b>Release Notes</b>. </span></li>
+</ol>
+
+<p class=MsoNormal><a name=InstDebugger><b><span style='font-family:"Verdana","sans-serif"'>Install
+Debugger(s)</span></b></a><b><span style='font-family:"Verdana","sans-serif"'> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The Debugging Tools for Windows package features
+WinDbg, a powerful debugger with a graphical interface that can debug both user&#8209;mode
+and kernel&#8209;mode code. This package also includes the debuggers KD, NTSD,
+CDB, and many additional tools. The documentation in this package describes the
+use of these debuggers and includes tips for user&#8209;mode and kernel&#8209;mode
+debugging. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Debugging Tools for Windows is available in 32&#8209;bit
+and 64&#8209;bit versions. The 32&#8209;bit version is appropriate for most
+users. However, if you want to debug an application on a processor that is
+based on 64 bits, you should select the 64&#8209;bit version. The 64&#8209;bit
+version can be installed only on 64&#8209;bit versions of the Windows operating
+system. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>To obtain the most current version of Debugging Tools
+for Windows, see <a href="http://go.microsoft.com/fwlink/?LinkID=8708">Microsoft
+Debugging Tools</a>. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>If you cannot install the most recent version of the
+Debugging Tools for Windows from the Internet, you can install the debugger
+that is appropriate for your platform: </span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>For
+x86&#8209;based platforms, run </span><i><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'>Setup_x86.exe</span></i><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>
+from the </span><b><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Debuggers</span></b><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'> </span><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>folder
+of the installation media. </span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>For
+IA64&#8209;based platforms, run </span><i><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'>Setup_ia64.exe</span></i><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>
+from the </span><b><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Debuggers</span></b><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'> </span><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>folder
+of the installation media. </span></p>
+
+<p class=MsoNormal style='margin-left:.5in;text-indent:-.25in'><span
+style='font-size:10.0pt;line-height:115%;font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>For
+AMD86&#8209;based platforms, run </span><i><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'>Setup_amd64.exe</span></i><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>
+from the </span><b><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Debuggers</span></b><span style='font-size:10.0pt;
+line-height:115%;font-family:"Verdana","sans-serif"'> </span><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>folder
+of the installation media. </span></p>
+
+<p class=MsoNormal><a name=InstDsf><b><span style='font-family:"Verdana","sans-serif"'>Install
+Device Simulation Framework (DSF)</span></b></a><b><span style='font-family:
+"Verdana","sans-serif"'> </span></b></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>The Device Simulation Framework for USB Devices
+provides an architecture and programming framework to simulate USB devices in
+software. For the most up-to-date information about DSF installation, see "<span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'><a
+     href="http://go.microsoft.com/fwlink/?LinkID=127771&clcid=0x409">Installing DSF</a></span>" on MSDN</p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>For more information about DSF, see "<span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'><a
+     href="http://go.microsoft.com/fwlink/?LinkID=127773&clcid=0x409">Device Simulation Framework for USB Devices</a></span>" on MSDN </span></p>
+
+<p class=MsoNormal><a name=SupplementalInfo><b><span style='font-family:"Verdana","sans-serif"'>Supplemental
+WDK Information</span></b></a><b><span style='font-family:"Verdana","sans-serif"'>
+</span></b></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'><a
+     href="http://go.microsoft.com/fwlink/?LinkID=8703">Windows Hardware and
+     Driver Central</a> </span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'><a
+     href="http://go.microsoft.com/fwlink/?LinkId=8705">Hardware and Driver
+     Testing</a> </span></li>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'><a
+     href="http://go.microsoft.com/fwlink/?LinkId=8714">Microsoft Developers
+     Network (MSDN)</a> </span></li>
+</ul>
+
+<p class=MsoNormal><a name=TechSupt><b><span style='font-family:"Verdana","sans-serif"'>Technical
+Support for the WDK Build Environments</span></b></a><b><span style='font-family:
+"Verdana","sans-serif"'> </span></b></p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+     "Verdana","sans-serif"'>For all support inquiries, visit our <a
+     href="http://go.microsoft.com/fwlink/?LinkId=74196">Support Site</a>. </span></li>
+</ul>
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Copyright © 2001-2008 Microsoft Corporation. All rights
+reserved. </span></p>
+
+<p class=MsoNormal><span style='font-size:10.0pt;line-height:115%;font-family:
+"Verdana","sans-serif"'>Version: </span><span
+style='font-size:10.0pt;line-height:115%;font-family:"Verdana","sans-serif"'>Tuesday,
+September 2, 2008</span><span style='font-size:10.0pt;line-height:115%;
+font-family:"Verdana","sans-serif"'> </span></p>
+
+</div>
+
+</body>
+
+</html>

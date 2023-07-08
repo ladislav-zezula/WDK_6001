@@ -1,0 +1,9 @@
+!include ..\sources.inc
+
+
+TARGETNAME=1394DIAG
+
+C_DEFINES= $(C_DEFINES)  -DDRIVER 
+
+SOURCES = $(SOURCES) 1394diag.rc
+

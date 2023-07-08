@@ -1,0 +1,38 @@
+TARGETNAME=smbmrxnp
+TARGETTYPE=DYNLINK
+
+!IFDEF  IFSKIT
+TARGETLIBS=$(DDK_LIB_PATH)\user32.lib \
+           $(DDK_LIB_PATH)\kernel32.lib\
+           $(DDK_LIB_PATH)\netapi32.lib
+!ELSE
+
+TARGETLIBS=$(SDK_LIB_PATH)\user32.lib \
+           $(SDK_LIB_PATH)\kernel32.lib\
+           $(SDK_LIB_PATH)\netapi32.lib
+
+
+!ENDIF
+
+!IFNDEF DISABLE_NET_UNICODE
+UNICODE=1
+NET_C_DEFINES=-DUNICODE
+!ENDIF
+
+
+DLLBASE=0x1010000
+
+USE_NTDLL=0
+
+INCLUDES=$(INCLUDES);$(IFSKIT_INC_PATH);$(DDK_INC_PATH);..\..\inc;..\sys
+
+SOURCES= dllmain.c \
+         smbmrxnp.c \
+         smbmrxnp.rc
+
+UMTYPE=console
+OPTIONAL_NTTEST=
+
+
+DLLDEF=smbmrxnp.def
+

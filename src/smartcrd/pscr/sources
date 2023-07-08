@@ -1,0 +1,49 @@
+#$TAG BIZDEV
+#  $IPCategory:     
+#  $DealPointID:    90993
+#  $AgreementName:  
+#  $AgreementType:  
+#  $ExternalOrigin: 
+#$ENDTAG
+
+#$TAG ENGR 
+#  $Owner:    janetsc
+#  $Module:   smartcrd_pscr
+#
+#$ENDTAG
+
+!IF 0
+
+Copyright (C) SCM Microsystems, 1998 - 1999
+
+!ENDIF
+
+
+TARGETNAME=Pscr
+TARGETTYPE=DRIVER
+
+TARGETLIBS=\
+	$(DDK_LIB_PATH)\smclib.lib \
+	$(DDK_LIB_PATH)\ntoskrnl.lib
+	
+
+KMDF_VERSION=1
+
+INCLUDES=..\inc
+
+SOURCES=pscr.rc    \
+        PscrLog.mc \
+        PscrNT.c   \
+        PscrCB.c   \
+        PscrCmd.c  \
+        PscrRdWr.c
+
+INF_NAME=pscr
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+MISCFILES=$(NTTARGETFILES)
+
+TARGET_DESTINATION=retail
+
+

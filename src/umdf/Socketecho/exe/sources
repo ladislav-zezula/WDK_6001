@@ -1,0 +1,17 @@
+TARGETNAME=socketechoserver
+TARGETTYPE=PROGRAM
+
+_NT_TARGET_VERSION=$(_NT_TARGET_VERSION_WINXP)
+
+USE_MSVCRT=1
+
+UMTYPE=console
+UMENTRY=main
+
+TARGETLIBS= $(SDK_LIB_PATH)\user32.lib \
+           $(SDK_LIB_PATH)\Ws2_32.lib 
+           
+INCLUDES=$(INCLUDES);
+
+SOURCES=socketechoserver.cpp  
+

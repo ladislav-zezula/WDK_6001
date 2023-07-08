@@ -1,0 +1,6 @@
+TARGETNAME=sioctl
+TARGETTYPE=DRIVER
+
+
+SOURCES=sioctl.c sioctl.rc
+

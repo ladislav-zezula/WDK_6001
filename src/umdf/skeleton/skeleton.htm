@@ -1,0 +1,274 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>UMDF Skeleton Sample Driver</title>
+<style type="text/css">
+.style1 {
+	font-family: Verdana;
+	font-size: x-small;
+}
+.style2 {
+	margin-left: 40px;
+}
+</style>
+</head>
+
+<body>
+
+<h1><font face="Verdana" size="2">SKELETON</font></h1>
+<h2><font face="Verdana" size="2">SUMMARY</font></h2>
+<p><font face="Verdana" size="2">This sample demonstrates how to use the Driver 
+Framework to write a minimal driver with the User-Mode Driver Framework and 
+shows best practices. The Skeleton driver will successfully load on a device 
+(either root enumerated or a real hardware device) but has the minimum PnP 
+functionality and does not support any I/O operations.</font></p>
+<p><font face="Verdana" size="2">The Skeleton driver is a template from which 
+many of the other UMDF sample drivers were constructed. It is intended to serve 
+as a starting point for other UMDF drivers that you may write.</font></p>
+<p class="style1">Se<font size="2">e the UMDF Readme.htm file for more 
+information about <a href="../readme.htm#Supported_Environments">supported 
+operating systems</a> and <a href="../readme.htm#BuildEnv">building the samples</a>.</font></p>
+<h2><font face="Verdana" size="2">BUILDING THE SAMPLE</font></h2>
+<p><font face="Verdana" size="2">Start a build environment window as described 
+under<b> <a href="../readme.htm#buildenv">Building and Testing the Samples</a>
+</b>the UMDF Readme file.</font></p>
+<p><font face="Verdana" size="2">Change to the directory containing the device 
+source code, such as &quot;CD C:\WINDDK\&lt;build number&gt;\src\umdf\skeleton (the WINDDK location and build number may vary).</font></p>
+<p><font face="Verdana" size="2">Run build -ceZ, or use the macro BLD. This 
+command invokes the Microsoft make routines to build the components. If the 
+build succeeds, you will find the driver, UMDFSkeleton.dll in the %_BuildArch% subdirectory of the %TARGETPATH% 
+directory specified in the Sources file. If it fails you can find errors and 
+warnings in the build error (.err) and warning (.wrn) log files respectively 
+(buildfre_wlh_x86.err for example). </font>
+</p>
+<p><font face="Verdana" size="2"><strong>INSTALLATION</strong></font></p>
+<p><font face="Verdana" size="2">To test the sample you will need to setup your 
+test system as described <b><a href="../readme.htm#buildenv">Building and 
+Testing the Samples</a> </b>the UMDF Readme file.</font></p>
+<p><font face="Verdana" size="2">The Skeleton sample provides two different INF 
+files. One allows for the driver to be installed on a root-enumerated device:</font></p><font face="Verdana">
+<blockquote>
+	<p><font face="Verdana" size="2">To install the Skeleton driver:</font></p>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<li><font face="Verdana" size="2">Copy the driver binary and the 
+		UMDFSkeleton_Root.inf file to a directory on your test machine (for 
+		example c:\skeletonSample.)</font></li>
+		<li>Copy the UMDF coinstaller WUDFUpdate_01007.dll from c:\winddk\&lt;bld&gt;\redist\wdf\&lt;arch&gt; to
+		the same directory (for example c:\skeletonSample).</li>
+		<li>Change to the directory containing the inf and binaries (for example
+		<b>cd /d c:\skeletonSample</b>.)</li>
+		<li><font size="2">Next run devcon.exe as follows:</font></li>
+	</ol>
+								</font>
+	<blockquote>
+		<p><font size="2" face="Courier New">devcon.exe install 
+		UMDFSkeleton_Root.inf UMDFSamples\Skeleton</font></p>
+		<p><font face="Verdana" size="2">DevCon can be found in the tools 
+		directory of your WDK enlistment (for example: d:\winddk\&lt;bld&gt;\tools\devcon\i386\devcon.exe.)</font></p>
+	</blockquote>
+	<p><font face="Verdana" size="2">To update the Skeleton driver after making 
+	any changes:</font></p><font face="Verdana">
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<li>Increment the version number found in the INF.&nbsp; While this is 
+		not strictly necessary, it will help ensure PnP selects your new driver 
+		as a better match for the device.</li>
+		<li><font face="Verdana" size="2">Copy the updated driver binary and the 
+		UMDFSkeleton_Root.inf file to a directory on your test machine (for 
+		example c:\skeletonSample.)</font></li>
+		<li>Change to the directory containing the inf and binaries (for example
+		<b>cd /d c:\skeletonSample</b>.)</li>
+		<li><font size="2">Next run devcon.exe as follows:</font></li>
+	</ol>
+	</font>
+	<blockquote>
+		<p><font size="2" face="Courier New">devcon.exe update 
+		UMDFSkeleton_Root.inf UMDFSamples\Skeleton</font></p>
+	</blockquote>
+</blockquote>
+<p><font face="Verdana" size="2">The second INF allows you to install the driver 
+on the OSR USB-FX2 Learning Kit board from <a href="http://www.osronline.com">
+OSR</a>:</font></p>
+<font face="Verdana" size="2">
+
+<table border="1" id="table3" style="border-collapse: collapse; width: 90%;" bgcolor="#CCCCCC" class="style2">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana"><Strong>Note:</Strong></font></td>
+		<td><font face="Verdana" size="2">This version of the sample requires installation of WinUsb runtime on Windows XP and would not work without that.&nbsp; 
+		The WinUsb co-installer will install WinUsb during your driver's 
+		installation and can be found in the \winddk\&lt;bld&gt;\redist directory.</font></td>
+	</tr>
+</table>
+
+</font>
+<blockquote>
+	<p><font face="Verdana" size="2">To install the Skeleton driver on Windows 
+	Vista and XP (SP2 and above):</font></p>
+	<ol>
+		<li>
+	    <font face="Verdana" size="2">Copy the driver binary and the 
+	UMDFSkeleton_OSR.inf file to a directory on your test machine (for example 
+	c:\skeletonSample).</font>
+		</li>
+		<li><font face="Verdana" size="2">Attach the OSR USB-FX2 device to your 
+		computer.</font></li>
+		<li><font face="Verdana" size="2">At the &quot;Welcome to the Found New 
+		Hardware Wizard&quot; choose &quot;No, not this time&quot; and click Next.</font></li>
+		<li><font face="Verdana" size="2">Select &quot;Install from a list or 
+		specific location (Advanced)&quot; and click Next.</font></li>
+		<li><font face="Verdana" size="2">Select &quot;Search for the best 
+		driver in these locations&quot;.</font></li>
+		<li><font face="Verdana" size="2">Clear the &quot;Search removable media 
+		(floppy, CD-ROM ...)&quot; check box.</font></li>
+		<li><font face="Verdana" size="2">Select the &quot;Include this location in 
+		the search&quot; check box.</font></li>
+		<li><font face="Verdana" size="2">Enter the path to the files (for 
+		example: c:\skeletonSample) under that check box and click Next. (see 
+		Note)</font></li>
+		<li><font face="Verdana" size="2">Click Finish at 'Completing the Found 
+		New Hardware Wizard.'</font></li>
+	</ol>
+</blockquote>
+<table border="1" width="100%" id="table2" style="border-collapse: collapse" bgcolor="#CCCCCC">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana">Note:</font></td>
+		<td><font face="Verdana" size="2">Between steps 8 and 9 you may see a 
+		&quot;Please select the best match for your hardware from the list below&quot; 
+		page.&nbsp; This happens when there are multiple INFs which match your 
+		hardware.&nbsp; If this happens you should select an entry with &quot;<b>Microsoft 
+		Skeleton User-Mode Driver on OSR USB Device Sample</b>&quot; in the 
+		'Description' column and the directory which holds the INF (for example 
+		c:\skeletonSample) in the 'Location' column.&nbsp; If you have multiple 
+		versions of an INF in that directory, you may also need to check the 
+		'Version' column to find the highest version number.</font><p>
+		<font face="Verdana" size="2">Occasionally you may be told that no newer 
+		driver could be found for your device in this case.&nbsp; If that should 
+		happen use the alternate installation instructions below.</font></td>
+	</tr>
+</table>
+<blockquote>
+	<p><font face="Verdana" size="2">Alternately you may use DevCon to install 
+	the Skeleton driver for the OSR USB device:</font></p>
+	<ol>
+		<li><font face="Verdana" size="2">Copy the driver binary and the 
+	UMDFSkeleton_OSR.inf file to a directory on your test machine (for example 
+		c:\skeletonSample).</font></li>
+		<li><font face="Verdana" size="2">Attach the OSR USB-FX2 device to your 
+		computer.</font></li>
+		<li><font face="Verdana" size="2">At the &quot;Welcome to the Found New 
+		Hardware Wizard&quot; click Cancel.</font></li>
+		<li><font face="Verdana" size="2">Change to the directory containing the 
+		inf and binaries (for example <b>cd /d c:\skeletonSample</b>.)</font></li>
+		<li><font face="Verdana" size="2">Run devcon.exe as follows:<br>
+		<br>
+		</font><font size="2" face="Courier New">devcon.exe update 
+		UMDFSkeleton_OSR.inf &quot;USB\Vid_0547&amp;Pid_1002&quot;</font><font face="Verdana" size="2">
+		<br>
+		(note: the quotes are important because of the &amp;)<br>
+		<br>
+		DevCon can be found in the tools directory of your WDK enlistment (for 
+		example: d:\winddk\&lt;bld&gt;\tools\devcon\i386\devcon.exe.)</font></li>
+	</ol>
+	<p><font face="Verdana" size="2">To update the Skeleton driver after making 
+	any changes:</font></p>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<font face="Verdana">
+		<li>Increment the version number found in the INF.&nbsp; While this is 
+		not strictly necessary, it will help ensure PnP selects your new driver 
+		as a better match for the device.</li>
+		<li><font face="Verdana" size="2">Copy the driver binary and the 
+	UMDFSkeleton_OSR.inf file to a directory on your test machine (for example 
+		c:\skeletonSample).</font></li>
+		<li>Follow instructions 4 and 5 above</li>
+		</font>
+	</ol>
+</blockquote>
+<h2><font face="Verdana" size="2">CODE TOUR</font></h2>
+<h3><font face="Verdana" size="2">File Manifest</font></h3>
+<table border="1" width="62%" id="table1">
+	<tr>
+		<td align="center" width="161"><b><font face="Verdana" size="2">File</font></b></td>
+		<td width="604" align="center"><b><font face="Verdana" size="2">
+		Description</font></b></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">Skeleton.htm</font></td>
+		<td width="604"><font face="Verdana" size="2">Documentation for this 
+		sample (this file).</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">comsup.cpp &amp; comsup.h</font></td>
+		<td width="604"><font face="Verdana" size="2">COM Support code - 
+		specifically base classes which provide implementations for the standard 
+		COM interfaces IUnknown and IClassFactory which are used throughout the 
+		skeleton sample.</font><p>
+		<font face="Verdana" size="2">The implementation of IClassFactory is designed to create instances of 
+		the CMyDriver class. If you should change the name of your base driver 
+		class, you would also need to modify this file.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">dllsup.cpp</font></td>
+		<td width="604"><font face="Verdana" size="2">DLL Support code - 
+		provides the DLL's entry point as well as the single required export 
+		(DllGetClassObject).</font><p><font face="Verdana" size="2">These depend on comsup.cpp to perform the necessary 
+		class creation.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">exports.def</font></td>
+		<td width="604"><font face="Verdana" size="2">This file lists the 
+		functions that the driver DLL exports.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">makefile</font></td>
+		<td width="604"><font face="Verdana" size="2">This file redirects to 
+		the real makefile, which is shared by all the driver components of the 
+		Windows Driver Kit.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">internal.h</font></td>
+		<td width="604"><font face="Verdana" size="2">This is the main header 
+		file for the skeleton driver. </font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">driver.cpp &amp; driver.h</font></td>
+		<td width="604"><font face="Verdana" size="2">Definition and 
+		implementation of the driver callback class for the Skeleton sample.
+		</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">device.cpp &amp; driver.h</font></td>
+		<td width="604"><font face="Verdana" size="2">Definition and 
+		implementation of the device callback class for the Skeleton sample.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">skeleton.rc</font></td>
+		<td width="604"><font face="Verdana" size="2">This file defines resource 
+		information for the Skeleton sample driver.</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">sources</font></td>
+		<td width="604"><font face="Verdana" size="2">Generic file that lists 
+		source files and all the build options</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">UMDFSkeleton_OSR.inf</font></td>
+		<td width="604"><font face="Verdana" size="2">Sample INF for installing 
+		the Skeleton driver to control the OSR USB-FX2 Learning Kit device</font></td>
+	</tr>
+	<tr>
+		<td width="161"><font face="Verdana" size="2">UMDFSkeleton_Root.inf</font></td>
+		<td width="604"><font face="Verdana" size="2">Sample INF for installing 
+		the Skeleton driver to control a root enumerated device with a hardware 
+		ID of UMDFSamples\Skeleton</font></td>
+	</tr>
+</table>
+
+<p align="center"><font face="Verdana" size="2"><a href="#top">Top of Page</a></font></p>
+<p><font face="Verdana" size="2">© 2005 Microsoft Corporation</font></p>
+
+</body>
+
+</html>
+

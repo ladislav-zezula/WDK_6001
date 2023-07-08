@@ -1,0 +1,199 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Directory of Windows User-Mode D</title>
+<style>
+<!--
+div.Section1
+	{page:Section1;}
+ li.MsoNormal
+	{margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	}
+.style1 {
+	font-family: Verdana;
+	font-size: x-small;
+}
+.style2 {
+	border: 1px solid #000000;
+	background-color: #C0C0C0;
+}
+.style3 {
+	text-align: left;
+	margin-left: 40px;
+}
+-->
+</style>
+</head>
+
+<body>
+
+<h1><font face="Verdana" size="3">Directory of Windows User-Mode Driver 
+Framework Samples</font></h1>
+<p><font face="Verdana" size="2">This directory contains several sample drivers 
+that illustrate various aspects of using the User-Mode Driver Framework. In each 
+directory you will find a .htm file which describes the sample in more detail 
+and which contains build and test instructions for that sample.</font></p>
+<h2><font face="Verdana" size="2"><a name="Supported_Environments">Supported Environments</a></font></h2>
+<p class="style1">This pre-release of U<font size="2">MDF 1.7 is currently
+<strong>only</strong> supported on Windows Server 2008, as we do not yet 
+have an installation package for previous operating systems.</font></p>
+
+<p><font face="Verdana" size="2">
+The build instructions 
+apply only to the Windows Driver Kit (WDK) and, more specifically, to the 
+Windows Server 2008 'Build Environments' supplied with that Kit. We do not support 
+building these samples under any earlier Driver Development Kits.</font></p>
+
+<table border="1" width="60%" id="table2" style="border-collapse: collapse" bgcolor="#CCCCCC">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana"><Strong>Note:</Strong></font></td>
+		<td><font face="Verdana" size="2">You will need to use Windows Vista 
+                'Build Environments' even for building UMDF drivers for XP.</font></td>
+	</tr>
+</table>
+
+
+<h2><font face="Verdana" size="2"><a name="BuildEnv">Building and Testing the Samples</a></font></h2>
+<p><font face="Verdana" size="2">To build these samples you will first have to 
+install the WDK on your development system.</font></p>
+<p><font face="Verdana" size="2">You will use Vista build environment for building UMDF samples both for Vista and XP.
+To start a Vista build environment for UMDF:</font></p>
+<ol>
+	<li><font size="2"><span style="font-family: Verdana">Bring up the start 
+	menu and select All Programs.</span></font></li>
+	<li><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana">Point to <b>Windows 
+	Driver Kits</b> in the , point to <b>Windows DDK &lt;<i>bld</i>&gt;</b>, point to <b>Build 
+	Environments</b>, and then point to <b>Windows Vista and Windows Server 2008</b></span>
+	</li>
+	<li><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana">Click the <b>Windows 
+	Vista and Windows Server 
+	2008&lt;<i>build type</i>&gt; &lt;<i>architecture</i>&gt; Build Environment</b>.</span>
+	</li>
+	<li><strong>
+	<span style="FONT-WEIGHT: normal; FONT-SIZE: 10pt; FONT-FAMILY: Verdana">Type</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana"> cd /d
+	</span></strong><font size="2"><i><b><span style="font-family: Verdana">&lt;</span></b></i><b><span style="font-family: Verdana"><i>drive 
+	letter</i>&gt;</span></b></font><b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana"><i>:</i>\WinDDK\&lt;<i>bld</i>&gt;</span></b><em><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana"> 
+	(These values may differ depending on the version of the WDK you install and 
+	where you install it.)</span></em> </li>
+	<li><strong>
+	<span style="FONT-WEIGHT: normal; FONT-SIZE: 10pt; FONT-FAMILY: Verdana">Type</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana">&nbsp; 
+	</span></strong><b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana">cd src\umdf</span></b>
+	</li>
+</ol>
+<p><font face="Verdana" size="2">To test the samples you will need a test 
+machine running Windows Vista or Windows XP (SP2 and above).&nbsp; This can be a second computer or, if 
+necessary, your development computer.</font></p>
+<div class="style3">
+	<table width="90%" class="style2" style="border-style: solid">
+		<tr>
+			<td><p class="style1"><strong><a name="TestingChecked"></a>Te</strong><font size="2"><strong>sting 
+Samples on Checked Systems:</strong></font></p>
+<p class="style1"><font size="2">In order to test these sample drivers on a 
+checked OS installation (as opposed to the standard retail installations) you 
+will need to modify the INF files to use the checked version of the UMDF 
+co-installer.&nbsp; To do this:</font></p>
+<ol>
+	<li>
+	<p class="style1"><font size="2">Replace all occurrences of 
+	WudfUpdate_01007.dll with WudfUpdate_01007_chk.dll in the INX 
+	file.</font></p>
+	</li>
+	<li>
+	<p class="style1"><font size="2">Copy the WudfUpdate_01007_chk.dll from
+	<a href="file:///c:/winddk/redist/wdf/%3Carch%3E/">c:\winddk\&lt;bld&gt;\redist\wdf\&lt;arch&gt;</a> 
+	into your driver package instead of WudfUpdate_01007.dll.</font></p>
+	</li>
+	<li>
+	<p class="style1"><font size="2">Repeat steps #1 and #2 for 
+	WdfCoinstaller01007.dll and WinUsbCoinstaller.dll if either of them are 
+	included in your driver package.</font></p>
+	</li>
+</ol>
+</td>
+		</tr>
+	</table>
+</div>
+<h2><font face="Verdana" size="2">List of samples:</font></h2>
+<ul>
+	<li><font face="Verdana" size="2"><a href="#Skeleton">Skeleton</a></font></li>
+	<li><font face="Verdana" size="2"><a href="#Echo">Echo</a></font></li>
+	<li><font face="Verdana" size="2"><a href="#USB">USB</a></font></li>
+</ul>
+<p><font face="Verdana" size="2">Following table lists framework samples and a 
+description of a usage scenario where this sample would be suitable as a 
+starting point for driver writers. You can bring up the readme file to learn 
+more about the sample by clicking on the sample name. </font></p>
+<table border="1" width="100%" id="table1">
+	<tr>
+		<td align="center"><font face="Verdana" size="2">Sample Name</font></td>
+		<td align="center" width="1126"><font face="Verdana" size="2">Scenario</font></td>
+	</tr>
+	<tr>
+		<td align="center"><font face="Verdana" size="2">
+		<a href="Skeleton/Skeleton.htm" name="Skeleton">Skeleton</a></font></td>
+		<td width="1126"><font face="Verdana" size="2">Demonstrates the minimum 
+		amount of code needed to write a loadable user-mode driver. Skeleton was 
+		designed to be a starting point - a code sample from which other UM 
+		drivers could be easily derived. In addition to showing basic 
+		functionality and best practices, it splits the common code to all UM 
+		drivers out into support modules.</font><p>
+		<font face="Verdana" size="2">The skeleton driver loads and supports all 
+		basic PnP and Power operations. It does not support any I/O operations.</font></td>
+	</tr>
+	<tr>
+		<td align="center"><font face="Verdana" size="2">
+		<a href="socketecho/SocketEcho.htm" name="Socket echo">Socket echo </a></font></td>
+		<td width="1126"><font face="Verdana" size="2">This sample demonstrates how to use the User-Mode Driver Framework to write a driver and demonstrates best practices. It also demonstrates the use of a default Parallel Dsipatch Dispatch I/O Queue, Using Win32 Dispatcher , handling socket handle using Win32 File I/O target. Parts of this sample code are generated from VS 2005 ATL wizard. 
+
+</font></td>
+	</tr>
+	<tr>
+		<td align="center"><font face="Verdana" size="2">
+		<a href="1394vdev_hybrid/wdf1394vdev.htm" name="1394">1394 Virtual Device</a></font></td>
+		<td width="1126"><font face="Verdana" size="2">The WDF 1394 Hybrid Sample consist of two sample WDF Drivers, a UMDF component (umdf1394vdev.dll) and a KMDF component (kmdf1394vdev.sys).  The sample also includes a user mode application that instantiates the loading the WDF Hybrid Driver stack and allows interaction with the 1394 bus driver through the installed WDF Hybrid Driver stack.
+</td>
+	</tr>
+	<tr>
+		<td align="center"><font face="Verdana" size="2">
+		<a name="USB" href="Usb/echo_driver/usb.htm">USB\</a></font><a href="Usb/echo_driver/usb.htm" name="USB"><font face="Verdana" size="2">Echo_Driver</font></a><p>
+		<font face="Verdana" size="2"><a href="USB/Filter/Filter.htm">USB\Filter</a></font><p>
+		<font face="Verdana" size="2"><a href="usb/fx2_driver/usb.htm">USB\Fx2_Driver</a></font><p></td>
+		<td width="1126"><font face="Verdana" size="2">There are two device 
+		drivers in this directory, both of which work with the OSR USB-FX2 
+Learning Kit device from <a href="http://www.osronline.com">OSR</a>.</font><p>
+		<b><font face="Verdana" size="2">Echo_Driver</font></b><font face="Verdana" size="2"><b>:</b></font></p>
+		<p><font face="Verdana" size="2">This driver is similar in functionality 
+		to the Echo driver. However it shows how to work with a parallel I/O 
+		queue. This is a typical pattern for a driver/device that can handle 
+		multiple independent requests at one time.</font></p>
+		<p><font face="Verdana" size="2">This driver also demonstrates a 
+		user-mode driver controlling a device – it uses the OSR-USBFX2 device’s 
+		memory as a buffer. The driver demonstrates how to use the USB I/O 
+		target to control a USB device.</font></p>
+		<p><b><font face="Verdana" size="2">Filter:</font></b></p>
+		<p><font face="Verdana" size="2">This demonstrates how to create a 
+		filter driver using UMDF. In particular it shows how to modify the data 
+		carried in read and write requests as they flow through the driver 
+		stack, and how to use I/O targets to communicate with a lower driver.</font><p>
+		<b><font face="Verdana" size="2">Fx2_Driver:</font></b><p>
+		<font face="Verdana" size="2">This driver is a port of the corresponding
+		<a href="../kmdf/osrusbfx2/osrusbfx2.htm">KMDF OSR-USBFX2 driver</a> and 
+		UMDF provides a similar test application.&nbsp; This 
+		driver provides much of the same functionality as the KMDF driver, as 
+		well as some additional functionality to demonstrate UMDF features.</font></td>
+	</tr>
+</table>
+<p align="center"><font face="Verdana" size="2"><a href="#top">Top of Page</a></font></p>
+<p><font face="Verdana" size="2">© 2005 Microsoft Corporation</font></p>
+
+</body>
+
+</html>
+
+

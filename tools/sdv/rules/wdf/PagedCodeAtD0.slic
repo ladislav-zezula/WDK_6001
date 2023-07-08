@@ -1,0 +1,73 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Summary: 
+	Do not mark code as pageable within callabcks in the power up code path.
+
+	Description: 
+
+	When a function is marked pagable and the code section is paged out, 
+	it will generate a page fault which could impact
+    the fast resume behavior because the client driver will have to wait
+    until the system drivers can service this page fault.
+   
+*/
+
+
+
+
+
+
+
+#include "ntddk_slic.h"
+state{
+     enum {INIT,  POWERUPPATH} p = INIT;
+}
+
+
+
+[fun_WDF_DEVICE_WAKE_FROM_SX_TRIGGERED,
+fun_WDF_DEVICE_D0_ENTRY,
+fun_WDF_INTERRUPT_ENABLE,
+fun_WDF_DEVICE_D0_ENTRY_POST_INTERRUPTS_ENABLED,
+fun_WDF_DMA_ENABLER_FILL,
+fun_WDF_DMA_ENABLER_ENABLE,
+fun_WDF_DMA_ENABLER_SELFMANAGED_IO_START,
+fun_WDF_CHILD_LIST_SCAN_FOR_CHILDREN, 
+fun_WDF_DEVICE_DISARM_WAKE_FROM_S0,
+fun_WDF_DEVICE_DISARM_WAKE_FROM_SX,
+fun_WDF_EVT_IO_RESUME,
+fun_WDF_DEVICE_SELF_MANAGED_IO_INIT,
+fun_WDF_DEVICE_SELF_MANAGED_IO_RESTART,
+fun_WDF_DEVICE_DISABLE_WAKE_AT_BUS 
+].entry
+{
+	p = POWERUPPATH;
+}
+
+[fun_WDF_DEVICE_WAKE_FROM_SX_TRIGGERED,
+fun_WDF_DEVICE_D0_ENTRY,
+fun_WDF_INTERRUPT_ENABLE,
+fun_WDF_DEVICE_D0_ENTRY_POST_INTERRUPTS_ENABLED,
+fun_WDF_DMA_ENABLER_FILL,
+fun_WDF_DMA_ENABLER_ENABLE,
+fun_WDF_DMA_ENABLER_SELFMANAGED_IO_START,
+fun_WDF_CHILD_LIST_SCAN_FOR_CHILDREN, 
+fun_WDF_DEVICE_DISARM_WAKE_FROM_S0,
+fun_WDF_DEVICE_DISARM_WAKE_FROM_SX,
+fun_WDF_EVT_IO_RESUME,
+fun_WDF_DEVICE_SELF_MANAGED_IO_INIT,
+fun_WDF_DEVICE_SELF_MANAGED_IO_RESTART,
+fun_WDF_DEVICE_DISABLE_WAKE_AT_BUS 
+].exit
+{
+	p = INIT;
+}
+
+sdv_do_paged_code_check.entry 
+{
+    if (p == POWERUPPATH) 
+	{
+        abort "Do not mark code as pageable within callabcks in the power up code path.";
+    }
+}

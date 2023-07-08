@@ -1,0 +1,6 @@
+TARGETNAME=fail_driver1
+TARGETTYPE=DRIVER
+
+SOURCES = fail_driver1.c
+
+MSC_WARNING_LEVEL=/W4 /WX

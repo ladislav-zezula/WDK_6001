@@ -1,0 +1,302 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<title>ECHO</title>
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>BestFit</w:Zoom>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+    {font-family:Verdana;
+    panose-1:2 11 6 4 3 5 4 4 2 4;
+    mso-font-charset:0;
+    mso-generic-font-family:swiss;
+    mso-font-pitch:variable;
+    mso-font-signature:536871559 0 0 0 415 0;}
+@font-face
+    {font-family:"MS Sans Serif";
+    panose-1:0 0 0 0 0 0 0 0 0 0;
+    mso-font-alt:"Times New Roman";
+    mso-font-charset:0;
+    mso-generic-font-family:roman;
+    mso-font-format:other;
+    mso-font-pitch:auto;
+    mso-font-signature:0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+    {mso-style-parent:"";
+    margin:0in;
+    margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    font-size:12.0pt;
+    font-family:"Times New Roman";
+    mso-fareast-font-family:"Times New Roman";
+    color:black;}
+h2
+    {color:black;}
+h3
+    {color:black;}
+h4
+    {color:black;}
+a:link, span.MsoHyperlink
+    {color:blue;
+    text-decoration:underline;
+    text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+    {color:purple;
+    text-decoration:underline;
+    text-underline:single;}
+p
+    {font-size:12.0pt;
+    font-family:"Times New Roman";
+    mso-fareast-font-family:"Times New Roman";
+    color:black;}
+pre
+    {margin-top:0in;
+    margin-bottom:0in;
+    margin-bottom:.0001pt;
+    font-size:10.0pt;
+    font-family:"Courier New";
+    mso-fareast-font-family:"Times New Roman";
+    color:black;}
+span.SpellE
+    {mso-style-name:"";
+    mso-spl-e:yes;}
+span.GramE
+    {mso-style-name:"";
+    mso-gram-e:yes;}
+@page Section1
+    {size:8.5in 11.0in;
+    margin:1.0in 1.25in 1.0in 1.25in;
+    mso-header-margin:.5in;
+    mso-footer-margin:.5in;
+    mso-paper-source:0;}
+div.Section1
+    {page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+    {mso-style-name:"Table Normal";
+    mso-tstyle-rowband-size:0;
+    mso-tstyle-colband-size:0;
+    mso-style-noshow:yes;
+    mso-style-parent:"";
+    mso-padding-alt:0in 5.4pt 0in 5.4pt;
+    mso-para-margin:0in;
+    mso-para-margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    font-size:10.0pt;
+    font-family:"Times New Roman";}
+</style>
+<![endif]-->
+<meta name=Template content="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+<!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body bgcolor=white lang=EN-US link=blue vlink=purple style='tab-interval:.5in'
+leftmargin=8>
+
+<div class=Section1>
+
+<h2><a name=MYSAMPLE><span style='font-family:Verdana'>ECHO</span></a><span
+style='font-family:Verdana'> <o:p></o:p></span></h2>
+
+<h3><span style='font-family:Verdana'>SUMMARY<o:p></o:p></span></h3>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>This sample demonstrates how to use 
+sequential queue to serialize read and write requests presented to the driver 
+and how to use framework provided locking scheme to synchronize execution of 
+these events with other asynchronous events such as request cancellation and DPC. </span></p>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>The building and
+installation instructions given here apply to Windows® 2000, Windows® XP
+and Windows Server 2003.<o:p></o:p></span></p>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>This sample driver is a minimal driver meant to demonstrate the usage of the Windows Driver Framework.
+It is not intended for use in a production
+environment.  <o:p></o:p></span></p>
+
+<h3><span style='font-family:Verdana'>BUILDING THE SAMPLE<o:p></o:p></span></h3>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>Click the Free Build
+Environment or Checked Build Environment icon under Development Kits program
+group to set basic environment variables. <o:p></o:p></span></p>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>Change to the directory
+containing the device source code, such as CD <span class=SpellE>src\wdf</span>\echo.
+<o:p></o:p></span></p>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>Run <b>build -<span
+class=SpellE>ceZ</span>,</b> or use the macro <b>BLD</b>. This command invokes
+the Microsoft make routines to build the components. If the build </span>s<span
+style='font-size:10.0pt;font-family:Verdana'>ucceeds, you will find the driver,
+<span class=SpellE>echo.sys</span>
+in the i386 subdirectory of the %TARGETPATH% directory specified in the Sources
+file. If it fails you can find errors and warnings in the <span class=SpellE>buildxxx.err</span>
+and <span class=SpellE>buildxxx.err</span> respectively, where xxx is <span
+class=SpellE>either</span> <span class=SpellE>chk</span> or <span class=SpellE>fre</span>
+depending on the build environment. <o:p></o:p></span></p>
+
+<h3><span style='font-family:Verdana'>INSTALLATION<o:p></o:p></span></h3>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>
+Copy the KMDF coinstaller (wdfcoinstallerMMmmm.dll), driver binary and the echo.inf file to a floppy disk or a temp folder. </span></p>
+<p><span style='font-size:10.0pt;font-family:Verdana'>
+To install the echo driver on Windows 2000: </span></p>
+<span style='font-size:10.0pt;font-family:Verdana'>
+
+<OL>
+
+<LI>
+      Double-click the ‘Add/Remove Hardware’ wizard in Control Panel.
+<LI>
+      At the Add/Remove Hardware Wizard, click Next.
+<LI>
+      Choose the ‘Add/Troubleshoot a device’, then click Next.
+
+<LI>
+      Select ‘Add a new device’ from the list, then click Next.
+
+<LI>
+      Select ‘No, I Want to Select the Hardware from a list’ and then click Next.
+
+<LI>
+      Select ‘Other Devices’ and then click Next. NOTE: This might take a few minutes.
+
+
+<LI>  Click 'Have Disk', make sure that 'A:\' is in the "Copy manufacturer's files from:" box, and click OK.
+
+<LI>  Click on the "Sample WDF Echo Driver" entry, and then click Next.
+
+<LI>  At 'Start Hardware Installation,' click Next.
+
+<LI>  Click Finish at 'Completing the Add/Remove Hardware Wizard.'
+  
+ </OL>
+
+To install the echo driver on Windows XP and Windows Server 2003: <p>
+
+<OL>
+
+<LI>
+      Double-click the ‘Add Hardware’ wizard in Control Panel.
+
+<LI>
+      At the 'Welcome to the Add Hardware Wizard', click ‘Next’.
+
+<LI>
+      Select 'Yes, I have already connected the hardware', then click Next.
+<LI>
+      Select ‘Add a new hardware device’ from the list, then click Next.
+
+<LI>
+      Select ‘Install the hardware that I manually select from a list(Advanced),' and then click next.
+
+<LI>
+      Select ‘Show All Devices’, then click Next. 
+
+<LI>  Click 'Have Disk', make sure that 'A:\' is in the "Copy manufacturer's files from:" box, and click OK.
+
+<LI>  Click on the "Sample WDF Echo Driver" entry, and then click Next.
+
+<LI>  At 'The wizard is ready to install your hardware', click Next.
+
+<LI>  Click Finish at 'Completing the Add/Remove Hardware Wizard.'
+ </OL>
+</span></p>
+<p><span style='font-size:10.0pt;font-family:Verdana'>
+ 
+Another quick way to install the echo driver without going through so many mouse clicks would be to use the Installer sample application present in the <I>src\setup\devcon</I> directory. This sample allows you to root-enumerate a driver with one simple command. Please read the help file included in the sample on how to build and use the application to install this driver. To install the driver using devcon.exe:
+
+<BLOCKQUOTE> <PRE>
+c:\>devcon.exe  install  echo.inf  "root\echo"
+</PRE></BLOCKQUOTE>
+
+</span></p>
+
+<h3><span style='font-family:Verdana'>CODE TOUR</span></h3>
+<p><u>DriverEntry</u> - Creates a framework driver object.</p>
+<p><u>EvtDeviceAdd</u>: Creates a device object with the 
+SynchronizationScope set to WdfSynchronizationScopeDevice so that callback events of child objects such as queue and dpc are all synchronized. Since the default 
+ExectionLevel is WdfExecutionLevelDispatch, framework will use spinlock to 
+serialize event callbacks, registers self managed Io 
+callbacks so that it can start and stop the periodic timer when the device is 
+entering and leaving D0 state. It registers a device interface so that 
+application can find the device and send I/O. For managing I/O requests, the 
+driver creates a default queue to receive only read &amp; write requests. All other 
+requests sent to the driver will be failed by the framework. Then the driver 
+creates a periodic timer to simulate asynchronous event. The purpose of this 
+timer would be to complete the currently pending request. Since timer is 
+parented to queue and by default timer objects are created with 
+AutomaticSerialization set to TRUE, timer dpc callbacks will be serialized with 
+EvtIoRead, EvtIoWrite and Cancel Routine.</p>
+<p><u>EvtIoWrite</u>: Allocates an internal buffer as big as the size of buffer 
+in the write request and copies the data from the request buffer to internal 
+buffer. The intrnal buffer address is saved in the queue context. If the driver 
+receives another write request, it will free this one and allocate a new buffer 
+to match the size of the incoming request. After copying the data, it will mark 
+the request cancelable and return. The request will be eventually completed 
+either by the timer or by the cancel routine if the application exits.</p>
+<p><u>EvtIoRead</u>: Retrieves request memory buffer and copies the data from 
+the buffer created by the write&nbsp; handler to the request buffer, and marks 
+the request cancelable. The request will be completed by the timer dpc callback.</p>
+<p>Since the queue is a sequential queue, only one request is outstanding in the 
+driver. </p>
+<h3>TESTING</h3>
+<p><b>Usage:</b><br>
+Echoapp.exe --- Send single write and read request synchronously<br>
+Echoapp.exe -Async --- Send 100 reads and writes asynchronously<br>
+Exit the app anytime by pressing Ctrl-C</p>
+
+<h4><span style='font-family:Verdana'>File Manifest<o:p></o:p></span></h4>
+
+<pre><u>File<span style='mso-tab-count:2'>           </span>Description<o:p></o:p></u></pre><pre><o:p>&nbsp;</o:p></pre><pre><span
+class=GramE>Echo.htm<span style='mso-tab-count:1'>     </span>Documentation for this sample (this file).</span></pre><pre><span
+class=SpellE>Driver.c</span><span style='mso-tab-count:1'>       </span>DriverEntry and Events on the Driver Object.</pre><pre><span
+class=SpellE>Device.c</span><span style='mso-tab-count:1'>      </span>Events on the Device Object.</pre><pre><span class=SpellE>Queue.c</span><span
+style='mso-tab-count:1'>      </span>Contains Events on the I/O Queue Objects.</pre><pre><span
+class=SpellE>Makefile</span><span style='mso-tab-count:1'>       </span><span
+class=GramE>This file</span> merely <span class=SpellE>indirects</span> to the real <span
+class=SpellE>makefile</span> that is shared by all the driver components of the Windows NT DDK.</pre>
+<pre><span class=GramE>Sources<span
+style='mso-tab-count:2'>        </span>Generic file that lists source files and all the build options.</span></pre>
+
+<p align=center style='text-align:center'><a href="#top"><span
+style='font-size:10.0pt;font-family:Verdana'>Top of page</span></a><span
+style='font-size:10.0pt;font-family:Verdana'> <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=624
+ style='width:6.5in;mso-cellspacing:0in'>
+ <tr style='mso-yfti-irow:0;mso-yfti-lastrow:yes;height:1.5pt'>
+  <td style='background:aqua;padding:.75pt .75pt .75pt .75pt;height:1.5pt'>
+  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+</table>
+
+<p><span style='font-size:7.5pt;font-family:"MS Sans Serif"'>© 2002 Microsoft
+Corporation</span><span style='font-size:10.0pt;font-family:Verdana'> <o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>
+

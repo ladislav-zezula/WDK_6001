@@ -1,0 +1,20 @@
+TARGETNAME=gagp30kx
+TARGETTYPE=DRIVER
+TARGET_DESTINATION=retail
+
+TARGETLIBS=$(OBJ_PATH)\..\agplib\$O\agplib.lib
+
+INCLUDES=..\inc;..\..\..\inc
+
+MSC_WARNING_LEVEL=/W3 /WX
+
+SOURCES=agplog.mc       \
+        gagp30kx.rc     \
+        init.c          \
+        gart.c          \
+        kxagplib.c      \
+        verifier.c
+
+# Macro to create marker for Boot Driver embedded signing.
+BOOT_LOADER_CRITICAL=1         
+

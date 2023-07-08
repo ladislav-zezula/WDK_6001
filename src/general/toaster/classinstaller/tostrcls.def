@@ -1,0 +1,6 @@
+LIBRARY  TOSTRCLS
+
+EXPORTS   
+   ToasterClassInstaller
+   
+

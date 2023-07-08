@@ -1,0 +1,25 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\purecall.obj \
+ $(OBJ_PATH)\$O\avssamp.obj \
+ $(OBJ_PATH)\$O\capture.obj \
+ $(OBJ_PATH)\$O\filter.obj \
+ $(OBJ_PATH)\$O\image.obj \
+ $(OBJ_PATH)\$O\video.obj \
+ $(OBJ_PATH)\$O\audio.obj \
+ $(OBJ_PATH)\$O\wave.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\avssamp.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\avstream\avssamp
+MAKEDIR_RELATIVE_TO_BASEDIR=src\avstream\avssamp
+OBJ_PATH=e:\sdk\wdk_6001\src\avstream\avssamp
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

@@ -1,0 +1,25 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\inputkbd.h \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\inputkbd_i.obj \
+ $(OBJ_PATH)\$O\inputkbd.obj \
+ $(OBJ_PATH)\$O\softkbdtranslator.obj \
+ $(OBJ_PATH)\$O\softkeyboard.obj \
+ $(OBJ_PATH)\$O\messagetask.obj \
+ $(OBJ_PATH)\$O\task.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\inputkbd.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\test\dsf\usb\inputkbd
+MAKEDIR_RELATIVE_TO_BASEDIR=src\test\dsf\usb\inputkbd
+OBJ_PATH=e:\sdk\wdk_6001\src\test\dsf\usb\inputkbd
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

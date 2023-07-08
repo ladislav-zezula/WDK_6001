@@ -1,0 +1,24 @@
+TARGETNAME=ndislwf
+TARGETTYPE=DRIVER
+
+INCLUDES=..;.;
+
+C_DEFINES=$(C_DEFINES) -DNDIS_WDM=1
+
+C_DEFINES=$(C_DEFINES) -DNDIS60=1
+
+C_DEFINES=$(C_DEFINES) -DNDISLWF=1
+
+
+PRECOMPILED_INCLUDE=precomp.h
+
+
+TARGETLIBS=$(DDK_LIB_PATH)\ndis.lib
+
+SOURCES=\
+    filter.c\
+    device.c\
+    flt_dbg.c\
+    filter.rc
+    
+

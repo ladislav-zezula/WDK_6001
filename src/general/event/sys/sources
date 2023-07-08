@@ -1,0 +1,6 @@
+TARGETNAME=event
+TARGETTYPE=DRIVER
+
+SOURCES=event.c \
+        event.rc
+

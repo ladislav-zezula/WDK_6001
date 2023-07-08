@@ -1,0 +1,14 @@
+
+!include sources.inc
+
+!IF $(MONOLITHIC_MINIRDR)
+
+TARGETLIBS= $(TARGETLIBS) \
+            $(DDK_LIB_PATH)\rxce.lib  \
+            $(DDK_LIB_PATH)\copysup.lib
+
+!ENDIF
+
+SOURCES= $(MOST_SOURCES)      \
+         nulmrx.rc
+

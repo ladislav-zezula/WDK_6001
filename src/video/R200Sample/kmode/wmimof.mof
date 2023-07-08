@@ -1,0 +1,484 @@
+/*++
+
+Copyright (c) 2003  Microsoft Corporation
+
+Module Name:
+
+    videoprt.mof
+
+Abstract:
+
+    This module contains the definition for the data structure
+    exposed by the videoport through WMI.
+
+
+Note:
+    - countertype() specify a decimal value for the counter flags defined in 
+    winperf.h. 
+    
+    - defaultscale() specify a power of 10 by which to scale to scale chart. 
+    The default height of the chart is 100. The default scale change that 
+    value. A scale of 0 ==> 1x, 1 ==> 10x, -1 ==> 1/10x.
+    
+    - perfdetail() Use to determine the level of detail associated with the
+    counter. The use will be setting the level of detail that should be 
+    displayed at any given time.
+    
+	#define PERF_DETAIL_NOVICE          100 // The uninformed can understand it
+	#define PERF_DETAIL_ADVANCED        200 // For the advanced user
+	#define PERF_DETAIL_EXPERT          300 // For the expert user
+	#define PERF_DETAIL_WIZARD          400 // For the system designer
+
+Revision History:
+
+--*/
+
+[Dynamic,Provider("WMIProv"),HiPerf,
+ WMI,
+ Locale("MS\\0x409"),
+ Description("Video memory manager segment's statistics") : Amended,
+ DisplayName("VidMm: Segment statistics"),
+ guid("{0A2D6A3E-B503-4c6e-B49D-3D7FEE1738D2}"),
+ PerfDetail(100)
+ ]
+
+class Win32Perf_VidMmSegmentStats : Win32_PerfRawData
+{
+    [key, read]
+     string InstanceName;
+    [read] boolean Active;
+
+    [WmiDataId(1),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec"),
+     Description("Number of allocation evicted per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSec;
+    
+    [WmiDataId(2),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Policy1)"),
+     Description("Number of allocation evicted per seconds caused by Policy #1") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecPolicy1;
+    
+    [WmiDataId(3),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Policy2)"),
+     Description("Number of allocation evicted per seconds caused by Policy #2") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecPolicy2;
+
+    [WmiDataId(4),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Policy3)"),
+     Description("Number of allocation evicted per seconds caused by Policy #3") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecPolicy3;
+    
+    [WmiDataId(5),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Policy4)"),
+     Description("Number of allocation evicted per seconds caused by Policy #4") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecPolicy4;
+    
+    [WmiDataId(6),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Lock)"),
+     Description("Number of allocation evicted per seconds caused by a DxLock() operation.") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecLock;
+    
+    [WmiDataId(7),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Rotate)"),
+     Description("Number of allocation evicted per seconds caused by a failed DxLock() operation.") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecRotate;
+
+    [WmiDataId(8),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Scratch)"),
+     Description("Number of scratch allocation evicted per seconds.") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecScratch;
+
+    [WmiDataId(9),
+     PerfDefault,
+     DisplayName("Allocation Evicted/sec (Config)"),
+     Description("Number of allocation evicted per seconds because of segment reconfiguration.") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfEvictionPerSecConfig;
+
+    [WmiDataId(10),
+     PerfDefault,
+     DisplayName("Allocation Marked/sec"),
+     Description("Number of allocation marked for eviction per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfMarkedPerSec;
+    
+    [WmiDataId(11),
+     PerfDefault,
+     DisplayName("Allocation Marked/sec (Policy1)"),
+     Description("Number of allocation marked for eviction per seconds caused by Policy #1") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfMarkedPerSecPolicy1;
+    
+    [WmiDataId(12),
+     PerfDefault,
+     DisplayName("Allocation Marked/sec (Policy2)"),
+     Description("Number of allocation marked for eviction per seconds caused by Policy #2") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfMarkedPerSecPolicy2;
+    
+    [WmiDataId(13),
+     PerfDefault,
+     DisplayName("Allocation Marked/sec (Policy3)"),
+     Description("Number of allocation marked for eviction per seconds caused by Policy #3") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfMarkedPerSecPolicy3;
+
+    [WmiDataId(14),
+     PerfDefault,
+     DisplayName("Allocation Marked/sec (Policy4)"),
+     Description("Number of allocation marked for eviction per seconds caused by Policy #4") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfMarkedPerSecPolicy4;
+
+    [WmiDataId(15),
+     PerfDefault,
+     DisplayName("Allocation Restored/sec"),
+     Description("Number of allocation marked for eviction being restored per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfRestoredPerSec;
+    
+    [WmiDataId(16),
+     PerfDefault,
+     DisplayName("Allocation Restored/sec (Policy1)"),
+     Description("Number of allocation marked for eviction being restored per seconds caused by Policy #1") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfRestoredPerSecPolicy1;
+    
+    [WmiDataId(17),
+     PerfDefault,
+     DisplayName("Allocation Restored/sec (Policy2)"),
+     Description("Number of allocation marked for eviction being restored per seconds caused by Policy #2") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfRestoredPerSecPolicy2;
+    
+    [WmiDataId(18),
+     PerfDefault,
+     DisplayName("Allocation Restored/sec (Policy3)"),
+     Description("Number of allocation marked for eviction being restored per seconds caused by Policy #3") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfRestoredPerSecPolicy3;
+
+    [WmiDataId(19),
+     PerfDefault,
+     DisplayName("Allocation Restored/sec (Policy4)"),
+     Description("Number of allocation marked for eviction being restored per seconds caused by Policy #4") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfRestoredPerSecPolicy4;
+
+    [WmiDataId(20),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec"),
+     Description("Number of kilo bytes evicted per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSec;
+    
+    [WmiDataId(21),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Policy1)"),
+     Description("Number of kilo bytes evicted per seconds caused by Policy #1") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecPolicy1;
+    
+    [WmiDataId(22),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Policy2)"),
+     Description("Number of kilo bytes evicted per seconds caused by Policy #2") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecPolicy2;
+
+    [WmiDataId(23),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Policy3)"),
+     Description("Number of kilo bytes evicted per seconds caused by Policy #3") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecPolicy3;
+
+    [WmiDataId(24),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Policy4)"),
+     Description("Number of kilo bytes evicted per seconds caused by Policy #4") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecPolicy4;
+    
+    [WmiDataId(25),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Lock)"),
+     Description("Number of kilo bytes evicted per seconds caused by a DxLock() operation.") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecLock;
+    
+    [WmiDataId(26),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Rotate)"),
+     Description("Number of kilo bytes evicted per seconds caused by a failed DxLock() operation.") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecRotate;
+    
+    [WmiDataId(27),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Scratch)"),
+     Description("Number of kilo bytes evicted per seconds for scratch allocation") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecScratch;
+
+    [WmiDataId(28),
+     PerfDefault,
+     DisplayName("Kbytes evicted/sec (Config)"),
+     Description("Number of kilo bytes evicted per seconds because of segment reconfiguration.") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesEvictedPerSecConfig;
+
+    [WmiDataId(29),
+     PerfDefault,
+     DisplayName("Kbytes marked/sec"),
+     Description("Number of kilo bytes marked for eviction per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesMarkedPerSec;
+    
+    [WmiDataId(30),
+     PerfDefault,
+     DisplayName("Kbytes marked/sec (Policy1)"),
+     Description("Number of kilo bytes marked for eviction per seconds caused by Policy #1") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesMarkedPerSecPolicy1;
+    
+    [WmiDataId(31),
+     PerfDefault,
+     DisplayName("Kbytes marked/sec (Policy2)"),
+     Description("Number of kilo bytes marked for eviction per seconds caused by Policy #2") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesMarkedPerSecPolicy2;
+
+    [WmiDataId(32),
+     PerfDefault,
+     DisplayName("Kbytes marked/sec (Policy3)"),
+     Description("Number of kilo bytes marked for eviction per seconds caused by Policy #3") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesMarkedPerSecPolicy3;
+
+    [WmiDataId(33),
+     PerfDefault,
+     DisplayName("Kbytes marked/sec (Policy4)"),
+     Description("Number of kilo bytes marked for eviction per seconds caused by Policy #4") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesMarkedPerSecPolicy4;
+
+    [WmiDataId(34),
+     PerfDefault,
+     DisplayName("Kbytes restored/sec"),
+     Description("Number of kilo bytes marked for eviction being restored per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesRestoredPerSec;
+
+    [WmiDataId(35),
+     PerfDefault,
+     DisplayName("Kbytes restored/sec (Policy1)"),
+     Description("Number of kilo bytes marked for eviction being restored per seconds caused by Policy #1") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesRestoredPerSecPolicy1;
+    
+    [WmiDataId(36),
+     PerfDefault,
+     DisplayName("Kbytes restored/sec (Policy2)"),
+     Description("Number of kilo bytes marked for eviction being restored per seconds caused by Policy #2") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesRestoredPerSecPolicy2;
+    
+    [WmiDataId(37),
+     PerfDefault,
+     DisplayName("Kbytes restored/sec (Policy3)"),
+     Description("Number of kilo bytes marked for eviction being restored per seconds caused by Policy #3") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesRestoredPerSecPolicy3;
+    
+    [WmiDataId(38),
+     PerfDefault,
+     DisplayName("Kbytes restored/sec (Policy4)"),
+     Description("Number of kilo bytes marked for eviction being restored per seconds caused by Policy #4") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 NumberOfKBytesRestoredPerSecPolicy4;
+    
+    [WmiDataId(39),
+     PerfDefault,
+     DisplayName("#Process commited"),
+     Description("Number of process having commitment in this segment") : Amended,
+     CounterType(65792),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 NumberOfProcessCommited;
+    
+    [WmiDataId(40),
+     PerfDefault,
+     DisplayName("#Allocation commited"),
+     Description("Number of allocation commited in this segment") : Amended,
+     CounterType(65792),
+     DefaultScale(1),
+     PerfDetail(100)
+    ] uint64 NumberOfAllocationCommited;
+
+    [WmiDataId(41),
+     PerfDefault,
+     DisplayName("#Allocation marked"),
+     Description("Number of allocation marked for eviction") : Amended,
+     CounterType(65792),
+     DefaultScale(1),
+     PerfDetail(100)
+    ] uint64 NumberOfAllocationMarked;
+    
+    [WmiDataId(42),
+     PerfDefault,
+     DisplayName("#Free block"),
+     Description("Number of free block in the segment") : Amended,
+     CounterType(65792),
+     DefaultScale(1),
+     PerfDetail(100)
+    ] uint64 NumberOfFreeBlock;
+    
+    [WmiDataId(43),
+     PerfDefault,
+     DisplayName("Kbytes available"),
+     Description("Number of kilo bytes free in the segment") : Amended,
+     CounterType(65792),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 KbytesAvailable;
+
+    [WmiDataId(44),
+     PerfDefault,
+     DisplayName("Kbytes allocated"),
+     Description("Number of kilo bytes allocated in the segment") : Amended,
+     CounterType(65792),
+     DefaultScale(2),
+     PerfDetail(100)
+    ] uint64 KbytesAllocated;
+
+    [WmiDataId(45),
+     PerfDefault,
+     DisplayName("Kbytes marked"),
+     Description("Number of kilo marked for eviction in the segment") : Amended,
+     CounterType(65792),
+     DefaultScale(2),
+     PerfDetail(100)
+    ] uint64 KbytesMarked;
+
+    [WmiDataId(46),
+     PerfDefault,
+     DisplayName("#Reference/sec"),
+     Description("Number of allocation being referenced per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 ReferencePerSec;
+    
+    [WmiDataId(47),
+     PerfDefault,
+     DisplayName("#Fault/sec"),
+     Description("Number of allocation being faulted per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(0),
+     PerfDetail(100)
+    ] uint64 FaultPerSec;
+    
+    [WmiDataId(48),
+     PerfDefault,
+     DisplayName("Kbytes paged-in/sec"),
+     Description("Number of kilo bytes being paged-in per seconds") : Amended,
+     CounterType(272696576),
+     DefaultScale(4),
+     PerfDetail(100)
+    ] uint64 KbytesPagedInPerSec;
+};
+
+

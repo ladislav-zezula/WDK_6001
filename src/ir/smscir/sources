@@ -1,0 +1,30 @@
+TARGETNAME=smscir
+TARGETTYPE=DRIVER
+
+MSC_WARNING_LEVEL=-W3 -WX
+
+USE_WDF_DYNAMIC=1
+KMDF_VERSION=1
+
+C_DEFINES=-DWIN9X_COMPAT_SPINLOCK
+
+#
+# Define controlling whether or 
+# not we're going to use WPP tracing
+#
+C_DEFINES = -DWPP_TRACING $(C_DEFINES)
+
+SOURCES=smscir.c    \
+        pnp.c       \
+        isr.c       \
+        dpc.c       \
+        io.c        \
+        wake.c      \
+        runtables.c \
+        smscir.rc   \
+
+RUN_WPP=$(SOURCES)\
+        -km\
+        -func:SmscIrTracePrint(LEVEL,FLAGS,(MSG,...))\
+        -gen:{km-WdfDefault.tpl}*.tmh      
+

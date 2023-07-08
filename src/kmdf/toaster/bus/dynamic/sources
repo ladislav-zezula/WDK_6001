@@ -1,0 +1,25 @@
+TARGETNAME=dynambus
+TARGETTYPE=DRIVER
+
+
+NTTARGETFILE0=$(OBJ_PATH)\$(O)\busenum.bmf
+
+INCLUDES=$(INCLUDES);..\..\inc\
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=dynambus
+
+TARGETLIBS=$(TARGETLIBS) \
+           $(DDK_LIB_PATH)\ntstrsafe.lib
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+MISCFILES=$(NTTARGETFILES)
+
+
+SOURCES= busenum.rc \
+         busenum.c \
+         buspdo.c \
+         wmi.c
+

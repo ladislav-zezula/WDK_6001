@@ -1,0 +1,85 @@
+;
+; WpdHelloWorldDriver.inf
+;
+
+[Version]
+Signature="$Windows NT$"
+Class=WPD
+ClassGuid={EEC5AD98-8080-425f-922A-DABF3DE3F69A}
+Provider=%Provider%
+CatalogFile=WpdHelloWorldDriver.cat
+DriverVer=01/24/2005,1.1.1.1
+
+[Manufacturer]
+%MSFTWUDF%=Microsoft,NTx86,NTia64,NTamd64
+
+[Microsoft.NTx86]
+%BasicDeviceName%=Basic_Install,WUDF\Basic
+
+[Microsoft.NTia64]
+%BasicDeviceName%=Basic_Install,WUDF\Basic
+
+[Microsoft.NTamd64]
+%BasicDeviceName%=Basic_Install,WUDF\Basic
+
+[SourceDisksFiles]
+WpdHelloWorldDriver.dll=1
+
+[SourceDisksNames]
+1 = %MediaDescription%
+
+; =================== WPD Sample Device ==================================
+
+[Basic_Install]
+CopyFiles=System32Copy
+
+[Basic_Install.hw]
+AddReg=Device_AddReg
+
+[Basic_Install.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall
+
+[Basic_Install.CoInstallers]
+AddReg=Basic_Install.CoInstallers_AddReg
+
+[Basic_Install.CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WUDFCoInstaller.dll"
+
+[Basic_Install.Wdf]
+UmdfService=WpdHelloWorldDriver, WpdHelloWorldDriver_Install
+UmdfServiceOrder=WpdHelloWorldDriver
+
+[WpdHelloWorldDriver_Install]
+UmdfLibraryVersion=1.0.0
+DriverCLSID="{EC7445EE-BC00-4CED-AFE7-A52849F10239}"
+ServiceBinary=%12%\UMDF\WpdHelloWorldDriver.dll
+
+[Device_AddReg]
+; Enable WIA support for legacy WIA applications
+HKR,,"EnableLegacySupport",0x10001,1
+
+; Enable default AutoPlay support
+HKR,,"EnableDefaultAutoPlaySupport",0x10001,1
+
+[WUDFRD_ServiceInstall]
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\WUDFRd.sys
+
+[DestinationDirs]
+System32Copy=12,UMDF ; copy to system32\drivers\umdf
+
+[System32Copy]
+WpdHelloWorldDriver.dll
+
+
+; =================== Generic ==================================
+
+[Strings]
+MSFTWUDF="Microsoft Windows Portable Devices"
+Provider="Microsoft WPD"
+MediaDescription="Windows Portable Device Hello World Sample Driver Installation Media"
+BasicDeviceName="Windows Portable Device Hello World Sample Driver"
+REG_DWORD = 0x00010001
+

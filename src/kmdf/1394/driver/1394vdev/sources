@@ -1,0 +1,13 @@
+!include ..\sources.inc
+
+TARGETNAME=1394VDEV
+
+
+#
+# -DWDF_DEVICE_NO_WDMSEC_H required if the Driver type is set to WDM
+# WDMSEC.H header is not available under DDK\INC\WDM directory.
+#
+C_DEFINES= $(C_DEFINES)  -D_1394VDEV_DRIVER_=1 -DDRIVER -DWDF_DEVICE_NO_WDMSEC_H=1
+
+SOURCES = $(SOURCES) 1394vdev.rc
+

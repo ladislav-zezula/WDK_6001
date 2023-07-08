@@ -1,0 +1,263 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>README for Windows Driver Framework Samples</title>
+<style>
+<!--
+ table.MsoNormalTable
+    {mso-style-parent:"";
+    font-size:10.0pt;
+    font-family:"Times New Roman"}
+-->
+</style>
+</head>
+
+<body>
+
+<p align="left"><font size="5">Directory of Windows Driver Framework Samples</font></p>
+<p align="left"><font size="4">List of samples:</font></p>
+<table border="0" style="border-collapse: collapse" width="272" id="table3">
+  <tr>
+    <td width="90">
+    <ul>
+      <li><a href="#Toaster">Toaster</a></li>
+      <li><a href="#AMCC5933">AMCC5933</a></li>
+      <li><a href="#NONPNP">NONPNP</a></li>
+      <li><a href="#ndis-wdm">NDISWDF</a></li>
+      <li><a href="#plx9x5x">PLX9x5x</a></li>
+    </ul>
+    </td>
+    <td width="121">
+    <ul>
+      <li><a href="#PCIDRV">PciDrv</a></li>
+      <li><a href="#Echo">Echo</a></li>
+      <li><a href="#FakeModem">FakeModem</a></li>
+      <li><a href="#ramdisk">Ramdisk</a></li>
+      <li><a href="#serial">Serial</a></li>
+    </ul>
+    </td>
+    <td width="121">
+    <ul>
+      <li><a href="#1394">1394</a></li>
+      <li><a href="#ndisprot">NDISPROT</a></li>
+      <li><a href="#kbfiltr">KBFILTR</a></li>
+      <li><a href="#OSRUSBFX2">OSRUSBFX2</a></li>
+      <li><a href="#UsbSamp">UsbSamp</a></li>
+      <li><a href="#WmiSamp">WmiSamp</a></li>
+    </ul>
+    </td>
+  </tr>
+</table>
+<p align="left">Following table lists framework samples and a
+description of a usage scenario where this sample would be suitable as a
+starting point for driver writers.&nbsp; You can bring up the readme file to
+learn more about the sample by clicking on the sample name. </p>
+<table class="MsoNormalTable" border="1" cellspacing="0" cellpadding="0" style="width: 579px; border-collapse: collapse; border: medium none">
+  <tr>
+    <td style="width: 93px; border: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in" align="center">
+    <h1><b><font size="3">Sample Name</font></b></h1>
+    </td>
+    <td style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: 1.0pt solid windowtext; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in" align="center">
+    <h1><font size="3"><b>Scenario</b></font></h1>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in" height="345">
+    <p class="MsoNormal"><b><font size="3">
+    <a href="toaster/toaster.htm" name="Toaster">Toaster</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in" height="345">
+    <p class="MsoNormal"><font size="3">Samples contained in this directory are
+    meant to illustrate basic functionality of the Driver Framework. They are
+    purely meant for learning purposes or building blocks for real drivers. It
+    contains:</font><p class="MsoNormal"><font size="3"><b>Func:</b> This
+    directoy contains a simple and featured version of function driver. The
+    simple version is the most skeletal form of the driver you can write with
+    Framework.</font><p class="MsoNormal"><font size="3"><b>Bus: </b>Contains
+    the bus driver sample to
+    illustrate how to enumerate child devices.</font><p class="MsoNormal">
+    <font size="3"><b>Filter:</b> Shows how to write a filter driver and also
+    how to provide a control deviceobject to have a private communication with
+    an application.</font><p class="MsoNormal"><font size="3"><b>Toastmon: </b>
+    This one shows how to open a device in kernel-mode using IoTarget.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in" height="35">
+    <p class="MsoNormal"><font size="3">&nbsp;<b><a href="Echo/Echo.htm" name="Echo">Echo</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in" height="35">
+    <p class="MsoNormal"><font size="3">Demonstrates how to serialize all the
+    I/O going into a driver by using Serial
+    I/O Queue. Typically useful for driver that can handle only one I/O at a
+    time. The sample defers the completion of request to a timer DPC. It also
+    demonstrates how to mark the request cancelable while it's pending in the
+    driver. </font>
+    <p class="MsoNormal"><font size="3">This sample is functionally similar to a
+    WDM sample that has a single queue and uses IoStartPacket/IoStartNextPacket
+    WDM APIs. </font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><b><font size="3">
+    <a href="PCIDRV/PCIDRV.HTM" name="PCIDRV">PCIDRV</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">Fully functional driver sample for a PCI
+    device that uses port, memory, interrupt resources and
+    scatter-gather DMA. </font>
+    <p class="MsoNormal"><font size="3">The device is capable of using either
+    port or memory resources to control the device. Device can be suspended when
+    Idle and also has the ability to wake the machine from low power state.</font><p class="MsoNormal">
+    <font size="3"><br>
+    The driver is capable of doing concurrent read and write
+    operations to the device. The driver is written to work for Intel Etherpress
+    10/100 Network controllers and it's variants.</font><p class="MsoNormal">
+    <font size="3">This sample also illustrates how to configure the hardware
+    for run time power management and wait-wake.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><b><font size="3">
+    <a href="plx9x5x/pci9x5x.htm" name="plx9x5x">PLX9x5x</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">Sample is for a PCI device with port,
+    memory, interrupt resources and supports scatter-gather DMA.
+    </font></p>
+    <p class="MsoNormal"><font size="3"><br>
+    The driver illustrates how to serailize read and write requests to the
+    device using seperate queues.</font></p>
+    <p class="MsoNormal"><font size="3">The sample is written for PLx PCI9056RDK-Lite Adapter.</font></p>
+    <p class="MsoNormal"><font size="3">This is just a simple version of PCIDRV.</font></p></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <b><font size="3">
+    <a href="amcc5933/readme.htm" name="AMCC5933">AMCC5933</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">This directory contains samples for PCI
+    and Non PNP ISA device. </font></p>
+    <p class="MsoNormal"><font size="3">The PCI device has port and DMA
+    resouces. The driver is primarily meant to illustrate how to do non
+    scatter-gather (Packet based) DMA.</font></p>
+    <p class="MsoNormal"><font size="3">The ISA device supports only port
+    resources and it has to be specified in the INF file and the driver must be
+    installed manually using Add Hardware Wizard. The driver illustrates how to
+    program the hardware and poll the device using WorkItems</font></p>
+    <p class="MsoNormal"><font size="3">These samples are written for AMCC
+    5933/5935 adapters.</font></p></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><b><font size="3">
+    <a href="fakemodem/fakemodem.htm" name="FakeModem">FakeModem</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">Sample for controller-less modem
+    (soft-modem)&nbsp; drivers. Soft modem drivers are generic WDM
+    drivers. They handle serial IOCTLs to support TAPI interface on the
+    top edge and use I/O resources to talk to the hardware or other WDM stack.</font></p>
+    <p class="MsoNormal"><font size="3">&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3"><b><a href="nonpnp/nonpnp.htm" name="nonpnp">NONPNP</a></b>
+    </font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">This sample would be useful for writing
+    driver that doesn’t interact with any hardware. Typically, such drivers are
+    written to provide some kernel-level services to a user application. These
+    drivers are dynamically loaded by the application when it’s run and unloaded
+    when it exits. <br>
+    (E.g: FileMon, Regmon, DevicTree are examples of tools that use this type of
+    driver).</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><b><font size="3">
+    <a href="ndisedge/ndiswdm.htm" name="ndis-wdm">NDIS-WDF</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">The purpose is to illustrate Miniport
+    functionality and I/O Targets of Windows Driver Framework.&nbsp; This driver
+    exposes NDIS miniport interface at its upper edge and uses Windows Driver
+    Framework(WDF) interfaces to interact with other WDM drivers such as USB,
+    IEEE 1394, and serial at its lower edge. </font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <b><font size="3"><a href="osrusbfx2/osrusbfx2.htm" name="OSRUSBFX2">
+    OSRUSBFX2</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">The OSRUSBFX2 sample demonstrates how to perform bulk and 
+    isochronous data transfers to a generic USB device using Windows Driver 
+    Framework (WDF). This sample is written for OSR USB-FX2 Learning Kit. It 
+    contains a console test application to initiate bulk &amp; isochronouse 
+    transfers and obtain information on the device's I/O endpoints. The 
+    application also demonstrates how to use GUID-based device names and pipe 
+    names generated by the operating system using the SetupDiXXX user-mode APIs.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><b><font size="3">
+    <a href="ramdisk/ramdisk.htm" name="ramdisk0">RAMDISK</a></font></b></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal"><font size="3">This sample is meant to show how to
+    create&nbsp; RAM disk driver. This Ramdisk can be used like any other disk,
+    but the contents of the disk will be lost when the machine is shutdown.</font></td>
+    </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3"><b><a name="serial" href="serial/serial.htm">SERIAL</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">This sample is a rewrite of inbox WDM serial driver. The
+    purpose of this sample is to illustrate how device level locking feature can
+    be used to serialize all the I/O events, dpc and timer callbacks into the
+    driver so that driver doesn't have to worry about any synchronization
+    issues. This sample also illustrates runtime power managments.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3"><b><a name="kbfiltr" href="kbfiltr/sys/kbfiltr.htm">KBFILTR</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">This samples illustrates how to write a filter driver and
+    expose side band PNP interface to an usermode application by enumerating a
+    RAW PDO.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3"><b><a name="ndisprot" href="ndisprot/ndisprot.htm">NDISPROT</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">This samples shows how to write an NDIS protocol driver using
+    WDF. Protocol drivers use generic I/O interface on the top edge and a NDIS
+    interface at the bottom. They convert incoming I/O requests to NDIS packets
+    and send it to miniport drivers and do the converse on the receive side.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3"><b><a name="1394" href="1394/1394.htm">1394</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">This sample illustrates how a client driver can use framework
+    Request and IoTarget intefaces to interact with 1394 stack.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3"><b><a name="UsbSamp" href="usbsamp/usbsamp.htm">USBSAMP</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">This sample demonstrates how to perform bulk and isochronous 
+    data transfers to a generic USB device.</font></td>
+  </tr>
+  <tr>
+    <td valign="top" style="width: 93px; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3"><b><a name="WmiSamp" href="wmisamp/wmisamp.htm">WMISAMP</a></b></font></td>
+    <td valign="top" style="width: 437px; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <font size="3">This sample illustrates how a client driver can use the framework 
+    to handle WMI requests.</font></td>
+  </tr>
+  </table>
+
+<p class="MsoNormal">&nbsp;</p>
+
+</body>
+
+</html>
+

@@ -1,0 +1,105 @@
+
+!INCLUDE ..\sources.inc
+
+MAJORCOMP=ntos
+
+TARGETNAME=r200
+TARGETPATH=..\lib\$(_OBJ_DIR)
+TARGETTYPE=MINIPORT
+
+USE_LIBCNTPR=1
+
+386_FLAGS=-D_NTSDK -DCOMPILE_DAL_SUPPORT -DNT_BUILD
+IA64_FLAGS=-D_NTSDK -DCOMPILE_DAL_SUPPORT -DNT_BUILD
+
+ALPHA_FLAGS=-D_NTSDK -DCOMPILE_DAL_SUPPORT
+
+## Remove the LDK_PATH when true LH_DDK arrives
+
+TARGETLIBS=                         \
+    $(DDK_LIB_PATH)\displib.lib     \
+    $(DDK_LIB_PATH)\ntoskrnl.lib    \
+    $(DDK_LIB_PATH)\hal.lib         \
+    $(SDK_LIB_PATH)\libcntpr.lib    \
+
+
+!if $(FREEBUILD)
+TARGETLIBS= \
+    $(TARGETLIBS)   \
+    ..\lib\*\free\atinmmag.lib \
+    ..\lib\*\free\dal.lib    \
+    ..\lib\*\free\r6gco.lib  \
+    ..\lib\*\free\r6crt.lib  \
+    ..\lib\*\free\r6dfp.lib  \
+    ..\lib\*\free\r6lcd.lib  \
+    ..\lib\*\free\tv2.lib	\
+    ..\lib\*\free\cail.lib	\
+    ..\lib\*\free\irqmgr.lib \
+    ..\lib\*\free\r200mport.lib \
+    ..\lib\*\free\r2umdd.lib    \
+!else
+TARGETLIBS= \
+    $(TARGETLIBS)   \
+    ..\lib\*\chk\atinmmag.lib \
+    ..\lib\*\chk\dal.lib    \
+    ..\lib\*\chk\r6gco.lib  \
+    ..\lib\*\chk\r6crt.lib  \
+    ..\lib\*\chk\r6dfp.lib  \
+    ..\lib\*\chk\r6lcd.lib  \
+    ..\lib\*\chk\tv2.lib	\
+    ..\lib\*\chk\cail.lib	\
+    ..\lib\*\chk\irqmgr.lib \
+    ..\lib\*\chk\r200mport.lib \
+    ..\lib\*\chk\r2umdd.lib    \
+!endif
+
+
+
+INCLUDES=   \
+    $(INCLUDES);                \
+    ..\2d\ntx\r6\inc;           \
+    ..\2d\ntx\r6\r6gxo\dallib\inc; \
+    ..\2d\ntx\r6\miniport;      \
+    ..\2d\ntx\r6\cail\inc;      \
+    ..\inc\asic_reg;            \
+    ..\cmmqs\inc;               \
+    ..\dx\r6\direct3d\inc;      \
+    ..\dx\r6\inc\common;        \
+    ..\dx\r6\inc\radeon;        \
+    ..\dx\r6\inc\pm4;           \
+    ..\dx\r6\directdraw\inc;    \
+    ..\clone;			\
+
+
+
+C_DEFINES=  \
+    $(C_DEFINES)                \
+    -DMMLIB_COMPILE_SUPPORT     \
+    -DNT_MINIPORT_BUILD        \
+
+
+!if !$(FREEBUILD)
+C_DEFINES=$(C_DEFINES) -D_DEBUG_PARSER -DQS_EMU
+!endif
+
+# Enable interrupt for time stamp
+C_DEFINES=$(C_DEFINES) -DPM4_TS_INTERRUPT
+
+# Indicate LH KMD in MP
+C_DEFINES=$(C_DEFINES) -DKMD
+
+# QS uses C++ and it takes special step to initialize the global C++ objects
+LINKER_FLAGS = $(LINKER_FLAGS) -IGNORE:4210
+
+SOURCES=            \
+    vidlog.mc       \
+    wmimof.mof      \
+    rage.rc         \
+    dma.c	    \
+    dmamem.c        \
+    r2d3dddi.c      \
+    miniport.c      \
+    init.c          \
+    debug.c         \
+
+TARGET_DESTINATION=retail

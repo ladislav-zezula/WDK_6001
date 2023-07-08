@@ -1,0 +1,13 @@
+TARGETNAME=elmsmc
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\mcd.lib
+
+INCLUDES=..\inc;..\..\inc;..\..\..\inc
+
+SOURCES=elmsmc.c \
+        elmsmc.rc
+
+
+TARGET_DESTINATION=retail
+

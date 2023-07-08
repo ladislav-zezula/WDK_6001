@@ -1,0 +1,90 @@
+; Copyright (c) Microsoft Corporation.  All rights reserved.
+[Version]
+signature="$Windows NT$"
+Class=MEDIA
+ClassGUID={4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider=%Msft%
+DriverVer=06/21/2006,6.0.5314.0
+
+[ControlFlags]
+;ExcludeFromSelect=*
+
+[DestinationDirs]
+DefaultDestDir=10,system32\drivers
+
+[Manufacturer]
+%Msft%=Microsoft,NTx86,NTamd64
+
+[Microsoft.NTx86]
+%BDASwCap.DeviceDesc%=BDASwCap,SW\{AA7F4F0A-A95B-42d1-B9DD-EE3AC9AB39A8}
+
+[Microsoft.NTamd64]
+%BDASwCap.DeviceDesc%=BDASwCap,SW\{AA7F4F0A-A95B-42d1-B9DD-EE3AC9AB39A8}
+
+[DefaultInstall]
+Include     = ks.inf, kscaptur.inf, bda.inf
+needs=KS.Registration, KSCAPTUR.Registration, BDA.Installation, BDASwCap.RunOnce.Install
+CopyFiles=BDASwCap.CopyFiles
+
+[BDASwCap.RunOnce.Install]
+AddReg=BDASwCap.RunOnce.AddReg
+
+[BDASwCap.RunOnce.AddReg]
+HKLM,%RunOnce%,"BdaSW.Capture",,"rundll32.exe streamci,StreamingDeviceSetup %BdaSWCap.DeviceId%,%KSSTRING_BdaSWCapFilter%,%KSCATEGORY_BDARECEIVER%,%01%\BDASwCap.inf,BDASwCap.Install"
+
+[BDASwCap.Install]
+AddReg=BDASwCap.AddReg
+
+[BDASwCap.AddReg]
+HKR,,DevLoader,,*NTKERN
+HKR,,NTMPDriver,,BDASwCap.sys
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BDASwCap.FriendlyName%
+
+[BDASwCap.CopyFiles]
+BDASwCap.sys
+
+[BDASwCap.Interfaces]
+AddInterface = %KSCATEGORY_BDARECEIVER%, %KSSTRING_BdaSWCapFilter%, BDASwCap.Filter
+
+[BDASwCap.Filter]
+AddReg = BDASwCap.Filter.AddReg
+
+[BDASwCap.Filter.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BDASwCap.FilterDesc%
+
+[BDASwCap.Services]
+AddService=BDASwCap, 0x00000002, BDASwCap.ServiceInstall
+
+[BDASwCap.NT.Services]
+AddService=BDASwCap, 0x00000002, BDASwCap.ServiceInstall
+
+[BDASwCap.ServiceInstall]
+DisplayName=%BDASwCap.DeviceDesc%
+ServiceType=%SERVICE_KERNEL_DRIVER%
+StartType=%SERVICE_DEMAND_START%
+ErrorControl=%SERVICE_ERROR_NORMAL%
+ServiceBinary=%10%\system32\drivers\BDASwCap.sys
+LoadOrderGroup=Extended Base
+
+[Strings]
+; non-localizeable
+RunOnce="SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+BDASwCap.DeviceId="{AA7F4F0A-A95B-42d1-B9DD-EE3AC9AB39A8}"
+Proxy.CLSID="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSCATEGORY_BDARECEIVER="{FD0A5AF4-B41D-11d2-9C95-00C04F7971E0}"
+KSSTRING_BDASwCapFilter="{074649FE-2DD8-4c12-8A23-BD828BADFFFA}"
+
+SERVICE_KERNEL_DRIVER=1
+SERVICE_DEMAND_START=3
+SERVICE_ERROR_NORMAL=1
+REG_EXPAND_SZ=0x00020000
+REG_DWORD=0x00010001
+
+;localizeable
+Msft="Microsoft"
+BDASwCap.DeviceDesc="Sample BDA Capture Device"
+BDASwCap.FilterDesc="Sample BDA Capture Filter"
+BDA_DISK = "S/W Sample BDA Captures Driver disk"
+BDASwCap.FriendlyName="Sample BDA Capture"

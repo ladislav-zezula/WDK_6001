@@ -1,0 +1,154 @@
+;/*++
+;
+;Copyright (c) Microsoft Corporation.  All rights reserved.
+;
+;Module Name:
+;
+;    1394SAMP.INF
+;
+;Abstract:
+;    INF file for installing 1394 diagnostic device and virtual device
+; 
+;
+;--*/
+[Version]
+signature="$CHICAGO$"
+Class=Sample
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171}
+Provider=%Msft%
+CatalogFile=KmdfSamples.cat
+DriverVer=05/01/2001,1.0.0.0
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+1394vdev.sys=1
+1394diag.sys=1
+
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; =================== Class Sections ===========================
+[ClassInstall32]
+Addreg=1394DevicesClassReg
+
+[1394DevicesClassReg]
+HKR,,,,%ClassName%
+HKR,,Icon,,-21
+HKR,,Security,,"D:P(A;;GA;;;SY)(A;;GA;;;BA)"  ; ACL allowing System and Admin
+
+[Manufacturer]
+%Msft%=Microsoft,NT$ARCH$
+
+[ControlFlags]
+ExcludeFromSelect=*
+
+; =================== Microsoft ========================
+
+; Following section is meant for Windows 2000 as it cannot parse decorated model sections
+[Microsoft]
+%V1394\1394_VIRTUAL_DEVICE.DeviceDesc%=1394VDEV,V1394\1394_VIRTUAL_DEVICE
+%1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE.DeviceDesc%=1394DIAG,1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE
+%1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE.DeviceDesc%=1394DIAG,1394\031887&040892
+
+; Decorated model section take precedence over undecorated ones on XP and later.
+[Microsoft.NT$ARCH$]
+%V1394\1394_VIRTUAL_DEVICE.DeviceDesc%=1394VDEV,V1394\1394_VIRTUAL_DEVICE
+%1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE.DeviceDesc%=1394DIAG,1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE
+%1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE.DeviceDesc%=1394DIAG,1394\031887&040892
+
+;
+; 1394vdev
+;
+[1394VDEV.NT]
+CopyFiles=1394VDEV.CopyDriver
+
+[1394VDEV.NT.Services]
+AddService=1394VDEV,2,1394VDEV_ServiceInstall
+
+[1394VDEV_ServiceInstall]
+DisplayName=%V1394\1394_VIRTUAL_DEVICE.DeviceDesc%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\1394vdev.sys
+
+;
+; 1394diag
+;
+[1394DIAG.NT]
+CopyFiles=1394DIAG.CopyDriver
+
+[1394DIAG.NT.Services]
+AddService=1394DIAG,2,1394DIAG_ServiceInstall
+
+[1394DIAG_ServiceInstall]
+DisplayName=%1394\031887&040892.DeviceDesc%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\1394diag.sys
+
+;
+; core files
+;
+
+[1394VDEV.CopyDriver]
+1394vdev.sys
+
+[1394DIAG.CopyDriver]
+1394diag.sys
+
+;-------------- WDF Coinstaller installation
+[1394VDEV.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[SourceDisksFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[1394VDEV.NT.Wdf]
+KmdfService = 1394VDEV, 1394VDEV_wdfsect
+[1394VDEV_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+
+;-------------- WDF Coinstaller installation
+[1394DIAG.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[1394DIAG.NT.Wdf]
+KmdfService = 1394DIAG, 1394DIAG_wdfsect
+[1394DIAG_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+        
+;
+; Strings
+;
+[Strings]
+Msft="Microsoft"
+V1394\1394_VIRTUAL_DEVICE.DeviceDesc="1394 Virtual Device"
+1394\031887&040892.DeviceDesc="1394 Diagnostic Device"
+1394\MICROSOFT&1394_DIAGNOSTIC_DEVICE.DeviceDesc="1394 Diagnostic Device"
+ClassName = "Sample Device"
+DiskId1 = "IEEE-1394 Test Tools"
+

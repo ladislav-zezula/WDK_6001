@@ -1,0 +1,48 @@
+!IF 0
+
+Copyright (c) 2005 Microsoft Corporation
+
+All rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+PARTICULAR PURPOSE.
+
+File Name:
+
+    sources
+
+Abstract:
+
+    This file specifies the target component being built and the list of
+    sources files needed to build that component.  Also specifies optional
+    compiler switches and libraries that are unique for the component being
+    built.
+
+!ENDIF
+
+SOURCES=         \
+ dllentry.cpp    \
+ scaleflt.cpp    \
+ scalesax.cpp    \
+ pagescale.cpp   \
+ pgscptprop.cpp  \
+ scaleflt.rc
+
+TARGETNAME=xdscale
+TARGETTYPE=DYNLINK
+
+DLLENTRY=_DllMainCRTStartup
+
+INCLUDES=$(INCLUDES); \
+    ..\xdcont;        \
+
+TARGETLIBS=$(TARGETLIBS)               \
+    $(OBJ_PATH)\..\lib\$(O)\xdcont.lib \
+
+!include ..\sources.inc
+
+!IF "$(BUILD_PASS)" == "PASS2" || "$(BUILD_PASS)" == "PASSALL"
+NTTARGETFILES=COPYDLL
+!ENDIF

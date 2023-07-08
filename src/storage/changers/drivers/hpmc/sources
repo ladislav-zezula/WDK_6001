@@ -1,0 +1,13 @@
+TARGETNAME=hpmc
+TARGETTYPE=DRIVER
+
+TARGETLIBS=$(DDK_LIB_PATH)\mcd.lib
+
+INCLUDES=..\inc;..\..\inc;..\..\..\inc
+
+SOURCES=hpmc.c \
+        hpmc.rc
+
+
+TARGET_DESTINATION=retail
+

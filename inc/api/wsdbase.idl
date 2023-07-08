@@ -1,0 +1,297 @@
+//+-------------------------------------------------------------------------
+//
+//  Microsoft Windows
+//  Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//  Component: WSDAPI - Microsoft Web Services for Devices API
+// 
+//  File: wsdbase.idl
+//
+//  Abstract: Base interface definitions and typedefs for WSDAPI
+//
+//--------------------------------------------------------------------------
+
+import "objidl.idl";
+
+//
+// Forward definitions
+//
+interface IWSDAddress;
+interface IWSDMessageParameters;
+interface IWSDUdpAddress;
+interface IWSDUdpMessageParameters;
+interface IWSDHttpAddress;
+interface IWSDHttpMessageParameters;
+
+cpp_quote("#define WSDAPI_ADDRESSFAMILY_IPV4 1")
+cpp_quote("#define WSDAPI_ADDRESSFAMILY_IPV6 2")
+
+//+-------------------------------------------------------------------------
+//  IWSDAddress Interface
+//  Description: Generic Transport Address
+//--------------------------------------------------------------------------
+[
+    object,
+    uuid(b9574c6c-12a6-4f74-93a1-3318ff605759),
+    local
+]
+interface IWSDAddress : IUnknown
+{
+midl_pragma warning( disable:2495 )
+    HRESULT Serialize(
+        [out, size_is(cchLength), annotation("__out_ecount(cchLength)")] LPWSTR pszBuffer,
+        [in] DWORD cchLength,
+        [in] BOOL fSafe);
+midl_pragma warning( default:2495 )
+
+    HRESULT Deserialize(
+        [in] LPCWSTR pszBuffer);
+}
+
+//+-------------------------------------------------------------------------
+//  IWSDTransportAddress Interface
+//  Description: IP-based Transport Address
+//--------------------------------------------------------------------------
+[
+    object,
+    uuid(70d23498-4ee6-4340-a3df-d845d2235467),
+    local
+]
+interface IWSDTransportAddress : IWSDAddress
+{
+    HRESULT GetPort(
+        [out] WORD* pwPort);
+
+    HRESULT SetPort(
+        [in] WORD wPort);
+
+    HRESULT GetTransportAddress(
+        [out] LPCWSTR* ppszAddress); // Note: Do not deallocate ppszAddress
+    
+    HRESULT GetTransportAddressEx(
+        [in] BOOL fSafe,
+        [out] LPCWSTR* ppszAddress); // Note: Do not deallocate ppszAddress
+    
+    HRESULT SetTransportAddress(
+        [in] LPCWSTR pszAddress);
+}
+
+//+-------------------------------------------------------------------------
+//  IWSDMessageParameters Interface
+//  Description: Specific transmission with a remote device
+//--------------------------------------------------------------------------
+[
+    object,
+    uuid(1fafe8a2-e6fc-4b80-b6cf-b7d45c416d7c)
+]
+interface IWSDMessageParameters : IUnknown
+{
+    HRESULT GetLocalAddress(
+        [out] IWSDAddress** ppAddress);
+
+    HRESULT SetLocalAddress(
+        [in] IWSDAddress* pAddress);
+
+    HRESULT GetRemoteAddress(
+        [out] IWSDAddress** ppAddress);
+    
+    HRESULT SetRemoteAddress(
+        [in] IWSDAddress* pAddress);
+
+    HRESULT GetLowerParameters(
+        [out] IWSDMessageParameters** ppTxParams);
+} 
+
+////////////////////////////////////////////////////////////////////////////
+//
+// Soap-over-Udp specific definitions
+//
+////////////////////////////////////////////////////////////////////////////
+
+//
+// Helper for creating UDP message parameters
+//
+cpp_quote("HRESULT WINAPI")
+cpp_quote("WSDCreateUdpMessageParameters(")
+cpp_quote("    IWSDUdpMessageParameters** ppTxParams);")
+
+//
+// Retransmit parameters
+//
+typedef struct _WSDUdpRetransmitParams
+{
+    ULONG ulSendDelay;
+    ULONG ulRepeat;
+    ULONG ulRepeatMinDelay;
+    ULONG ulRepeatMaxDelay;
+    ULONG ulRepeatUpperDelay;
+} WSDUdpRetransmitParams;
+
+//+-------------------------------------------------------------------------
+//  IWSDUdpMessageParameters Interface
+//  Description: UDP specific retransmission information for this message
+//--------------------------------------------------------------------------
+[
+    object,
+    uuid(9934149f-8f0c-447b-aa0b-73124b0ca7f0)
+]
+interface IWSDUdpMessageParameters : IWSDMessageParameters
+{
+    HRESULT SetRetransmitParams(
+        [in] const WSDUdpRetransmitParams* pParams);
+
+    HRESULT GetRetransmitParams(
+        [out] WSDUdpRetransmitParams* pParams);
+
+}
+
+//
+// Helper for creating UDP address
+//
+cpp_quote("HRESULT WINAPI")
+cpp_quote("WSDCreateUdpAddress(")
+cpp_quote("    IWSDUdpAddress** ppAddress);")
+
+//
+// Forward declare SOCKADDR_STORAGE so MIDL wont choke
+//
+#ifndef SOCKADDR_STORAGE
+cpp_quote("#if 1")
+cpp_quote("// Forward declaration to avoid winsock2.h inclusion")
+cpp_quote("#ifndef __CSADDR_DEFINED__")
+cpp_quote("struct SOCKADDR_STORAGE;")
+cpp_quote("#endif // __CSADDR_DEFINED__")
+cpp_quote("#else  // 1")
+cpp_quote("// Bogus definition used to make MIDL compiler happy")
+typedef void SOCKADDR_STORAGE;
+cpp_quote("#endif // 1")
+#endif
+
+typedef enum _WSDUdpMessageType
+{
+    ONE_WAY,
+    TWO_WAY,
+} WSDUdpMessageType;
+    
+//+-------------------------------------------------------------------------
+//  IWSDUdpAddress Interface
+//  Description: UDP Address Interface
+//--------------------------------------------------------------------------
+[
+    object,
+    uuid(74d6124a-a441-4f78-a1eb-97a8d1996893),
+    local
+]
+interface IWSDUdpAddress : IWSDTransportAddress
+{
+    HRESULT SetSockaddr(
+        [in] const SOCKADDR_STORAGE* pSockAddr);
+
+    HRESULT GetSockaddr(
+        [out] SOCKADDR_STORAGE* pSockAddr);
+    
+    HRESULT SetExclusive(
+        [in] BOOL fExclusive);
+
+    HRESULT GetExclusive(); 
+
+    HRESULT SetMessageType(
+        [in] WSDUdpMessageType messageType);
+
+    HRESULT GetMessageType(
+        [out] WSDUdpMessageType* pMessageType);
+ 
+    HRESULT SetTTL(
+        [in] DWORD dwTTL);
+
+    HRESULT GetTTL(
+        [out] DWORD* pdwTTL);
+    
+    HRESULT SetAlias(
+        [in] const GUID* pAlias);
+
+    HRESULT GetAlias(
+        [out] GUID* pAlias);
+}
+
+////////////////////////////////////////////////////////////////////////////
+//
+// Soap-over-HTTP specific definitions
+//
+////////////////////////////////////////////////////////////////////////////
+
+//
+// Helper for creating http message parameters
+//
+cpp_quote("HRESULT WINAPI")
+cpp_quote("WSDCreateHttpMessageParameters(")
+cpp_quote("    IWSDHttpMessageParameters** ppTxParams);")
+
+//+-------------------------------------------------------------------------
+//  IWSDHttpMessageParameters Interface
+//  Description: HTTP message parameters
+//--------------------------------------------------------------------------  
+[
+    object,
+    uuid(540bd122-5c83-4dec-b396-ea62a2697fdf),
+	local
+]
+interface IWSDHttpMessageParameters : IWSDMessageParameters
+{
+    HRESULT SetInboundHttpHeaders(
+        [in] LPCWSTR pszHeaders);
+
+    HRESULT GetInboundHttpHeaders(
+        [out] LPCWSTR* ppszHeaders); // Note: Do not deallocate ppszHeaders
+
+    HRESULT SetOutboundHttpHeaders(
+        [in] LPCWSTR pszHeaders);
+
+    HRESULT GetOutboundHttpHeaders(
+        [out] LPCWSTR* ppszHeaders); // Note: Do not deallocate ppszHeaders
+
+    HRESULT SetID(
+        [in] LPCWSTR pszId);
+
+    HRESULT GetID(
+        [out] LPCWSTR* ppszId); // Note: Do not deallocate ppszId
+
+    HRESULT SetContext(
+        [in] IUnknown* pContext);
+
+    HRESULT GetContext(
+        [out] IUnknown** ppContext);
+    
+    HRESULT Clear();
+}
+
+//
+// Helper for creating HTTP address objects
+//
+cpp_quote("HRESULT WINAPI")
+cpp_quote("WSDCreateHttpAddress(")
+cpp_quote("    IWSDHttpAddress** ppAdress);")
+
+//+-------------------------------------------------------------------------
+//  IWSDHttpAddress Interface
+//  Description: HTTP address interface
+//--------------------------------------------------------------------------
+[
+    object,
+    uuid(d09ac7bd-2a3e-4b85-8605-2737ff3e4ea0),
+	local
+]
+interface IWSDHttpAddress : IWSDTransportAddress
+{
+    HRESULT GetSecure(); 
+
+    HRESULT SetSecure(
+        [in] BOOL fSecure);
+
+    HRESULT GetPath(
+		[out] LPCWSTR* ppszPath); // Note: Do not deallocate ppszAddress
+
+    HRESULT SetPath(
+        [in] LPCWSTR pszPath);
+}
+

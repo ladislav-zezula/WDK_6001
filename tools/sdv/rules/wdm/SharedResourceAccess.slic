@@ -1,0 +1,44 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Description: 
+
+	This rule verifies that calls to ExAcquireResourceSharedLite
+	and ExReleaseResourceLite or ExReleaseResourceForThreadLite
+	are used in strict alternation.
+*/
+
+#include "ntddk_slic.h"
+
+state{
+    enum {acquired, notAcquired} accessState = notAcquired;
+}
+watch ExAcquireResourceSharedLite.entry.$1;
+
+
+ExAcquireResourceSharedLite.exit[guard $1]
+{
+    if (accessState == acquired) {
+       abort "The driver is calling $fname after already acquiring shared access to the resource.";
+    } else if ($return == 1) {
+       accessState = acquired;                
+    }             
+}
+
+[ExReleaseResourceLite,ExReleaseResourceForThreadLite].entry [guard $1]
+{   
+    if (accessState == notAcquired) {
+        abort "The driver is calling $fname without first acquiring shared access to the resource.";
+    } else {
+        accessState = notAcquired;
+    }
+}
+
+[DriverEntry,sdv_RunAddDevice,sdv_RunStartDevice,sdv_RunStartIo,sdv_RunDPC,
+ sdv_RunISR,sdv_RunCancelRoutine,sdv_RunDispatchFunction,sdv_RunRemoveDevice,
+ sdv_RunUnload].exit
+{
+    if (accessState == acquired) {
+       abort "The driver has returned without releasing shared access to the resource.";
+    }
+}

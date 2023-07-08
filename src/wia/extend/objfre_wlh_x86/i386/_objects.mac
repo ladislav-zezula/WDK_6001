@@ -1,0 +1,24 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\extidl.h \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\shellext.obj \
+ $(OBJ_PATH)\$O\extend.obj \
+ $(OBJ_PATH)\$O\stdafx.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\extend.res
+PRECOMPILED_INCLUDE_BASENAME=precomp.h
+
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\wia\extend
+MAKEDIR_RELATIVE_TO_BASEDIR=src\wia\extend
+OBJ_PATH=e:\sdk\wdk_6001\src\wia\extend
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

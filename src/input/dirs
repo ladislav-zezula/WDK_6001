@@ -1,0 +1,11 @@
+DIRS= \
+     hbtnkey \
+     hiddigi \
+     kbdclass \
+     kbfiltr \
+     layout \
+     mouclass \
+     moufiltr \
+     mouser \
+     pnpi8042 \
+     vserial

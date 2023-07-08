@@ -1,0 +1,15 @@
+TARGETNAME=event
+TARGETTYPE=PROGRAM
+
+USE_MSVCRT=1
+
+_NT_TARGET_VERSION= $(_NT_TARGET_VERSION_WIN2K)
+
+INCLUDES=..\sys
+
+SOURCES=eventtest.c \
+        install.c
+
+UMTYPE=console
+UMBASE=0x400000
+

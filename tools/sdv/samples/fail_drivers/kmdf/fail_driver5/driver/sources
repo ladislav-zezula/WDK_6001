@@ -1,0 +1,13 @@
+TARGETNAME=fail_driver5
+TARGETTYPE=DRIVER
+
+MSC_WARNING_LEVEL=/W4 /WX
+
+KMDF_VERSION_MAJOR=1
+KMDF_VERSION_MINOR=7
+
+SOURCES = fail_driver5.c
+
+INCLUDES=..\Library
+
+TARGETLIBS=$(OBJ_PATH)\..\library\$(O)\fail_library5.lib

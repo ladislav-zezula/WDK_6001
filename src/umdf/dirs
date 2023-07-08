@@ -1,0 +1,7 @@
+DIRS= \
+     1394vdev_hybrid \
+     echo \
+     sideshow \
+     skeleton \
+     Socketecho \
+     usb

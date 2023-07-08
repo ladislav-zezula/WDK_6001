@@ -1,0 +1,12 @@
+TARGETNAME=toastmon
+TARGETTYPE=DRIVER
+
+INCLUDES = ..\inc
+
+MSC_OPTIMIZATION=/Odi
+
+SOURCES= toastmon.rc \
+         toastmon.c  \
+         wmi.c
+
+_NT_TARGET_VERSION=$(_NT_TARGET_VERSION_WIN2K)

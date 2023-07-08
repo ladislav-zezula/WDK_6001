@@ -1,0 +1,101 @@
+/*
+	Copyright (c) Microsoft Corporation.  All rights reserved.
+
+	Description:
+
+	This rule verifies that ZwCreateKey routine is used correctly.
+*/
+
+#include "ntddk_slic.h"
+
+state{
+   enum {initial, opened, closed} handleState = initial;
+}
+watch ZwCreateKey.exit.(*$1);
+
+ZwCreateKey.exit[guard *$1]
+{  
+   if (handleState == opened) {
+	abort "The driver calls $fname with a registry key that has been created already.";	
+   } else {
+   	if (NT_SUCCESS($return)) {
+   		handleState = opened;
+	}
+  }
+}
+
+ZwOpenKey.entry[guard *$1]
+{  
+   if (handleState == opened) {
+	abort "The driver calls $fname with a registry key that has been opened already.";	
+   }
+}
+
+ZwEnumerateKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to enumerate a registry key by calling $fname with an invalid handle.";
+   }
+}
+
+ZwEnumerateValueKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to obtain information about the value entries of a registry key by calling $fname with an invalid handle.";
+   }
+}
+
+ZwFlushKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to commit the changes made on a registry key to disk by calling $fname with an invalid handle.";
+   }
+}
+
+ZwQueryKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to obtain information about a registry key and its subkeys by calling $fname with an invalid handle.";
+   }
+}
+
+ZwQueryValueKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to obtain the the value entries for a registry key by calling $fname with an invalid handle.";
+   }
+}
+
+ZwSetValueKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to replace or create a value entry for a registry key by calling $fname with an invalid handle.";
+   }
+}
+
+ZwClose.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to close an invalid handle.";  
+   } else {
+	handleState = closed;
+   }
+}
+
+ZwDeleteKey.entry [guard $1]
+{
+   if (handleState != opened) {
+	abort "The driver is trying to delete a registry key with an invalid handle.";
+   } else {
+	handleState = initial;
+   }        
+}
+
+[DriverEntry,sdv_RunAddDevice,sdv_RunStartDevice,sdv_RunStartIo,sdv_RunDPC,
+ sdv_RunISR,sdv_RunCancelRoutine,sdv_RunDispatchFunction,sdv_RunRemoveDevice,
+ sdv_RunUnload].exit
+{
+   if (handleState == opened) {
+	abort "The driver is returning without closing an open handle.";
+   } 
+}

@@ -1,0 +1,14 @@
+TARGETNAME=dlttape
+TARGETTYPE=MINIPORT
+
+TARGETLIBS=$(DDK_LIB_PATH)\tape.lib
+
+INCLUDES=..\inc
+
+SOURCES=dlttape.c \
+        wmi.c     \
+        dlttape.rc
+
+
+TARGET_DESTINATION=retail
+

@@ -1,0 +1,5 @@
+DIRS= \
+     filter \
+     fspykd \
+     lib \
+     user

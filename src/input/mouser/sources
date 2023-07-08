@@ -1,0 +1,25 @@
+TARGETNAME=sermouse
+TARGETTYPE=DRIVER
+
+MSC_WARNING_LEVEL=/W3 /WX
+
+#Disable deprecated function uage warnings
+C_DEFINES=$(C_DEFINES) /wd4996
+
+INCLUDES=..\inc
+
+SOURCES = pnp.c       \
+          mouser.rc   \
+          cseries.c   \
+          mseries.c   \
+          sermcmn.c   \
+          sermdep.c   \
+          io.c        \
+          detect.c    \
+          wmi.c       \
+          wrapper.c   \
+          sermlog.mc
+
+
+TARGET_DESTINATION=retail
+

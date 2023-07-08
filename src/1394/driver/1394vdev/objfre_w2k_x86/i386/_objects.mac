@@ -1,0 +1,21 @@
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\1394vdev.obj \
+ $(OBJ_PATH)\$O\ioctl.obj \
+ $(OBJ_PATH)\$O\pnp.obj \
+ $(OBJ_PATH)\$O\power.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\1394vdev.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\1394\driver\1394vdev
+MAKEDIR_RELATIVE_TO_BASEDIR=src\1394\driver\1394vdev
+OBJ_PATH=e:\sdk\wdk_6001\src\1394\driver\1394vdev
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

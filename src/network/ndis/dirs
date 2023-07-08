@@ -1,0 +1,10 @@
+DIRS= \
+     coisdn \
+     e100bex \
+     filter \
+     mux \
+     ndisprot \
+     ndiswdm \
+     netvmini \
+     passthru \
+     rtlnwifi

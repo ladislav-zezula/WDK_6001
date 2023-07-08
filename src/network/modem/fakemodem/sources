@@ -1,0 +1,25 @@
+TARGETNAME=fakemodem
+TARGETTYPE=DRIVER
+
+!if "$(DDK_TARGET_OS)"=="Win2K" || "$(DDK_TARGET_OS)"=="WinXP"
+#
+# The driver is built in the Windows 2000 or Windows XP build environment
+#
+C_DEFINES=$(C_DEFINES) -DBUILD_DOWNLEVEL=1
+
+!endif
+
+PRECOMPILED_INCLUDE=fakemodem.h
+
+SOURCES=\
+        init.c     \
+        pnp.c      \
+        power.c    \
+        open.c     \
+        util.c     \
+        readwrit.c \
+        ioctl.c    \
+        fakemodm.rc
+
+
+

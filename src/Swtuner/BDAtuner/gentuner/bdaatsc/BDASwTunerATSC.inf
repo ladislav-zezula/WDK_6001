@@ -1,0 +1,88 @@
+; Copyright (c) Microsoft Corporation.  All rights reserved.
+[Version]
+signature="$Windows NT$"
+Class=MEDIA
+ClassGUID={4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider=%Msft%
+DriverVer=06/21/2006,6.0.5314.0
+
+[ControlFlags]
+;ExcludeFromSelect=*
+
+[DestinationDirs]
+DefaultDestDir=10,system32\drivers
+
+[Manufacturer]
+%Msft%=Microsoft,NTx86,NTamd64
+
+[Microsoft.NTx86]
+%BDASwTunerATSC.DeviceDesc%=BDASwTunerATSC,SW\{828B00F0-9A04-4692-8573-535B05DFF3F4}
+
+[Microsoft.NTamd64]
+%BDASwTunerATSC.DeviceDesc%=BDASwTunerATSC,SW\{828B00F0-9A04-4692-8573-535B05DFF3F4}
+
+[DefaultInstall]
+Include     = ks.inf, kscaptur.inf, bda.inf
+needs=KS.Registration, KSCAPTUR.Registration, BDA.Installation, BDASwTunerATSC.RunOnce.Install
+CopyFiles=BDASwTunerATSC.CopyFiles
+
+[BDASwTunerATSC.RunOnce.Install]
+AddReg=BDASwTunerATSC.RunOnce.AddReg
+
+[BDASwTunerATSC.RunOnce.AddReg]
+HKLM,%RunOnce%,"BDA_ATSC.Tuner",,"rundll32.exe streamci,StreamingDeviceSetup %BDASwTunerATSC.DeviceId%,%KSSTRING_BDASwTunerATSCFilter%,%KSCATEGORY_BDASwTunerATSC%,,%01%\BDASwTunerATSC.inf,BDASwTunerATSC.Install"
+
+[BDASwTunerATSC.Install]
+AddReg=BDASwTunerATSC.AddReg
+
+[BDASwTunerATSC.AddReg]
+HKR,,DevLoader,,*NTKERN
+HKR,,NTMPDriver,,BDASwTunerATSC.sys
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BDASwTunerATSC.FriendlyName%
+
+[BDASwTunerATSC.CopyFiles]
+BDASwTunerATSC.sys
+
+[BDASwTunerATSC.Interfaces]
+AddInterface = %KSCATEGORY_BDASwTunerATSC%, %KSSTRING_BDASwTunerATSCFilter%, BDASwTunerATSC.Filter
+
+[BDASwTunerATSC.Filter]
+AddReg = BDASwTunerATSC.Filter.AddReg
+
+[BDASwTunerATSC.Filter.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%BDASwTunerATSC.FilterDesc%
+
+[BDASwTunerATSC.Services]
+AddService=BDASwTunerATSC, 0x00000002, BDASwTunerATSC.ServiceInstall
+
+[BDASwTunerATSC.NT.Services]
+AddService=BDASwTunerATSC, 0x00000002, BDASwTunerATSC.ServiceInstall
+
+[BDASwTunerATSC.ServiceInstall]
+DisplayName=%BDASwTunerATSC.DeviceDesc%
+ServiceType=%SERVICE_KERNEL_DRIVER%
+StartType=%SERVICE_DEMAND_START%
+ErrorControl=%SERVICE_ERROR_NORMAL%
+ServiceBinary=%10%\system32\drivers\BDASwTunerATSC.sys
+LoadOrderGroup=Extended Base
+
+[Strings]
+; non-localizeable
+RunOnce="SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+BDASwTunerATSC.DeviceId="{828B00F0-9A04-4692-8573-535B05DFF3F4}"
+Proxy.CLSID="{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSSTRING_BDASwTunerATSCFilter="{91B0CC87-9905-4d65-A0D1-5861C6F22CBF}"
+KSCATEGORY_BDASwTunerATSC="{71985F48-1CA1-11d3-9CC8-00C04F7971E0}"
+
+SERVICE_KERNEL_DRIVER=1
+SERVICE_DEMAND_START=3
+SERVICE_ERROR_NORMAL=1
+
+;localizeable
+Msft="Microsoft"
+BDASwTunerATSC.DeviceDesc="Sample BDA ATSC Tuner Device"
+BDASwTunerATSC.FilterDesc="Sample BDA ATSC Tuner Filter"
+BDA_DISK = "S/W Sample BDA ATSC Tuners Drivers disk"
+BDASwTunerATSC.FriendlyName="Sample BDA ATSC Tuner

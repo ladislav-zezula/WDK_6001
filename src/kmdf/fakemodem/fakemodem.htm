@@ -1,0 +1,547 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 11">
+<meta name=Originator content="Microsoft Word 11">
+<link rel=File-List href="fakemodem_files/filelist.xml">
+<title>UNIMODEM sample controller-less modem driver (fakemodem)</title>
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+ </w:LatentStyles>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+    {font-family:Courier;
+    panose-1:2 7 4 9 2 2 5 2 4 4;
+    mso-font-charset:0;
+    mso-generic-font-family:modern;
+    mso-font-format:other;
+    mso-font-pitch:fixed;
+    mso-font-signature:3 0 0 0 1 0;}
+@font-face
+    {font-family:Wingdings;
+    panose-1:5 0 0 0 0 0 0 0 0 0;
+    mso-font-charset:2;
+    mso-generic-font-family:auto;
+    mso-font-pitch:variable;
+    mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+    {font-family:"MS Sans Serif";
+    panose-1:0 0 0 0 0 0 0 0 0 0;
+    mso-font-charset:0;
+    mso-generic-font-family:swiss;
+    mso-font-format:other;
+    mso-font-pitch:variable;
+    mso-font-signature:3 0 0 0 1 0;}
+@font-face
+    {font-family:Verdana;
+    panose-1:2 11 6 4 3 5 4 4 2 4;
+    mso-font-charset:0;
+    mso-generic-font-family:swiss;
+    mso-font-pitch:variable;
+    mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+    {mso-style-parent:"";
+    margin:0in;
+    margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    font-size:12.0pt;
+    font-family:"Times New Roman";
+    mso-fareast-font-family:"Times New Roman";}
+h2
+    {mso-margin-top-alt:auto;
+    margin-right:0in;
+    mso-margin-bottom-alt:auto;
+    margin-left:0in;
+    mso-pagination:widow-orphan;
+    mso-outline-level:2;
+    font-size:18.0pt;
+    font-family:"Times New Roman";
+    font-weight:bold;}
+h3
+    {mso-margin-top-alt:auto;
+    margin-right:0in;
+    mso-margin-bottom-alt:auto;
+    margin-left:0in;
+    mso-pagination:widow-orphan;
+    mso-outline-level:3;
+    font-size:13.5pt;
+    font-family:"Times New Roman";
+    font-weight:bold;}
+h4
+    {mso-margin-top-alt:auto;
+    margin-right:0in;
+    mso-margin-bottom-alt:auto;
+    margin-left:0in;
+    mso-pagination:widow-orphan;
+    mso-outline-level:4;
+    font-size:12.0pt;
+    font-family:"Times New Roman";
+    font-weight:bold;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+    {margin:0in;
+    margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    font-size:10.0pt;
+    font-family:Verdana;
+    mso-fareast-font-family:"Times New Roman";
+    mso-bidi-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+    {color:blue;
+    text-decoration:underline;
+    text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+    {color:blue;
+    text-decoration:underline;
+    text-underline:single;}
+p
+    {mso-margin-top-alt:auto;
+    margin-right:0in;
+    mso-margin-bottom-alt:auto;
+    margin-left:0in;
+    mso-pagination:widow-orphan;
+    font-size:12.0pt;
+    font-family:"Times New Roman";
+    mso-fareast-font-family:"Times New Roman";}
+pre
+    {margin:0in;
+    margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
+    font-size:10.0pt;
+    font-family:"Courier New";
+    mso-fareast-font-family:"Courier New";}
+span.SpellE
+    {mso-style-name:"";
+    mso-spl-e:yes;}
+span.GramE
+    {mso-style-name:"";
+    mso-gram-e:yes;}
+@page Section1
+    {size:8.5in 11.0in;
+    margin:1.0in 1.25in 1.0in 1.25in;
+    mso-header-margin:.5in;
+    mso-footer-margin:.5in;
+    mso-paper-source:0;}
+div.Section1
+    {page:Section1;}
+ /* List Definitions */
+ @list l0
+    {mso-list-id:837157684;
+    mso-list-type:hybrid;
+    mso-list-template-ids:152977158 67698703 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l0:level1
+    {mso-level-tab-stop:.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level2
+    {mso-level-tab-stop:1.0in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level3
+    {mso-level-tab-stop:1.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level4
+    {mso-level-tab-stop:2.0in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level5
+    {mso-level-tab-stop:2.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level6
+    {mso-level-tab-stop:3.0in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level7
+    {mso-level-tab-stop:3.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level8
+    {mso-level-tab-stop:4.0in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l0:level9
+    {mso-level-tab-stop:4.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;}
+@list l1
+    {mso-list-id:858737299;
+    mso-list-template-ids:1400259370;}
+@list l1:level1
+    {mso-level-number-format:bullet;
+    mso-level-text:\F0B7;
+    mso-level-tab-stop:.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;
+    mso-ansi-font-size:10.0pt;
+    font-family:Symbol;}
+@list l2
+    {mso-list-id:876699599;
+    mso-list-type:hybrid;
+    mso-list-template-ids:-1580199726 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l2:level1
+    {mso-level-number-format:bullet;
+    mso-level-text:\F0B7;
+    mso-level-tab-stop:.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;
+    font-family:Symbol;}
+@list l2:level2
+    {mso-level-number-format:bullet;
+    mso-level-text:o;
+    mso-level-tab-stop:1.0in;
+    mso-level-number-position:left;
+    text-indent:-.25in;
+    font-family:"Courier New";}
+@list l3
+    {mso-list-id:901331311;
+    mso-list-template-ids:1335414366;}
+@list l3:level1
+    {mso-level-number-format:bullet;
+    mso-level-text:\F0B7;
+    mso-level-tab-stop:.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;
+    mso-ansi-font-size:10.0pt;
+    font-family:Symbol;}
+@list l4
+    {mso-list-id:1736706262;
+    mso-list-type:hybrid;
+    mso-list-template-ids:1974731216 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l4:level1
+    {mso-level-number-format:bullet;
+    mso-level-text:\F0B7;
+    mso-level-tab-stop:.5in;
+    mso-level-number-position:left;
+    text-indent:-.25in;
+    font-family:Symbol;}
+ol
+    {margin-bottom:0in;}
+ul
+    {margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+    {mso-style-name:"Table Normal";
+    mso-tstyle-rowband-size:0;
+    mso-tstyle-colband-size:0;
+    mso-style-noshow:yes;
+    mso-style-parent:"";
+    mso-padding-alt:0in 5.4pt 0in 5.4pt;
+    mso-para-margin:0in;
+    mso-para-margin-bottom:.0001pt;
+    mso-pagination:widow-orphan;
+    font-size:10.0pt;
+    font-family:"Times New Roman";
+    mso-ansi-language:#0400;
+    mso-fareast-language:#0400;
+    mso-bidi-language:#0400;}
+</style>
+<![endif]-->
+</head>
+
+<body lang=EN-US link=blue vlink=blue style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h2><span style='font-family:Verdana'>UNIMODEM sample controller-less modem
+driver (<span class=SpellE>Fakemodem</span>)<o:p></o:p></span></h2>
+
+<h3 style='tab-stops:120.0pt'><span style='font-family:Verdana'>SUMMARY<span
+style='mso-tab-count:1'>          </span><o:p></o:p></span></h3>
+
+<p><span style='font-size:10.0pt;font-family:Verdana'>This sample demonstrates
+a simple controller-less modem driver. <span class=GramE>This driver supports
+sending and receiving AT commands using the <span class=SpellE>ReadFile/WriteFile</span>
+calls or via a TAPI interface using an application such as HyperTerminal.</span><o:p></o:p></span></p>
+
+<h3><span style='font-family:Verdana'>BUILDING THE SAMPLE<o:p></o:p></span></h3>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'><span
+style='font-size:10.0pt;font-family:Verdana;color:black'>Click the Free Build
+Environment or Checked Build Environment icon under Development Kits program
+group to set basic environment variables. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'><span
+style='font-size:10.0pt;font-family:Verdana;color:black'>Change to the
+directory containing the device source code, such as CD <span class=SpellE>src\wdf\fakemodem</span>.
+<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'><span
+style='font-size:10.0pt;font-family:Verdana;color:black'>Run <b>build -<span
+class=SpellE>ceZ</span>,</b> or use the macro <b>BLD</b>. This command invokes
+the Microsoft make routines to build the components. If the build </span><span
+style='color:black'>s</span><span style='font-size:10.0pt;font-family:Verdana;
+color:black'>ucceeds, you will find the driver, <span class=SpellE>fakemodem.sys</span>
+in the i386 subdirectory of the %TARGETPATH% directory specified in the Sources
+file. If it fails you can find errors and warnings in the <span class=SpellE>buildxxx.err</span>
+and <span class=SpellE>buildxxx.err</span> respectively, where xxx is either <span
+class=SpellE>chk</span> or <span class=SpellE>fre</span> depending on the build
+environment. <o:p></o:p></span></p>
+
+<h3><span style='font-family:Verdana'>INSTALLATION<o:p></o:p></span></h3>
+
+<p><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Verdana'>To
+install and test this driver, you do not need any real hardware. You can
+install this driver either using Devcon.exe (<span class=SpellE>ddk\tools\devcon</span>)
+utility from the DDK or using toaster bus driver sample. <o:p></o:p></span></p>
+<p class=MsoNormal><span style='font-size:10.0pt;font-family:Verdana;
+color:black'>To install the bus driver on Windows XP and Windows Server 2003: <o:p></o:p></span></p>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Double-click the ‘Add Hardware’ wizard in
+     Control Panel. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>At the 'Welcome to the Add Hardware Wizard',
+     click ‘Next’. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Select 'Yes, I have already connected the
+     hardware', then click Next. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Select ‘Add a new hardware device’ from the
+     list, then click Next. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Select ‘Install the hardware that I manually
+     select from a list(Advanced),' and then click next. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Select ‘Modems’, then click Next. <o:p></o:p></span></li>
+<li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Check the box which says "Don't detect my modems; I will select it from a list.", then click Next. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Click 'Have Disk', make sure that 'A:\' is in
+     the &quot;Copy manufacturer's files from:&quot; box, and click OK. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Click on the desired entry, and then click
+     Next. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>At 'The wizard is ready to install your
+     hardware', click Next. <o:p></o:p></span></li>
+ <li class=MsoNormal style='color:black;mso-margin-top-alt:auto;mso-margin-bottom-alt:
+     auto;mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:
+     10.0pt;font-family:Verdana'>Click Finish at 'Completing the Add/Remove
+     Hardware Wizard.' <o:p></o:p></span></li>
+</ol>
+
+<p><b style='mso-bidi-font-weight:normal'><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Verdana'>To install the driver using
+toaster bus:<o:p></o:p></span></b></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Verdana'>Install the toaster bus driver. Information on how
+to install the toaster bus driver is given in src\general\toaster\toaster.htm <span
+class=SpellE>readme</span> file.<o:p></o:p></span></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Verdana'>Run the notify.exe (<span class=SpellE>src</span>\general\toaster\exe\notify)
+and choose Plug In a device in the Bus menu.<o:p></o:p></span></p>
+
+<p style='margin-left:.5in;text-indent:-.25in;mso-list:l4 level1 lfo4;
+tab-stops:list .5in'><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;
+mso-bidi-font-family:Symbol'><span style='mso-list:Ignore'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Verdana'>In the plug in dialog, specify {b85b7c50-6a01-11d2-b841-00c04fad5171}\<span
+class=SpellE>fakemodem</span> as the Hardware Id and click okay.<o:p></o:p></span></p>
+
+<p style='margin-left:.25in'><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Verdana'>The bus driver will enumerate a device with the
+hardware id provided by the application. At this point:<o:p></o:p></span></p>
+
+<p><b><span style='font-size:10.0pt;font-family:Verdana'>On Windows XP and
+later:</span></b><span style='font-size:10.0pt;font-family:Verdana'><o:p></o:p></span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>&quot;Found New Hardware Wizard&quot; dialog box will
+     appear. Here select the radio button labeled &quot;Install from a list of
+     specific location (Advanced)&quot; and then hit the &quot;Next&quot;
+     button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>In the following screen select the radio button labeled
+     &quot; Search the best driver in these locations&quot; and then select
+     &quot;Include this location in the search path&quot; and specify the
+     target media or the directory where the KMDF coinstaller (wdfcoinstallerMMmmm.dll), INF and SYS files are copied and
+     then hit the &quot;Next&quot; button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>The system will scan the directory and pick up the
+     matching INF and start the installation. You will get a Hardware
+     Installation Warning dialog stating that your driver has not passed
+     Windows Logo Testing. Hit &quot;Continue Anyway&quot; button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>The system will copy the driver, INF file, load the
+     driver and start the device. If every thing goes fine, you will get
+     &quot;Completing the Found New Hardware Wizard&quot;. Hit the
+     &quot;Finish&quot; button and the installation is complete. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo5;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>You should be able to see the device in the Device
+     manager under &quot;Modems&quot; <o:p></o:p></span></li>
+</ul>
+
+<p><b><span style='font-size:10.0pt;font-family:Verdana'>On Windows 2000:</span></b><span
+style='font-size:10.0pt;font-family:Verdana'><o:p></o:p></span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>&quot;Found New Hardware Wizard&quot; dialog box will
+     appear with the description of the device. Here click &quot;Next&quot;
+     button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>In the following screen &quot;Install Hardware Device
+     Driver&quot;, select the radio button labeled &quot;Display a list of
+     known drivers for this device...&quot; and then click &quot;Next&quot;
+     button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>In the following dialog on &quot;Hardware Type&quot;,
+     select &quot;Other Devices&quot; from the list and click &quot;Next&quot;.
+     <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>In the dialog on &quot;Select a Device Driver&quot;,
+     click on &quot;Have Disk&quot;. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>Specify the target media or the directory where the
+     KMDF coinstaller (wdfcoinstallerMMmmm.dll), INF and SYS files are copied and then hit the &quot;Okay&quot; button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>Select &quot;OSR&quot; in the Manufacture section
+     selection and click &quot;Next&quot;. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>Click &quot;Next&quot; on the &quot;Start Device
+     Driver Installation&quot; dialog. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo6;tab-stops:list .5in'><span style='font-size:10.0pt;
+     font-family:Verdana'>Click Finish at 'Completing the Add/Remove Hardware
+     Wizard.' <o:p></o:p></span></li>
+</ul>
+
+<p><span class=GramE><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Verdana'>Note that if you get a warning dialog with regards to
+Windows Logo, or unsigned drivers, testing then click on <b>continue</b>.</span></span><span
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Verdana'><o:p></o:p></span></p>
+
+<h3><span style='font-family:Verdana'>USAGE<o:p></o:p></span></h3>
+
+<p><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Verdana'>Once
+installed, you can talk to the <span class=SpellE>fakemodem</span> driver
+through HyperTerminal, or via <span class=SpellE>ReadFile/WriteFile</span>
+calls.<span style='mso-spacerun:yes'>  </span>The AT command set supported by <span
+class=SpellE>fakemodem</span> includes:<o:p></o:p></span></p>
+
+<p><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Verdana'><span
+style='mso-tab-count:1'>          </span><b>AT</b><span style='mso-tab-count:
+3'>                         </span>returns <b>OK</b><br>
+<br>
+<span style='mso-tab-count:1'>          </span><b>ATA</b><span
+style='mso-tab-count:3'>                       </span>returns <b>CONNECT<o:p></o:p></b></span></p>
+
+<p><b><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Verdana'><span
+style='mso-tab-count:1'>            </span>ATD</span></b><span
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Verdana'>&lt;number&gt;<span
+style='mso-tab-count:2'>                  </span>returns <b>CONNECT</b><o:p></o:p></span></p>
+
+<h3 style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+style='font-family:Verdana'>CODE TOUR<o:p></o:p></span></h3>
+
+<h4 style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+style='font-family:Verdana'>File Manifest<o:p></o:p></span></h4>
+
+<pre><u><span style='font-size:9.0pt;mso-bidi-font-size:7.5pt;font-family:Courier'>File</span></u><span
+style='font-size:9.0pt;mso-bidi-font-size:7.5pt;font-family:Courier'><span
+style='mso-tab-count:2'>             </span><u>Description<o:p></o:p></u></span></pre><pre><span
+class=SpellE><span class=GramE><b><span style='font-size:9.0pt;mso-bidi-font-size:
+7.5pt;font-family:Courier'>readwrit.c</span></b></span></span><span
+style='font-size:9.0pt;mso-bidi-font-size:7.5pt;font-family:Courier'><span
+style='mso-tab-count:1'>       </span>Routines for receiving and sending text. This includes processing AT commands.<o:p></o:p></span></pre><pre><span
+class=SpellE><b><span style='font-size:9.0pt;mso-bidi-font-size:7.5pt;
+font-family:Courier'>Driver.c</span></b></span><span style='font-size:9.0pt;
+mso-bidi-font-size:7.5pt;font-family:Courier'><span style='mso-tab-count:2'>         </span><span
+class=SpellE>Fakemodem</span> driver initialization entry points and for handling <span
+class=GramE>Plug</span> &amp; Play events.<o:p></o:p></span></pre><pre><span
+class=SpellE><span class=GramE><b><span style='font-size:9.0pt;mso-bidi-font-size:
+7.5pt;font-family:Courier'>ioctl.c</span></b></span></span><span
+style='font-size:9.0pt;mso-bidi-font-size:7.5pt;font-family:Courier'><span
+style='mso-tab-count:2'>          </span>Routines to handle IOCTL messages.<o:p></o:p></span></pre><pre><span
+class=SpellE><span class=GramE><b><span style='font-size:9.0pt;mso-bidi-font-size:
+7.5pt;font-family:Courier'>mdmfake.inf</span></b></span></span><span
+style='font-size:9.0pt;mso-bidi-font-size:7.5pt;font-family:Courier'><span
+style='mso-tab-count:1'>      </span>INF file for installing the <span
+class=SpellE>fakemodem</span> driver<o:p></o:p></span></pre>
+
+<p align=center style='text-align:center;tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+style='font-size:10.0pt;font-family:Verdana'><a href="#top">Top of page</a> <o:p></o:p></span></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=624
+ style='width:6.5in;mso-cellspacing:0in;mso-padding-alt:0in 0in 0in 0in'>
+ <tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes;mso-yfti-lastrow:yes;
+  height:1.5pt'>
+  <td style='background:aqua;padding:.75pt .75pt .75pt .75pt;height:1.5pt'>
+  <p class=MsoNormal><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+</table>
+
+<p style='tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt'><span
+style='font-size:7.5pt;font-family:"MS Sans Serif"'>© Microsoft Corporation 2000</span><span
+style='font-size:10.0pt;font-family:Verdana'> <o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>
+

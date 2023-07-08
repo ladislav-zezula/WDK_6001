@@ -1,0 +1,18 @@
+TARGETNAME=filespy
+TARGETTYPE=DRIVER
+DRIVERTYPE=FS
+
+
+TARGETLIBS=$(OBJ_PATH)\..\lib\$(O)\filespyLib.lib  \
+           $(OBJ_PATH)\..\..\lib\$(O)\namelookup.lib \
+           $(DDK_LIB_PATH)\ntstrsafe.lib
+
+INCLUDES=..\lib;..\..\lib
+
+SOURCES=filespy.c  \
+        fspyLib.c  \
+        fspyCtx.c  \
+        fspyHash.c \
+        fspyTx.c   \
+        filespy.rc
+

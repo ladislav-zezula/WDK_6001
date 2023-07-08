@@ -1,0 +1,24 @@
+PASS0_386_OBJECTS=\
+ $(PASS0_HEADERDIR)\agplog.h \
+ $(MC_SOURCEDIR)\agplog.rc \
+
+
+386_OBJECTS=\
+ $(OBJ_PATH)\$O\init.obj \
+ $(OBJ_PATH)\$O\gart.obj \
+ $(OBJ_PATH)\$O\kxagplib.obj \
+ $(OBJ_PATH)\$O\verifier.obj \
+
+
+_RES_FILE=$(OBJ_PATH)\$O\gagp30kx.res
+
+
+
+# lowercased
+BASEDIR=e:\sdk\wdk_6001
+OBJECT_ROOT=e:\sdk\wdk_6001
+MAKEDIR_LOWERCASE=e:\sdk\wdk_6001\src\kernel\agp\gagp30kx
+MAKEDIR_RELATIVE_TO_BASEDIR=src\kernel\agp\gagp30kx
+OBJ_PATH=e:\sdk\wdk_6001\src\kernel\agp\gagp30kx
+CONCURRENT_MIDL=0
+CONCURRENT_MANIFEST_BUILD=0

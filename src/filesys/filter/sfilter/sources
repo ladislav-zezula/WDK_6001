@@ -1,0 +1,14 @@
+TARGETNAME=sfilter
+TARGETTYPE=DRIVER
+DRIVERTYPE=FS
+LINKER_FLAGS=/map
+
+
+TARGETLIBS=$(OBJ_PATH)\..\lib\$(O)\namelookup.lib \
+           $(DDK_LIB_PATH)\ntstrsafe.lib
+
+INCLUDES=..\lib
+
+SOURCES=sfilter.c   \
+        sfilter.rc
+

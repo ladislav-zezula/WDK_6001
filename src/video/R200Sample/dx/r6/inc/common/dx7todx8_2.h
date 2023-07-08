@@ -1,0 +1,15 @@
+#ifndef _DX7TODX8_2_H_
+
+#define _DX7TODX8_2_H_
+
+#define D3DERR_LIGHT_SET_FAILED     D3DERR_INVALIDCALL
+#define D3DERR_INVALIDSTATEBLOCK    D3DERR_INVALIDCALL
+#define D3DERR_INBEGINSTATEBLOCK    D3DERR_INVALIDCALL
+#define D3DERR_INVALIDVERTEXFORMAT  D3DERR_INVALIDCALL
+
+//This is obsoleted in dx8, but we still need to support it for dx7.
+#define D3DTSS_ADDRESS              12 
+
+#endif //_DX7TODX8_2_H_
+
+

@@ -1,0 +1,319 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>User-Mode OSR USB-FX2 Sample Filter Driver</title>
+<style type="text/css">
+.style1 {
+	font-family: Verdana;
+	font-size: x-small;
+}
+.style2 {
+	font-family: Verdana;
+}
+.style3 {
+	font-size: x-small;
+}
+</style>
+</head>
+
+<body>
+
+<h1><font face="Verdana" size="2">OSR USB Filter Sample</font></h1>
+<h2>
+<font face="Verdana" size="2">SUMMARY</font></h2>
+<p>
+<font face="Verdana" size="2">This sample demonstrates how to use the Driver Framework to write a user-mode 
+filter driver. It demonstrates usage of I/O Target to send requests down the 
+device stack and handling request completion. The building and installation 
+instructions given here apply to Windows Server 2008.</font><p>
+<p>
+<font face="Verdana" size="2">The filter driver inverts bits on write and read requests to the device. Since 
+the bits are inverted both on write and read, the application reads the same 
+data it writes. </font> <p>
+<p>
+<font face="Verdana" size="2">This sample filter driver is a minimal driver meant to demonstrate the usage of 
+the User-Mode Driver Framework. It is not intended for use in a 
+production environment.</font><p>
+<font face="Verdana" size="2">See the usb\echo_driver directory for
+<a href="../echo_driver/usb.htm">more information</a> about the function driver 
+associated with this sample.</font><p class="style1">Se<font size="2">e the UMDF 
+Readme.htm file for more information about
+<a href="../../readme.htm#Supported_Environments">supported operating systems</a> 
+and <a href="../../readme.htm#BuildEnv">building the samples</a>.</font></p>
+<font face="Verdana" size="2">
+
+<table border="1" width="100%" id="table3" style="border-collapse: collapse" bgcolor="#CCCCCC">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana"><Strong>Note:</Strong></font></td>
+		<td><font face="Verdana" size="2">This sample requires installation of WinUsb runtime on Windows XP and would not work without that.&nbsp; 
+		The WinUsb co-installer will install WinUsb during your driver's 
+		installation and can be found in the \winddk\&lt;bld&gt;\redist directory.</font></td>
+	</tr>
+</table>
+
+</font>
+
+<p>
+
+<h2>
+<font face="Verdana" size="2">BUILDING THE SAMPLE</font></h2>
+<p><font face="Verdana" size="2">Start a build environment window as described 
+under<b> <a href="../../readme.htm#buildenv">Building and Testing the Samples</a>
+</b>the UMDF Readme file.</font></p>
+<p>
+<p>
+<font face="Verdana" size="2">Change to the directory containing the device 
+source code, such as &quot;CD </font>
+<font size="2" face="Verdana">CD c:\WINDDK\&lt;build 
+number&gt;\src\umdf\usb\filter&quot; 
+(the WINDDK location and build number may vary.)</font><p>
+<p>
+<font face="Verdana" size="2">Run build -ceZ, or use the macro BLD. This command invokes the Microsoft make 
+routines to build the components. If the build succeeds, you will find the 
+driver, WudfOsrUsbFilter.dll in the %_BuildArch% subdirectory of the %TARGETPATH% 
+directory specified in the Sources file. If it fails you can find errors and 
+warnings in the build error (.err) and warning (.wrn) log files respectively 
+(buildfre_wlh_x86.err for example). </font>
+<p>
+<h2>
+<font face="Verdana" size="2">INSTALLATION</font></h2>
+<p>
+<font face="Verdana" size="2">To test the sample you will need to setup your 
+test system as described <b><a href="../../readme.htm#buildenv">Building and 
+Testing the Samples</a> </b>the UMDF Readme file.</font><p>
+<font face="Verdana" size="2">You will need to build the function driver 
+located in ..\echo_driver - this will create the WUDFOsrUsbDriver.dll binary 
+mentioned below.</font><font face="Verdana" size="2"><p>You will also need to 
+copy the co-installer for the Kernel-Mode Driver Framework into the directory 
+with your driver binary and INF (and include it in the catalog file if you're 
+signing the driver package).&nbsp; This sample driver makes use of WinUSB, which 
+is a KMDF based driver and so requires the KMDF co-installer for proper 
+installation. </p>
+</font><p>
+<font face="Verdana" size="2">This sample's INF allows you to install both the filter driver (usb\filter) and 
+the function driver (usb\echo_driver) on the OSR USB-FX2 Learning Kit board from 
+<a href="http://www.osronline.com">OSR</a>.</font><p>
+<blockquote>
+	<p>
+	<p><font face="Verdana" size="2">To install the USB-FX2 driver on Windows 
+	Vista (or Windows XP SP2 and above, subject to the availability of WinUsb runtime):</font><p>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<li>
+	<p><font face="Verdana" size="2">Copy the filter binary (WudfOsrUsbFilter.dll) , driver binary (WudfOsrUsbDriver.dll) 
+and the sample INF (WUDFOsrUsbFilterOnUmDriver.inf) file to a directory on your 
+	test machine (for example, c:\usbFilterSample.)
+	</font></li>
+ 		<li>C<font size="2">opy the required coinstallers for this sample from c:\winddk\&lt;bld&gt;\redist to the 
+		same directory (for example c:\skeletonSample)</font></li>
+		<ol>
+			<li class="style1">w<font size="2">df\WUDFUpdate_01007.dll - the 
+			UMDF 1.7 coinstaller</font></li>
+			<li class="style1">w<font size="2">inusb\WinUsbCoinstaller.dll - the 
+			WinUsb coinstaller (required for USB support)</font></li>
+			<li class="style1">w<font size="2">df\WdfCoinstaller01007.dll - the 
+			KMDF 1.7 coinstaller (required by WinUsb)<br>
+			</font></li>
+		</ol>
+		<li>
+		<p><font face="Verdana" size="2">Attach the OSR USB-FX2 device to your computer. 
+		</font></li>
+		<li><font face="Verdana" size="2">At the &quot;Welcome to the Found New Hardware Wizard&quot; choose &quot;No, not this time&quot; and 
+click Next. </font></li>
+		<li><font face="Verdana" size="2">Select &quot;Install from a list or specific location&quot; and click Next. 
+		</font></li>
+		<li><font face="Verdana" size="2">Select &quot;Search for the best 
+		driver in these locations&quot;.</font></li>
+		<li><font face="Verdana" size="2">Clear the &quot;Search removable media 
+		(floppy, CD-ROM ...)&quot; check box.</font></li>
+		<li><font face="Verdana" size="2">Select the &quot;Include this location in 
+		the search&quot; check box.</font></li>
+		<li><font face="Verdana" size="2">Enter the path to the files (for 
+		example: c:\usbFilterSample) under that check box and click Next.</font></li>
+		<li><font face="Verdana" size="2">Click Finish at 'Completing the Found 
+		New Hardware Wizard.'</font></li>
+		</ol>
+		</blockquote>
+<table border="1" width="100%" id="table2" style="border-collapse: collapse" bgcolor="#CCCCCC">
+	<tr>
+		<td width="60">
+		<p align="left"><font size="2" face="Verdana">Note:</font></td>
+		<td><font face="Verdana" size="2">Between steps 8 and 9 you may see a 
+		&quot;Please select the best match for your hardware from the list below&quot; 
+		page.&nbsp; This happens when there are multiple INFs which match your 
+		hardware.&nbsp; If this happens you should select an entry with 
+		&quot;<b>Microsoft UMDF OSR USB Sample Device With Filter on User-mode Driver</b>&quot; 
+		in the 'Description' column and the directory which holds the INF (for 
+		example c:\usbFilterSample) in the 'Location' column.&nbsp; If you have 
+		multiple versions of an INF in that directory, you may also need to 
+		check the 'Version' column to find the highest version number.</font><p>
+		<font face="Verdana" size="2">Occasionally you may be told that no newer 
+		driver could be found for your device in this case.&nbsp; If that should 
+		happen use the alternate installation instructions below.</font></td>
+	</tr>
+</table>
+<blockquote>
+	<p><font face="Verdana" size="2">Alternately you may use DevCon to install 
+	the filter driver for the OSR USB device:</font></p>
+	<ol>
+		<li class="style3"><font face="Verdana">Copy the filter binary (WudfOsrUsbFilter.dll) , driver binary (WudfOsrUsbDriver.dll) 
+and the sample INF (WUDFOsrUsbFilterOnUmDriver.inf) file to a directory on your 
+		test machine (for example, c:\usbFilterSample.)
+	</font></li>
+		<li><span class="style2"><font size="2" class="style3">Copy the required coinstallers for this sample from c:\winddk\&lt;bld&gt;\redist to the 
+		same directory (for example c:\skeletonSample)</font><span class="style3"></li></span></span>
+		<ol>
+			<li class="style1">wdf\WUDFUpdate_01007.dll - the 
+			UMDF 1.7 coinstaller</li>
+			<li class="style1">winusb\WinUsbCoinstaller.dll - the 
+			WinUsb coinstaller (required for USB support)</li>
+			<li class="style1">wdf\WdfCoinstaller01007.dll - the 
+			KMDF 1.7 coinstaller (required by WinUsb)</li>
+		</ol>
+		</li>
+		<li class="style3"><font face="Verdana">Attach the OSR USB-FX2 device to your 
+		computer.</font></li>
+		<li class="style3"><font face="Verdana">At the &quot;Welcome to the Found New 
+		Hardware Wizard&quot; click Cancel.</font></li>
+		<li><font face="Verdana" size="2" class="style3">Change to the directory containing the 
+		inf and binaries (for example <b>cd /d c:\usbFilterSample</b>.)</font></li>
+		<li><font face="Verdana" size="2"><span class="style3">Run devcon.exe as follows:</span><br>
+		<br>
+		</font><font size="2" face="Courier New">devcon.exe update 
+		WUDFOsrUsbFilterOnUmDriver.inf &quot;USB\Vid_0547&amp;Pid_1002&quot;</font><font face="Verdana" size="2">
+		<br>
+		(note: the quotes are important because of the &amp;)<br>
+		<br>
+		DevCon can be found in the tools directory of your WDK enlistment (for 
+		example: d:\winddk\5048\tools\devcon\i386\devcon.exe.)</font></li>
+	</ol>
+	<p><font face="Verdana" size="2">To update the sample driver after making 
+	any changes:</font></p>
+	<ol style="font-family: Verdana; font-size: 10pt">
+		<font face="Verdana">
+		<li>Increment the version number found in the INF.&nbsp; While this is 
+		not strictly necessary, it will help ensure PnP selects your new driver 
+		as a better match for the device.</li>
+		<li><font face="Verdana" size="2">Copy the filter binary (WudfOsrUsbFilter.dll) , driver binary (WudfOsrUsbDriver.dll) 
+and the sample INF (WUDFOsrUsbFilterOnUmDriver.inf) file to a directory on your 
+		test machine (for example, c:\usbFilterSample.)
+	</font></li>
+		<li>Follow instructions 4 and 5 above</li>
+	</ol>
+</blockquote>
+		<p><font size="2"><a name="OnKmDriver">This sample contains an alternate INF file (WudfOsrUsbFilterOnKmDriver.inf) 
+		which shows how to install a UMDF filter driver on top of a KMDF 
+		function driver.&nbsp; In order to use this sample, you must include the 
+		KMDF OSR USB FX2 sample driver (kmdf\src\osrusbfx2\sys\final) in the 
+		driver package.&nbsp; Additionally, if deploying this package on a 
+		Windows XP system, you must obtain a copy of the KMDF co-installer 
+		and include that in the driver install package 
+		as well.</a></font></p>
+		</font>
+		<h2>
+<font face="Verdana" size="2">CODE TOUR</font></h2>
+		<h3>
+<font face="Verdana" size="2">File Manifest</font></h3>
+		<table border="1" width="63%" id="table1">
+			<tr>
+				<td width="233"><font face="Verdana" size="2">File</font></td>
+				<td><font face="Verdana" size="2">Description</font></td>
+			</tr>
+			<tr>
+				<td width="233"><font face="Verdana" size="2">Filter.htm</font></td>
+				<td><font face="Verdana" size="2">Documentation for this sample (this file).
+				</font></td>
+			</tr>
+            <tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">comsup.cpp &amp; comsup.h</font></td>
+		<td width="604"><font face="Verdana" size="2">COM Support code - 
+		specifically base classes which provide implementations for the standard 
+		COM interfaces IUnknown and IClassFactory which are used throughout this sample.</font><p>
+		<font face="Verdana" size="2">The implementation of IClassFactory is designed to create instances of 
+		the CMyDriver class. If you should change the name of your base driver 
+		class, you would also need to modify this file.</font></td>
+								</font>
+			</tr>
+			<tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">dllsup.cpp</font></td>
+		<td width="604"><font face="Verdana" size="2">DLL Support code - 
+		provides the DLL's entry point as well as the single required export 
+		(DllGetClassObject).</font><p><font face="Verdana" size="2">These depend on comsup.cpp to perform the necessary 
+		class creation.</font></td>
+								</font>
+			</tr>
+			<tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">exports.def</font></td>
+		<td width="604"><font face="Verdana" size="2">This file lists the 
+		functions that the driver DLL exports.</font></td>
+								</font>
+			</tr>
+			<tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">makefile</font></td>
+		<td width="604"><font face="Verdana" size="2">This file redirects to 
+		the real makefile, which is shared by all the driver components of the 
+		Windows Driver Kit.</font></td>
+								</font>
+			</tr>
+			<tr>
+				<font face="Verdana">
+		<td width="161"><font face="Verdana" size="2">internal.h</font></td>
+		<td width="604"><font face="Verdana" size="2">This is the main header 
+		file for this driver. </font></td>
+								</font>
+			</tr>
+            <tr>
+                <td width="233"><font face="Verdana" size="2">driver.cpp &amp; driver.h</font></td>
+                <td><font face="Verdana" size="2">Definition and implementation of the driver callback class 
+                        (CMyDriver) for the sample. </font></td>
+                            </tr>
+            <tr>
+                <td width="233"><font face="Verdana" size="2">device.cpp &amp; driver.h</font></td>
+                <td><font face="Verdana" size="2">Definition and implementation of the device callback class 
+                        (CMyDriver) for the sample. </font></td>
+                            </tr>
+            <tr>
+                <td width="233"><font face="Verdana" size="2">queue.cpp &amp; queue.h</font></td>
+                <td><font face="Verdana" size="2">Definition and implementation of the queue callback class 
+(CMyQueue) for the sample. This file contains the I/O processing &amp; shows the 
+operation of a filter driver. </font></td>
+            </tr>
+            <tr>
+                <td width="233"><font face="Verdana" size="2">osrusbfilter.rc</font></td>
+                <td><font face="Verdana" size="2">This file defines resource information for the sample driver.</font></td>
+                            </tr>
+            <tr>
+                <td width="233"><font face="Verdana" size="2">sources</font></td>
+                <td><font face="Verdana" size="2">Generic file that lists source files and all the build options 
+                </font></td>
+                            </tr>
+            <tr>
+                <td width="233"><font face="Verdana" size="2">WUDFOsrUsbFilterOnUmDriver.inf</font></td>
+                <td><font face="Verdana" size="2">Sample INF for installing the sample filter and 
+                        function drivers to control the OSR USB-FX2 Learning Kit device</font></td>
+            </tr>
+
+            <tr>
+                <td width="233"><font face="Verdana" size="2">
+				WUDFOsrUsbFilterOnKmDriver.inf</font></td>
+                <td><font face="Verdana" size="2">Sample INF for installing the 
+				sample user-mode filter along with the kernel-mode OSR USB-FX2 
+				driver on the device.&nbsp; See the <a href="#OnKmDriver">note 
+				in Installation</a> for more informaton about using this INF.</font></td>
+            </tr>
+
+		</table>
+		<p align="center"><font face="Verdana" size="2"><a href="#top">Top of 
+		Page</a></font></p>
+<p><font face="Verdana" size="2">© 2005 Microsoft Corporation</font></p>
+<p>&nbsp;</p>
+		<p>
+</body>
+
+</html>
+

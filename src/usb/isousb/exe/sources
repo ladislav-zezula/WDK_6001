@@ -1,0 +1,17 @@
+TARGETNAME=RwIso
+TARGETTYPE=PROGRAM
+
+USE_MSVCRT=1
+
+UMTYPE=console
+UMBASE=0x01000000
+
+INCLUDES=..\sys
+
+TARGETLIBS= $(DDK_LIB_PATH)\usbd.lib \
+            $(SDK_LIB_PATH)\setupapi.lib
+
+SOURCES=      \
+        RwIso.c  \
+        RwIso.rc
+

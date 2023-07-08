@@ -1,0 +1,51 @@
+TARGETNAME=WpdWudfSampleDriver
+TARGETTYPE=DYNLINK
+DLLENTRY   = _DllMainCRTStartup
+
+
+UMDF_VERSION = 1
+USE_MSVCRT   = 1
+UMTYPE       = windows
+USE_ATL      = 1
+ATL_VER      = 70
+UNICODE      = 1
+MSC_WARNING_LEVEL= /W3
+
+INCLUDES= $(INCLUDES);                          \
+          $(DDK_INC_PATH);                      \
+          $(SDK_INC_PATH);                      \
+
+SOURCES=\
+    WpdWudfSampleDriver.rc                      \
+    WpdWudfSampleDriver.idl                     \
+    WpdWudfSampleDriver.cpp                     \
+    Driver.cpp                                  \
+    Device.cpp                                  \
+    Queue.cpp                                   \
+    WpdBaseDriver.cpp                           \
+    WpdObjectEnum.cpp                           \
+    WpdObjectManagement.cpp                     \
+    WpdObjectProperties.cpp                     \
+    WpdObjectResources.cpp                      \
+    WpdCapabilities.cpp                         \
+    WpdObjectPropertiesBulk.cpp                 \
+    WpdStorage.cpp                              \
+    WpdNetworkConfig.cpp                        \
+    Helpers.cpp                                 \
+
+TARGETLIBS=\
+        $(SDK_LIB_PATH)\strsafe.lib             \
+        $(SDK_LIB_PATH)\kernel32.lib            \
+        $(SDK_LIB_PATH)\ole32.lib               \
+        $(SDK_LIB_PATH)\oleaut32.lib            \
+        $(SDK_LIB_PATH)\uuid.lib                \
+        $(SDK_LIB_PATH)\user32.lib              \
+        $(SDK_LIB_PATH)\advapi32.lib            \
+        $(SDK_LIB_PATH)\shlwapi.lib             \
+        $(SDK_LIB_PATH)\PortableDeviceGuids.lib \
+        $(MFC_LIB_PATH)\atls.lib                \
+
+BUILD_PASS0_CONSUMES=WUDFDDI
+PRECOMPILED_CXX     = 1
+PRECOMPILED_INCLUDE = Stdafx.h
+

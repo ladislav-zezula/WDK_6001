@@ -1,0 +1,21 @@
+TARGETNAME=agplib
+TARGETTYPE=DRIVER_LIBRARY
+
+INCLUDES=..\inc;..\..\..\inc
+
+MSC_WARNING_LEVEL=/W3 /WX
+
+SOURCES=agplog.mc   \
+        init.c      \
+        dispatch.c  \
+        resource.c  \
+        intrface.c  \
+        lowmem.c    \
+        config.c    \
+        utils.c     \
+        verifier.c  \
+	guardregion.c \
+        wmi.c       
+
+
+

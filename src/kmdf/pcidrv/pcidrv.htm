@@ -1,0 +1,106 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<meta NAME="GENERATOR" CONTENT="Microsoft FrontPage 6.0">
+<title>PCIDRV</title>
+<meta NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+<style>
+<!--
+table.MsoTableGrid
+    {border:1.0pt solid windowtext;
+    font-size:10.0pt;
+    font-family:"Times New Roman";
+    }
+-->
+</style>
+</head>
+
+<body TEXT="#000000" LINK="#0000ff" VLINK="#800080" BGCOLOR="#ffffff" leftmargin="8">
+<font FACE="Verdana">
+
+<h2><a NAME="NETVMINI">Sample WDM Driver For PCI Device</a> </h2>
+
+<h3>SUMMARY</h3>
+</font><font FACE="Verdana" SIZE="2">
+
+<p>This sample is a fully functional Windows Framework driver for Intel 82557/82558 based PCI Ethernet Adapter (10/100) and Intel compatibles. The purpose of this sample is to teach how to write a driver for a PCI device 
+using Windows Driver Framework (WDF). 
+
+<p>
+<font face="Verdana">This sample is a rewrite of the WDM version of PCIDRV sample present in this DDK 
+under src\general\pcidrv directory.&nbsp; For further information on the design &amp; implementation details, how to build, install, and test, refer to the
+<a href="../../general/pcidrv/pcidrv.htm">PCIDRV.HTM</a> readme file for the WDM 
+version of this sample.</font>
+
+<p class="MsoNormal" style="text-autospace: none">
+<span style="font-size: 10.0pt; font-family: Verdana; color: windowtext">
+Following table gives a typical device and driver scenario covered by the 
+sample, and also lists the driver framework interfaces demonstrated in this 
+sample:&nbsp;</span></p>
+<table class="MsoTableGrid" border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse; border: medium none" id="table1">
+  <tr>
+    <td width="311" valign="top" style="width: 233.6pt; border: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal" style="text-autospace: none"><b>
+    <span style="font-size: 10.0pt; font-family: Verdana; color: windowtext">
+    Scenario</span></b></td>
+    <td width="336" valign="top" style="width: 3.5in; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: 1.0pt solid windowtext; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal" style="text-autospace: none">
+    <span style="font-size: 10.0pt; font-family: Verdana; color: windowtext">
+    Features Demonstrated</span></td>
+  </tr>
+  <tr>
+    <td width="311" valign="top" style="width: 233.6pt; border-left: 1.0pt solid windowtext; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <p class="MsoNormal" style="text-autospace: none">
+    <span style="font-size: 10.0pt; font-family: Verdana; color: windowtext">The 
+    device is a PCI device with port, memory, interrupt and DMA resources. The 
+    device is capable of using either port or memory resources to control the 
+    device. Device can be stopped and started at run-time and also supports low 
+    power state.</span></p>
+    <p class="MsoNormal" style="text-autospace: none">
+    <span style="font-size: 10.0pt; font-family: Verdana; color: windowtext">The 
+    driver is capable of doing concurrent any number of read and write read and 
+    write operations to the device. </span></td>
+    <td width="336" valign="top" style="width: 3.5in; border-left: medium none; border-right: 1.0pt solid windowtext; border-top: medium none; border-bottom: 1.0pt solid windowtext; padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in">
+    <ul>
+      <li><font face="Verdana" size="2">Handling PnP &amp; Power Events</font></li>
+      <li><font face="Verdana" size="2">Registering Device Interface</font></li>
+      <li><font face="Verdana" size="2">Hardware resource mapping: Port, Memory 
+      &amp; Interrupt. </font></li>
+      <li><font face="Verdana" size="2">DMA Interfaces</font></li>
+      <li><font face="Verdana" size="2">Parallel default queue for write 
+      requests. If the write cannot be satisfied immediately, the request is put 
+      into a manual parallel queue.</font></li>
+      <li><font face="Verdana" size="2">Parallel manual queue for Read requests</font></li>
+      <li><font face="Verdana" size="2">Parallel&nbsp; </font>
+      <font face="Verdana">default queue for IOCTL requests. If </font>
+      <font face="Verdana" size="2">the ioctl cannot be satisfied immediately, 
+      the request is put into a manual parallel queue.</font></li>
+      <li><font face="Verdana">Request cancelation</font></li>
+      <li><font face="Verdana" size="2">Handling Interrupt &amp; DPC</font></li>
+      <li><font face="Verdana">Watchdog Timer DPC to monitor the device state.</font></li>
+      <li><font face="Verdana" size="2">Event Tracing &amp; HEXDUMP</font></li>
+      <li><font face="Verdana">Reading &amp; Writing to the registry</font></li>
+    </ul>
+    </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+</font><font face=Verdana>
+<font FACE="Verdana" SIZE="2">
+
+<p ALIGN="CENTER"><a HREF="#top">Top of page</a> </p>
+
+<table CELLSPACING="0" BORDER="0" WIDTH="624">
+  <tr>
+    <td VALIGN="MIDDLE" BGCOLOR="#00ffff" HEIGHT="2"></td>
+  </tr>
+</table>
+<font FACE="MS Sans Serif" SIZE="1">
+
+<p>&copy; 2003 Microsoft Corporation. All rights reserved.</font>
+</font>
+</body>
+</html>
+

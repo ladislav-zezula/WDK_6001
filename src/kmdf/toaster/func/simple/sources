@@ -1,0 +1,24 @@
+TARGETNAME=wdfsimple
+TARGETTYPE=DRIVER
+
+
+
+KMDF_VERSION_MAJOR=1
+
+INF_NAME=wdfsimple
+
+NTTARGETFILES=$(OBJ_PATH)\$(O)\$(INF_NAME).inf
+
+
+
+MISCFILES=$(NTTARGETFILES)
+
+
+INCLUDES = $(INCLUDES);..\..\inc;..\shared
+
+C_DEFINES=
+
+SOURCES= toaster.c
+
+
+
